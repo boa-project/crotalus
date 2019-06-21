@@ -1,0 +1,9 @@
+<h1>Let's do a quick search</h1>
+<h5>{{valueToSearch}}</h5>
+
+
+<mat-form-field class=search-input>
+  <input matInput placeholder="Sobre qué deseas buscar?" [(ngModel)]="valueToSearch">
+</mat-form-field>
+
+<button mat-raised-button color="primary" (click)="search()">Buscar</button>
