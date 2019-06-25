@@ -6,6 +6,11 @@ export const initialConfig = {
   filters: [
       { meta: 'metadata.technical.format', value: ['video', 'audio'] }
   ],
-  options: { cacheLife: 0 },
+  options: {
+    suggestionsSize: 10,
+    resultsSize: 0,
+    minLetters: 3,
+    cacheLife: 60000 // 60 seconds
+  },
   debug: true,
 }

@@ -9,6 +9,7 @@ import { SearchService } from '../services/search.service';
 export class SearchComponent implements OnInit {
 
   valueToSearch: string;
+  results: any;
 
   constructor( private searchService: SearchService) { }
 
@@ -16,7 +17,10 @@ export class SearchComponent implements OnInit {
   }
 
   search() {
-    this.searchService.search(this.valueToSearch).subscribe(data => console.log);
+    // this.searchService.search(this.valueToSearch).subscribe(data => console.log);
+    this.searchService.search(this.valueToSearch).subscribe(results => {
+      this.results = results;
+    })
   }
 
 }
