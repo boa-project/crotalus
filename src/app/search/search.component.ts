@@ -17,10 +17,13 @@ export class SearchComponent implements OnInit {
   }
 
   search() {
-    // this.searchService.search(this.valueToSearch).subscribe(data => console.log);
     this.searchService.search(this.valueToSearch).subscribe(results => {
-      this.results = results;
-    })
+      this.results = results && results[0];
+    });
+  }
+
+  getImageUrl(result): string {
+    return `${result.about}/!/${result.manifest.entrypoint}`;
   }
 
 }
