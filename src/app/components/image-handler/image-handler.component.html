@@ -1,0 +1,6 @@
+<div class="image-wrapper">
+  <i *ngIf="!imageVisible"></i>
+  <mat-icon *ngIf="!imageVisible">image</mat-icon>
+  <img [hidden]="!imageVisible" [src]="imageUrl" alt="" (load)="showImage()">
+  <!-- <img *ngIf="imageVisible" [src]="imageUrl" alt="" (load)="showImage()"> -->
+</div>

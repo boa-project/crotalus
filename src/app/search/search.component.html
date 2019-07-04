@@ -1,21 +1,35 @@
-<h1>Let's do a quick search</h1>
+<h1><mat-icon color="primary">image_search</mat-icon></h1>
 
-<mat-form-field class=search-input>
-  <input matInput placeholder="Sobre qué deseas buscar?" [(ngModel)]="valueToSearch">
-</mat-form-field>
-
-<button mat-raised-button color="primary" (click)="search()">Buscar</button>
-
-<div class="results-wrapper">
-  <ng-container *ngFor="let result of results" >
-    <mat-card class="example-card">
-      <div class="image-wrapper">
-        <img mat-card-image [src]="getImageUrl(result)" alt="Photo of a Shiba Inu">
-      </div>
-      <mat-card-content>
-        <mat-card-title>{{result.metadata.general.title.none}}</mat-card-title>
-        <mat-card-subtitle><mat-icon>visibility</mat-icon> {{result.social.views}} &nbsp;&nbsp; <mat-icon>comment</mat-icon> {{result.social.comments}} </mat-card-subtitle>
-      </mat-card-content>
-    </mat-card>
-  </ng-container>
+<div class="search-bar">
+  <mat-form-field class=search-input>
+    <input matInput name="valueToSearch" placeholder="¿Sobre qué deseas buscar?" [(ngModel)]="valueToSearch"
+      (keyup.enter)="search()" (ngModelChange)="shouldClearResults()">
+  </mat-form-field>
+  <button mat-raised-button color="primary" (click)="search()">Buscar</button>
 </div>
+
+<ng-container *ngIf="searchDone">
+  <div class="results-wrapper" *ngIf="results && results.length, else noResultsTemplate">
+    <ng-container *ngFor="let result of results">
+      <mat-card>
+        <app-image-handler [imageUrl]="getImageUrl(result)"></app-image-handler>
+        <mat-card-content>
+          <mat-card-title #titleRef [matTooltip]="result.metadata.general.title.none" matTooltipPosition="above"
+            [matTooltipDisabled]="shouldDisableTooltip(titleRef)">{{result.metadata.general.title.none}}</mat-card-title>
+          <mat-card-subtitle>
+            <mat-icon>visibility</mat-icon> {{result.social.views}} &nbsp;&nbsp; <mat-icon>comment</mat-icon>
+            {{result.social.comments}}
+          </mat-card-subtitle>
+        </mat-card-content>
+      </mat-card>
+    </ng-container>
+  </div>
+
+  <ng-template #noResultsTemplate>
+    <div class="no-results-wrapper">
+      <mat-icon>not_interested</mat-icon>
+    </div>
+  </ng-template>
+</ng-container>
+
+
