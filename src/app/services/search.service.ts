@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
-import { initialConfig } from "../initialConfig";
+// import { initialConfig } from "../initialConfig";
 import { HttpClient } from '@angular/common/http';
 import { forkJoin, Observable } from 'rxjs';
+import { AppSettingsService } from './app-settings.service';
 
 @Injectable({
   providedIn: 'root'
@@ -10,12 +11,12 @@ export class SearchService {
 
   private apiUri: any;
   filters: any;
-  catalogues: any
+  catalogues: any;
 
-  constructor(private http: HttpClient) {
-    this.apiUri = initialConfig.apiuri;
-    this.filters = initialConfig.filters;
-    this.catalogues = initialConfig.catalogues;
+  constructor(private http: HttpClient, private appSettings:AppSettingsService) {
+    this.apiUri = appSettings.apiUri;
+    this.filters = appSettings.filters;
+    this.catalogues = appSettings.catalogues;
   }
 
   search(value: string): Observable<any[]> {
@@ -31,7 +32,7 @@ export class SearchService {
   }
 
   generateRequestParams() {
-    const searchParams = `(n)=${initialConfig.options.suggestionsSize}&(s)=${initialConfig.options.resultsSize}`;
+    const searchParams = `(n)=${this.appSettings.options.suggestionsSize}&(s)=${this.appSettings.options.resultsSize}`;
     const filters = this.filters.map(filter => {
       return filter.value.reduce((prevValue, actualItem, index) => {
         return prevValue + (index !== 0 ? '&' : '') + `(meta)[${filter.meta}][${index}]=${actualItem}`

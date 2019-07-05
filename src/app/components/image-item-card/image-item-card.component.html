@@ -1,0 +1,17 @@
+<mat-card class="image-item-card">
+    <app-image-handler [imageUrl]="getImageUrl(imageItem)"></app-image-handler>
+    <mat-card-content>
+      <mat-card-title #titleRef [matTooltip]="imageItem.metadata.general.title.none" matTooltipPosition="above"
+        [matTooltipDisabled]="shouldDisableTooltip(titleRef)">{{imageItem.metadata.general.title.none}}</mat-card-title>
+      <mat-card-subtitle>
+        <span>
+            <mat-icon>visibility</mat-icon> {{imageItem.social.views}}
+        </span>
+        &nbsp;&nbsp;
+        <span>
+            <mat-icon>comment</mat-icon>
+            {{imageItem.social.comments}}
+        </span>
+      </mat-card-subtitle>
+    </mat-card-content>
+  </mat-card>

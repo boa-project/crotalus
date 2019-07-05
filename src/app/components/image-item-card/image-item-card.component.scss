@@ -1,0 +1,53 @@
+// @import '~styles/global/_mixins.scss';
+
+@mixin icon-size( $size: 24px) {
+  font-size: $size;
+  height: $size;
+  width: $size;
+  line-height: $size;
+}
+
+$indicators-size: 14px;
+
+mat-card.image-item-card {
+  height: 290px;
+  margin: 25px 15px;
+  max-width: 380px;
+  padding: 0;
+  border-radius: 2px;
+
+  mat-card-content {
+    height: 40px;
+    position: relative;
+  }
+
+  mat-card-title {
+    font-size: 16px;
+    font-weight: lighter;
+    position: absolute;
+    bottom: 7px;
+    left: 0;
+    right: 0;
+    padding: 0 8px 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    letter-spacing: -0.018em;
+    margin: 0;
+  }
+
+  mat-card-subtitle {
+    position: absolute;
+    top: -26px;
+    right: 0px;
+    padding: 6px 16px;
+    font-size: 15px;
+    background-color: #f6f6f6d9;
+    color: #673ab7;
+    border-radius: 4px 0px 0px 0px;
+    .mat-icon {
+      @include icon-size($indicators-size);
+      vertical-align: sub;
+    }
+  }
+}

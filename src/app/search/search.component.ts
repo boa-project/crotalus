@@ -13,29 +13,23 @@ export class SearchComponent {
   results: any[];
   snackBarRef: MatSnackBarRef<SimpleSnackBar>;
   searchDone = false;
+  isSearching = false;
 
   constructor(private searchService: SearchService, private snackBar: MatSnackBar) { }
 
   search() {
-    
-    if (this.snackBarRef)
-    this.snackBarRef.dismiss();
-    
+    if (this.snackBarRef) {
+      this.snackBarRef.dismiss();
+    }
+    this.isSearching = true;
     this.searchService.search(this.valueToSearch).subscribe(results => {
       if (!this.searchDone) {
         this.searchDone = true;
       }
+      this.isSearching = false;
       this.results = results && results[0];
       this.showSnackBar();
     });
-  }
-
-  getImageUrl(result): string {
-    return `${result.about}/!/${result.manifest.entrypoint}`;
-  }
-
-  shouldDisableTooltip(titleElement) {
-    return titleElement.offsetWidth === titleElement.scrollWidth;
   }
 
   shouldClearResults(): void {
@@ -47,13 +41,14 @@ export class SearchComponent {
   }
 
   showSnackBar() {
-    let message = this.results.length === 0 ? 'Opps!! no hay resultados para tu búsqueda.' : `${this.results.length} resultados encontrados`;
+    const message = this.results.length === 0 ?
+      'Ooops!! No encontramos resultados para tu búsqueda.' :
+      `${this.results.length} resultados encontrados`;
     this.snackBarRef = this.snackBar.open(message, 'Cerrar', {
       duration: 6000,
     });
     this.snackBarRef.onAction().subscribe(() => {
       this.snackBarRef.dismiss();
-    })
+    });
   }
-  
 }

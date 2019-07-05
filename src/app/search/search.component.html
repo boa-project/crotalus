@@ -5,29 +5,25 @@
     <input matInput name="valueToSearch" placeholder="¿Sobre qué deseas buscar?" [(ngModel)]="valueToSearch"
       (keyup.enter)="search()" (ngModelChange)="shouldClearResults()">
   </mat-form-field>
-  <button mat-raised-button color="primary" (click)="search()">Buscar</button>
+  <button *ngIf="!isSearching" mat-raised-button color="primary" (click)="search()">Buscar</button>
+  <div class="spinner-box">
+    <mat-spinner *ngIf="isSearching" diameter="30"></mat-spinner>
+  </div>
 </div>
 
-<ng-container *ngIf="searchDone">
+
+
+<ng-container *ngIf="!isSearching && searchDone">
   <div class="results-wrapper" *ngIf="results && results.length, else noResultsTemplate">
     <ng-container *ngFor="let result of results">
-      <mat-card>
-        <app-image-handler [imageUrl]="getImageUrl(result)"></app-image-handler>
-        <mat-card-content>
-          <mat-card-title #titleRef [matTooltip]="result.metadata.general.title.none" matTooltipPosition="above"
-            [matTooltipDisabled]="shouldDisableTooltip(titleRef)">{{result.metadata.general.title.none}}</mat-card-title>
-          <mat-card-subtitle>
-            <mat-icon>visibility</mat-icon> {{result.social.views}} &nbsp;&nbsp; <mat-icon>comment</mat-icon>
-            {{result.social.comments}}
-          </mat-card-subtitle>
-        </mat-card-content>
-      </mat-card>
+        <app-image-item-card [imageItem]="result"></app-image-item-card>
     </ng-container>
   </div>
 
   <ng-template #noResultsTemplate>
     <div class="no-results-wrapper">
-      <mat-icon>not_interested</mat-icon>
+      <mat-icon>sentiment_dissatisfied</mat-icon>
+      <p class="message">Ooops!! No encontramos resultados para tu búsqueda.</p>
     </div>
   </ng-template>
 </ng-container>

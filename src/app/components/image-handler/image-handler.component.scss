@@ -29,27 +29,27 @@
     opacity: 0;
     top: 0;
     left: 0;
-  
+
     /*   gradient   */
     background: linear-gradient(
       to right,
       rgba(255, 255, 255, 0) 0%,
-      rgba(255, 255, 255, 0.03) 1%,
-      rgba(255, 255, 255, 0.6) 30%,
-      rgba(255, 255, 255, 0.85) 50%,
-      rgba(255, 255, 255, 0.85) 70%,
-      rgba(255, 255, 255, 0.85) 71%,
+      rgba(255, 255, 255, 0.1) 1%,
+      rgba(255, 255, 255, 0.7) 30%,
+      rgba(255, 255, 255, 0.95) 50%,
+      rgba(255, 255, 255, 0.95) 70%,
+      rgba(255, 255, 255, 0.95) 71%,
       rgba(255, 255, 255, 0) 100%
     ); /* W3C */
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00ffffff', endColorstr='#00ffffff',GradientType=1 ); /* IE6-9 */
-  
+
     /*  forming the shine element
         play around with the width, skew and gradient to get different effects
       */
     width: 15%;
     height: 100%;
     transform: skew(-10deg, 0deg);
-  
+
     /*  animating it  */
     animation: shine 2s;
     animation-iteration-count: infinite;
