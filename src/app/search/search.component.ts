@@ -17,7 +17,7 @@ export class SearchComponent {
 
   constructor(private searchService: SearchService, private snackBar: MatSnackBar) { }
 
-  search() {
+  search(): void {
     if (this.snackBarRef) {
       this.snackBarRef.dismiss();
     }
@@ -40,7 +40,7 @@ export class SearchComponent {
     }
   }
 
-  showSnackBar() {
+  showSnackBar(): void {
     const message = this.results.length === 0 ?
       'Ooops!! No encontramos resultados para tu búsqueda.' :
       `${this.results.length} resultados encontrados`;

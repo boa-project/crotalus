@@ -15,7 +15,7 @@ export class ImageItemCardComponent {
     return `${item.about}/!/${item.manifest.entrypoint}`;
   }
 
-  shouldDisableTooltip(titleElement) {
+  shouldDisableTooltip(titleElement): boolean {
     return titleElement.offsetWidth === titleElement.scrollWidth;
   }
 

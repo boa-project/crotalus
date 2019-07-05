@@ -1,12 +1,4 @@
-// @import '~styles/global/mixins';
-
-
-@mixin icon-size( $size: 24px) {
-  font-size: $size;
-  height: $size;
-  width: $size;
-  line-height: $size;
-}
+@import 'global/mixins';
 
 h1 {
   padding-left: 3%;

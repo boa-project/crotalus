@@ -6,8 +6,8 @@ import { Component, Input } from '@angular/core';
   styleUrls: ['./image-handler.component.scss']
 })
 export class ImageHandlerComponent {
+  
   @Input() imageUrl: string;
-
   imageVisible = false;
 
   showImage(): void {

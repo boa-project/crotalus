@@ -1,11 +1,5 @@
-// @import '~styles/global/_mixins.scss';
-
-@mixin icon-size( $size: 24px) {
-  font-size: $size;
-  height: $size;
-  width: $size;
-  line-height: $size;
-}
+@import 'global/mixins';
+@import 'global/variables';
 
 $indicators-size: 14px;
 
@@ -43,7 +37,7 @@ mat-card.image-item-card {
     padding: 6px 16px;
     font-size: 15px;
     background-color: #f6f6f6d9;
-    color: #673ab7;
+    color: $primary;
     border-radius: 4px 0px 0px 0px;
     .mat-icon {
       @include icon-size($indicators-size);
