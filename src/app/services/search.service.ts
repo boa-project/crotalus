@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 // import { initialConfig } from "../initialConfig";
 import { HttpClient } from '@angular/common/http';
 import { forkJoin, Observable } from 'rxjs';
+import { tap } from 'rxjs/operators';
 import { AppSettingsService } from './app-settings.service';
 
 @Injectable({
@@ -9,9 +10,11 @@ import { AppSettingsService } from './app-settings.service';
 })
 export class SearchService {
 
-  private apiUri: any;
-  filters: any;
-  catalogues: any;
+  private apiUri: string;
+  private apiRequestsCounter: number;
+  filters: any[];
+  catalogues: any[];
+
 
   constructor(private http: HttpClient, private appSettings:AppSettingsService) {
     this.apiUri = appSettings.apiUri;
@@ -19,20 +22,30 @@ export class SearchService {
     this.catalogues = appSettings.catalogues;
   }
 
-  search(value: string): Observable<any[]> {
+  search(value: string, firstCall: boolean): Observable<any[]> {
+    if (firstCall) {
+      this.apiRequestsCounter = 0;
+    }
     const cataloguesToSearchIn = this.catalogues.map(catalog => catalog.key);
     const requestsArray = cataloguesToSearchIn.map(catalogueKey =>
       this.http.get(this.createCatalogRequestUrl(value, catalogueKey))
     )
-    return forkJoin([...requestsArray]);
+    return forkJoin([...requestsArray]).pipe(
+      tap(() => {
+        this.apiRequestsCounter += 1; 
+      })
+    );
   }
+
 
   createCatalogRequestUrl(value: string, catalogKey: string) {
     return `${this.apiUri}/c/${catalogKey}/resources.json?q=${value}&${this.generateRequestParams()}`
   }
 
   generateRequestParams() {
-    const searchParams = `(n)=${this.appSettings.options.suggestionsSize}&(s)=${this.appSettings.options.resultsSize}`;
+    const responseSize = this.appSettings.options.resultsResponseSize;
+    const resultsOffset = responseSize * this.apiRequestsCounter;
+    const searchParams = `(n)=${responseSize}&(s)=${resultsOffset}`;
     const filters = this.filters.map(filter => {
       return filter.value.reduce((prevValue, actualItem, index) => {
         return prevValue + (index !== 0 ? '&' : '') + `(meta)[${filter.meta}][${index}]=${actualItem}`

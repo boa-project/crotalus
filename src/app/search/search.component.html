@@ -1,31 +1,42 @@
-<h1><mat-icon color="primary">image_search</mat-icon></h1>
+<h1>
+  <mat-icon color="primary">image_search</mat-icon>
+</h1>
 
 <div class="search-bar">
   <mat-form-field class=search-input>
     <input matInput name="valueToSearch" placeholder="¿Sobre qué deseas buscar?" [(ngModel)]="valueToSearch"
-      (keyup.enter)="search()" (ngModelChange)="shouldClearResults()">
+      (keyup.enter)="search(true)">
   </mat-form-field>
-  <button *ngIf="!isSearching" mat-raised-button color="primary" (click)="search()">Buscar</button>
-  <div class="spinner-box">
-    <mat-spinner *ngIf="isSearching" diameter="30"></mat-spinner>
+  <button *ngIf="!isSearching" mat-raised-button color="primary" (click)="search(true)">Buscar</button>
+  <div class="spinner-box" *ngIf="isSearching">
+    <mat-spinner diameter="30"></mat-spinner>
   </div>
 </div>
 
 
-
-<ng-container *ngIf="!isSearching && searchDone">
-  <div class="results-wrapper" *ngIf="results && results.length, else noResultsTemplate">
+<ng-container *ngIf="searchDone || (results && results.length > 0)">
+  <div class="results-wrapper" *ngIf="results && results.length, else noResultsTemplate"
+    (scroll)="onResultsScrolled($event)">
     <ng-container *ngFor="let result of results">
-        <app-image-item-card [imageItem]="result"></app-image-item-card>
+      <app-image-item-card [imageItem]="result"></app-image-item-card>
     </ng-container>
+    <div *ngIf="shouldShowMoreResultsSpinner" class="more-results-spinner">
+      <mat-spinner diameter="40"></mat-spinner>
+    </div>
+    <div *ngIf="noMoreResults" class="more-results-spinner">
+      <p class="message">No hay más resultados.</p>
+    </div>
   </div>
 
   <ng-template #noResultsTemplate>
     <div class="no-results-wrapper">
-      <mat-icon>sentiment_dissatisfied</mat-icon>
-      <p class="message">Ooops!! No encontramos resultados para tu búsqueda.</p>
+      <ng-container *ngIf="!isSearching">
+        <mat-icon>sentiment_dissatisfied</mat-icon>
+        <p class="message">Ooops!! No encontramos resultados para tu búsqueda.</p>
+        <div class="spinner-box">
+          <mat-spinner *ngIf="isSearching" diameter="30"></mat-spinner>
+        </div>
+      </ng-container>
     </div>
   </ng-template>
 </ng-container>
-
-

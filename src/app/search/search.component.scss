@@ -23,6 +23,11 @@ h1 {
   .spinner-box {
     display: inline-block;
     width: 76px;
+
+    mat-spinner {
+      position: relative;
+      left: 23px;
+    }
   }
 }
 
@@ -32,6 +37,14 @@ h1 {
   justify-content: space-between;
   background-color: #f7f7f7;
   padding: 0 1%;
+  color: #ababab;
+
+  .more-results-spinner {
+    display: flex;
+    justify-content: center;
+    flex-basis: 100%;
+    margin: 30px 0 50px;
+  }
 }
 
 .no-results-wrapper {
@@ -50,10 +63,8 @@ h1 {
     @include icon-size(200px);
     color: #ababab;;
   }
-
-  .message {
-    font-size: 30px;
-  }
-
 }
 
+.message {
+  font-size: 30px;
+}

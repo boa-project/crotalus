@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, HostListener, ChangeDetectorRef } from '@angular/core';
 import { SearchService } from '../services/search.service';
 import { MatSnackBar, MatSnackBarRef, SimpleSnackBar } from '@angular/material';
+import { AppSettingsService } from '../services/app-settings.service';
 
 @Component({
   selector: 'app-search',
@@ -9,46 +10,85 @@ import { MatSnackBar, MatSnackBarRef, SimpleSnackBar } from '@angular/material';
 })
 export class SearchComponent {
 
-  valueToSearch: string;
+  valueToSearch: string = '*a*';
   results: any[];
   snackBarRef: MatSnackBarRef<SimpleSnackBar>;
+  resultsSize: number;
+  minLetters: number;
   searchDone = false;
   isSearching = false;
+  noMoreResults = false;
 
-  constructor(private searchService: SearchService, private snackBar: MatSnackBar) { }
+  constructor(
+    private searchService: SearchService,
+    private changeDetector: ChangeDetectorRef,
+    private snackBar: MatSnackBar,
+    appSettings: AppSettingsService,
+  ) {
+    this.resultsSize = appSettings.options.resultsResponseSize;
+    this.minLetters = appSettings.options.minLetters;
+  }
 
-  search(): void {
-    if (this.snackBarRef) {
-      this.snackBarRef.dismiss();
+  search(firstCall: boolean): void {
+
+    if (this.valueToSearch.length < this.minLetters) {
+      const message = `Texto de búsqueda mínimo de ${this.minLetters} letras`;
+      this.showSnackBar(message, 'Cerrar');
+      return;
+    }
+
+    if (firstCall) {
+      this.results = [];
+      this.noMoreResults = false;
     }
     this.isSearching = true;
-    this.searchService.search(this.valueToSearch).subscribe(results => {
-      if (!this.searchDone) {
-        this.searchDone = true;
-      }
+    this.searchService.search(this.valueToSearch, firstCall).subscribe(results => {
+      this.searchDone = true;
       this.isSearching = false;
-      this.results = results && results[0];
-      this.showSnackBar();
+      const lastResults = results[0];
+      if (lastResults.length > 0 && lastResults.length < this.resultsSize) {
+        this.results.push(...lastResults);
+        this.noMoreResults = true;
+      } else if (lastResults.length === 0) {
+        this.noMoreResults = true;
+        this.scrollToBottom();
+      } else {
+        this.results.push(...lastResults);
+      }
     });
   }
-
-  shouldClearResults(): void {
-    if (
-      this.valueToSearch.length === 0 && (this.results && this.results.length === 0)
-    ) {
-      this.searchDone = false;
-    }
+  
+  scrollToBottom() {
+    this.changeDetector.detectChanges();
+    setTimeout(() => {
+      window.scrollTo(0, document.body.scrollHeight);
+    }, 100);
   }
 
-  showSnackBar(): void {
-    const message = this.results.length === 0 ?
-      'Ooops!! No encontramos resultados para tu búsqueda.' :
-      `${this.results.length} resultados encontrados`;
-    this.snackBarRef = this.snackBar.open(message, 'Cerrar', {
+  showSnackBar(message:string, action:string): void {
+    this.snackBarRef = this.snackBar.open(message, action, {
       duration: 6000,
     });
     this.snackBarRef.onAction().subscribe(() => {
       this.snackBarRef.dismiss();
     });
   }
+
+  get shouldShowMoreResultsSpinner(): boolean {
+    return (this.results && this.results.length > 0) && !this.noMoreResults;
+  }
+
+  @HostListener("window:scroll", [])
+  onWindowScroll() {
+    if (
+      !this.noMoreResults &&
+      window.pageYOffset + window.innerHeight >= (document.documentElement.offsetHeight - 90)
+    ) {
+      if (!this.isSearching) {
+        this.search(false);
+      }
+    }
+  }
+  
+
 }
