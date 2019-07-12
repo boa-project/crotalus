@@ -1,5 +1,5 @@
 <mat-card class="image-item-card">
-    <app-image-handler [imageUrl]="getImageUrl(imageItem)"></app-image-handler>
+    <app-image-handler [imageUrl]="getThumbnailUrl(imageItem)"></app-image-handler>
     <mat-card-content>
       <mat-card-title #titleRef [matTooltip]="imageItem.metadata.general.title.none" matTooltipPosition="above"
         [matTooltipDisabled]="shouldDisableTooltip(titleRef)">{{imageItem.metadata.general.title.none}}</mat-card-title>

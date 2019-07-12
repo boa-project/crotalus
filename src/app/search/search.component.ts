@@ -10,7 +10,7 @@ import { AppSettingsService } from '../services/app-settings.service';
 })
 export class SearchComponent {
 
-  valueToSearch: string = '*a*';
+  valueToSearch: string;
   results: any[];
   snackBarRef: MatSnackBarRef<SimpleSnackBar>;
   resultsSize: number;
@@ -30,6 +30,9 @@ export class SearchComponent {
   }
 
   search(firstCall: boolean): void {
+    if (this.snackBarRef) {
+      this.snackBarRef.dismiss();
+    }
 
     if (this.valueToSearch.length < this.minLetters) {
       const message = `Texto de búsqueda mínimo de ${this.minLetters} letras`;
@@ -57,7 +60,7 @@ export class SearchComponent {
       }
     });
   }
-  
+
   scrollToBottom() {
     this.changeDetector.detectChanges();
     setTimeout(() => {
@@ -65,7 +68,7 @@ export class SearchComponent {
     }, 100);
   }
 
-  showSnackBar(message:string, action:string): void {
+  showSnackBar(message: string, action: string): void {
     this.snackBarRef = this.snackBar.open(message, action, {
       duration: 6000,
     });
@@ -74,8 +77,20 @@ export class SearchComponent {
     });
   }
 
+  onUpButtonClick = (): void => {
+    const c = document.documentElement.scrollTop || document.body.scrollTop;
+    if (c > 0) {
+      window.requestAnimationFrame(this.onUpButtonClick);
+      window.scrollTo(0, c - c / 8);
+    }
+  }
+
   get shouldShowMoreResultsSpinner(): boolean {
     return (this.results && this.results.length > 0) && !this.noMoreResults;
+  }
+
+  get shouldShowUpButton(): boolean {
+    return window.pageYOffset > window.innerHeight;
   }
 
   @HostListener("window:scroll", [])
@@ -89,6 +104,6 @@ export class SearchComponent {
       }
     }
   }
-  
+
 
 }

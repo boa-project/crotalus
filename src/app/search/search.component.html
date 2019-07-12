@@ -1,13 +1,14 @@
-<h1>
+<div class="logo">
   <mat-icon color="primary">image_search</mat-icon>
-</h1>
+  <div class="title mat-primary">Crotalus</div>
+</div>
 
 <div class="search-bar">
   <mat-form-field class=search-input>
     <input matInput name="valueToSearch" placeholder="¿Sobre qué deseas buscar?" [(ngModel)]="valueToSearch"
       (keyup.enter)="search(true)">
   </mat-form-field>
-  <button *ngIf="!isSearching" mat-raised-button color="primary" (click)="search(true)">Buscar</button>
+  <button *ngIf="!isSearching" mat-stroked-button color="primary" (click)="search(true)">Buscar</button>
   <div class="spinner-box" *ngIf="isSearching">
     <mat-spinner diameter="30"></mat-spinner>
   </div>
@@ -28,6 +29,7 @@
     </div>
   </div>
 
+
   <ng-template #noResultsTemplate>
     <div class="no-results-wrapper">
       <ng-container *ngIf="!isSearching">
@@ -40,3 +42,11 @@
     </div>
   </ng-template>
 </ng-container>
+
+<button mat-fab
+ *ngIf="shouldShowUpButton"
+  class="go-up-button"
+  aria-label="ir arriba"
+  (click) = "onUpButtonClick()">
+  <mat-icon>publish</mat-icon>
+</button>

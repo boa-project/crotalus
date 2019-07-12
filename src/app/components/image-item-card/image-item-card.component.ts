@@ -11,8 +11,9 @@ export class ImageItemCardComponent {
 
   constructor() { }
 
-  getImageUrl(item): string {
-    return `${item.about}/!/${item.manifest.entrypoint}`;
+  getThumbnailUrl(item): string {
+    // return `${item.about}/!/${item.manifest.customicon}`;
+    return item.manifest.customicon;
   }
 
   shouldDisableTooltip(titleElement): boolean {
