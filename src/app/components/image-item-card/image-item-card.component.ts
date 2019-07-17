@@ -11,13 +11,17 @@ export class ImageItemCardComponent {
 
   constructor() { }
 
-  getThumbnailUrl(item): string {
-    // return `${item.about}/!/${item.manifest.customicon}`;
-    return item.manifest.customicon;
+  getThumbnailUrl(): string {
+    // return `${this.imageItem.about}/!/${this.imageItem.manifest.customicon}`;
+    return this.imageItem.manifest.customicon;
   }
 
   shouldDisableTooltip(titleElement): boolean {
     return titleElement.offsetWidth === titleElement.scrollWidth;
+  }
+
+  getResourceDownloadUrl(): string {
+    return `${this.imageItem.about}/!/${this.imageItem.manifest.entrypoint}`;
   }
 
 }

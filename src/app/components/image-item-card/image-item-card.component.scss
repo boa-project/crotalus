@@ -1,23 +1,18 @@
-@import 'global/mixins';
-@import 'global/variables';
+@import "global/mixins";
+@import "global/variables";
 
-$indicators-size: 14px;
+$indicators-size: 16px;
 
 mat-card.image-item-card {
-  height: 290px;
-  margin: 25px 15px;
+  height: 322px;
+  margin: 25px 30px;
   max-width: 380px;
-  padding: 0;
+  padding: 32px 0 0;
   border-radius: 2px;
 
-  mat-card-content {
-    height: 40px;
-    position: relative;
-  }
-
   mat-card-title {
-    font-size: 16px;
-    font-weight: lighter;
+    font-size: 17px;
+    font-weight: bold;
     position: absolute;
     bottom: 7px;
     left: 0;
@@ -26,22 +21,56 @@ mat-card.image-item-card {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    letter-spacing: -0.018em;
     margin: 0;
+    letter-spacing: 0.015em;
+    font-family: "Cabin Sketch", cursive;
+    color: #555;
   }
 
   mat-card-subtitle {
     position: absolute;
-    top: -26px;
+    height: 32px;
+    top: 0px;
     right: 0px;
-    padding: 6px 16px;
+    margin: 0;
+    padding: 4px 4px 4px 8px;
     font-size: 15px;
-    background-color: #f6f6f6d9;
+    background-color: #ffffff;
     color: $primary;
-    border-radius: 4px 0px 0px 0px;
+    border-radius: 2px 2px 0 0;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+
+    a {
+      font-size: 15px;
+      color: #fff;
+      display: flex;
+      height: 24px;
+      width: 24px;
+      justify-content: center;
+      align-items: center;
+      text-decoration: none;
+      background: rgba( $primary, .45 );
+      border-radius: 2px;
+      transition: background 100ms ease-in-out;
+      
+      &:hover {
+        background: rgba( $primary, .75 );
+        transition: background 100ms ease-in-out;
+       }
+    }
+
     .mat-icon {
       @include icon-size($indicators-size);
       vertical-align: sub;
     }
+  }
+}
+
+::ng-deep {
+  .mat-tooltip {
+    font-weight: normal;
+    font-size: 12px;
   }
 }

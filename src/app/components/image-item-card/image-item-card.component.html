@@ -1,17 +1,30 @@
 <mat-card class="image-item-card">
-    <app-image-handler [imageUrl]="getThumbnailUrl(imageItem)"></app-image-handler>
-    <mat-card-content>
-      <mat-card-title #titleRef [matTooltip]="imageItem.metadata.general.title.none" matTooltipPosition="above"
-        [matTooltipDisabled]="shouldDisableTooltip(titleRef)">{{imageItem.metadata.general.title.none}}</mat-card-title>
-      <mat-card-subtitle>
+  <app-image-handler [imageUrl]="getThumbnailUrl(imageItem)"></app-image-handler>
+  <mat-card-content>
+    <mat-card-title 
+      #titleRef [matTooltip]="imageItem.metadata.general.title.none"
+      matTooltipPosition="above"
+      [matTooltipDisabled]="shouldDisableTooltip(titleRef)"
+    >{{imageItem.metadata.general.title.none}}</mat-card-title>
+    <mat-card-subtitle>
+      <div class="left">
         <span>
-            <mat-icon>visibility</mat-icon> {{imageItem.social.views}}
+          <mat-icon>visibility</mat-icon> {{imageItem.social.views}}
         </span>
         &nbsp;&nbsp;
         <span>
-            <mat-icon>comment</mat-icon>
-            {{imageItem.social.comments}}
+          <mat-icon>comment</mat-icon>
+          {{imageItem.social.comments}}
         </span>
-      </mat-card-subtitle>
-    </mat-card-content>
-  </mat-card>
+      </div>
+      <div class="right">
+        <span>
+          <a [href]="getResourceDownloadUrl()" [download]="imageItem.manifest.entrypoint">
+            <mat-icon>get_app</mat-icon>
+          </a>
+        </span>
+      </div>
+
+    </mat-card-subtitle>
+  </mat-card-content>
+</mat-card>
