@@ -42,7 +42,7 @@ mat-card.image-item-card {
     display: flex;
     justify-content: space-between;
 
-    a {
+    .download-icon {
       font-size: 15px;
       color: #fff;
       display: flex;
@@ -51,14 +51,22 @@ mat-card.image-item-card {
       justify-content: center;
       align-items: center;
       text-decoration: none;
-      background: rgba( $primary, .45 );
+      background: rgba($primary, 0.45);
       border-radius: 2px;
       transition: background 100ms ease-in-out;
-      
+      cursor: pointer;
+
       &:hover {
-        background: rgba( $primary, .75 );
+        background: rgba($primary, 0.75);
         transition: background 100ms ease-in-out;
-       }
+      }
+
+      .mat-icon {
+        height: 24px;
+        width: 24px;
+        line-height: 24px;
+        text-align: center;
+      }
     }
 
     .mat-icon {

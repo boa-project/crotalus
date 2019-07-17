@@ -357,9 +357,9 @@ MIT
 
 @angular/material/progress-spinner
 
-@angular/material/card
-
 @angular/material/icon
+
+@angular/material/card
 
 @angular/material/form-field
 
