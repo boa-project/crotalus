@@ -1,5 +1,10 @@
 <mat-card class="image-item-card">
-  <app-image-handler [imageUrl]="getThumbnailUrl()"></app-image-handler>
+  <div class="image-wrapper">
+    <app-image-handler [imageUrl]="getThumbnailUrl()"></app-image-handler>
+    <div class="open-details-overlay" (click)="openDetails()">
+      <mat-icon>open_in_new</mat-icon>
+    </div>
+  </div>
   <mat-card-content>
     <mat-card-title #titleRef [matTooltip]="imageItem.metadata.general.title.none" matTooltipPosition="above"
       [matTooltipDisabled]="shouldDisableTooltip(titleRef)">{{imageItem.metadata.general.title.none}}</mat-card-title>
@@ -16,8 +21,11 @@
       </div>
       <div class="right">
         <span [class.download-icon]="!isResourceInSameDomain">
-          <a *ngIf="isResourceInSameDomain; else iconTemplate" class="download-icon" [href]="getResourceDownloadUrl()"
-            [download]="imageItem.manifest.entrypoint">
+          <a *ngIf="isResourceInSameDomain; else iconTemplate" 
+            class="download-icon"
+            [href]="getResourceDownloadUrl()"
+            [download]="imageItem.manifest.entrypoint"
+          >
             <mat-icon>get_app</mat-icon>
           </a>
           <ng-template #iconTemplate>

@@ -1,0 +1,39 @@
+<app-header></app-header>
+
+<mat-card class="main-card">
+    <mat-card-header>
+      <mat-card-title>{{title}}</mat-card-title>
+      <mat-card-subtitle>{{format}}</mat-card-subtitle>
+    </mat-card-header>
+    <img mat-card-image [src]="imageSrc" [alt]="title">
+    <mat-card-content>
+      <p>
+       {{description}}
+      </p>
+    </mat-card-content>
+  </mat-card>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<pre>
+{{resourceData | json}}
+</pre>

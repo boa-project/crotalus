@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-image-item-card',
@@ -8,6 +8,7 @@ import { Component, Input, OnInit } from '@angular/core';
 export class ImageItemCardComponent implements OnInit {
 
   @Input() imageItem: any;
+  @Output() openDetailsEmitter = new EventEmitter();
   currentDomain: string;
   resourceDomain: string;
 
@@ -33,6 +34,10 @@ export class ImageItemCardComponent implements OnInit {
 
   openResourceInNewWindow(): void {
     window.open(this.getResourceDownloadUrl(), '_blank');
+  }
+
+  openDetails(): void {
+    this.openDetailsEmitter.emit();
   }
 
   get isResourceInSameDomain(): boolean {

@@ -53,6 +53,10 @@ export class SearchService {
     });
     return `${searchParams}&${filters.join('&')}`
   }
+
+  getResourceAbout(about: string) {
+    return this.http.get(about);
+  }
 }
 
 

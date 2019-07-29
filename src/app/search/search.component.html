@@ -1,7 +1,4 @@
-<div class="logo">
-  <mat-icon color="primary">image_search</mat-icon>
-  <div class="title mat-primary">Crotalus</div>
-</div>
+<app-header></app-header>
 
 <div class="search-bar">
   <mat-form-field class=search-input>
@@ -19,7 +16,8 @@
   <div class="results-wrapper" *ngIf="results && results.length, else noResultsTemplate"
     (scroll)="onResultsScrolled($event)">
     <ng-container *ngFor="let result of results">
-      <app-image-item-card [imageItem]="result"></app-image-item-card>
+      <app-image-item-card [imageItem]="result" (openDetailsEmitter)="showResourceDetails(result.about)"></app-image-item-card>
+      <!-- <app-image-item-card [imageItem]="result" [routerLink]="[ '/details', result.about ]" target="_blank"></app-image-item-card> -->
     </ng-container>
     <div *ngIf="shouldShowMoreResultsSpinner" class="more-results-spinner">
       <mat-spinner diameter="40"></mat-spinner>

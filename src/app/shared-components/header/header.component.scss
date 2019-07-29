@@ -1,0 +1,23 @@
+@import 'global/mixins';
+@import 'global/variables';
+
+.logo {
+  padding-left: 3%;
+  margin: 0;
+  margin-top: 2%;
+  position: relative;
+  margin-bottom: 36px;
+  .mat-icon {
+    transform: rotateZ(-15deg);
+    @include icon-size(80px);
+  }
+
+  .title {
+    font-family: "Cabin Sketch", cursive;
+    font-size: 27px;
+    position: absolute;
+    bottom: -25px;
+    transform: rotateZ(-10deg);
+    color: $primary;
+  }
+}

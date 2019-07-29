@@ -1,5 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 import { MatFormFieldModule, MatInputModule, MatButtonModule, MatCardModule, MatIconModule, MatTooltipModule, MatSnackBarModule, MatProgressSpinnerModule } from "@angular/material";
 
 import { AppRoutingModule } from './app-routing.module';
@@ -11,13 +12,18 @@ import { FormsModule } from '@angular/forms';
 import { ImageHandlerComponent } from './shared-components/image-handler/image-handler.component';
 import { AppSettingsServiceProvider } from './services/app-settings.service.provider';
 import { ImageItemCardComponent } from './shared-components/image-item-card/image-item-card.component';
+import { DetailsViewComponent } from './details-view/details-view.component';
+import { HeaderComponent } from './shared-components/header/header.component';
+
 
 @NgModule({
   declarations: [
     AppComponent,
     SearchComponent,
     ImageHandlerComponent,
-    ImageItemCardComponent
+    ImageItemCardComponent,
+    DetailsViewComponent,
+    HeaderComponent
   ],
   imports: [
     BrowserModule,
@@ -34,7 +40,10 @@ import { ImageItemCardComponent } from './shared-components/image-item-card/imag
     MatSnackBarModule,
     MatProgressSpinnerModule,
   ],
-  providers: [AppSettingsServiceProvider],
+  providers: [
+    AppSettingsServiceProvider,
+    // {provide: LocationStrategy, useClass: HashLocationStrategy}
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
