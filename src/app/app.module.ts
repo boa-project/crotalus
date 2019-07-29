@@ -8,9 +8,9 @@ import { SearchComponent } from './search/search.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
-import { ImageHandlerComponent } from './components/image-handler/image-handler.component';
+import { ImageHandlerComponent } from './shared-components/image-handler/image-handler.component';
 import { AppSettingsServiceProvider } from './services/app-settings.service.provider';
-import { ImageItemCardComponent } from './components/image-item-card/image-item-card.component';
+import { ImageItemCardComponent } from './shared-components/image-item-card/image-item-card.component';
 
 @NgModule({
   declarations: [
