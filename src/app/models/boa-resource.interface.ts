@@ -6,11 +6,11 @@ export interface BoaResource {
   about: string;
 }
 
-interface BoaResourceManifest {
+export interface BoaResourceManifest {
   title: string;
   type: string;
   is_a: string;
-  lastpublished: Date;
+  lastpublished: string;
   entrypoint: string;
   alternate: string[];
   customicon: string;
@@ -47,7 +47,7 @@ interface BoaResourceMetadata {
   annotation: any[];
 }
 
-interface Contribution {
+export interface Contribution {
   entity: {
     name: string;
     lastname: string;
@@ -55,10 +55,10 @@ interface Contribution {
     email: string;
   };
   rol: string;
-  date: Date;
+  date: string;
 }
 
-interface BoaResourceSocial {
+export interface BoaResourceSocial {
   views: number;
   score: any[];
   comments: number;

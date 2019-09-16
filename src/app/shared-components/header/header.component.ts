@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { MatDialog } from '@angular/material';
 
 @Component({
   selector: 'app-header',
@@ -7,7 +8,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HeaderComponent implements OnInit {
 
-  constructor() { }
+  @ViewChild('infoTextRef') infoTextRef: TemplateRef<any>;
+  @ViewChild('helpTextRef') helpTextRef: TemplateRef<any>;
+
+  constructor(
+    public dialog: MatDialog,
+  ) { }
 
   ngOnInit() {
   }

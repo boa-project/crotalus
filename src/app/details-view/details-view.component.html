@@ -1,39 +1,98 @@
 <app-header></app-header>
 
-<mat-card class="main-card">
-    <mat-card-header>
-      <mat-card-title>{{title}}</mat-card-title>
-      <mat-card-subtitle>{{format}}</mat-card-subtitle>
-    </mat-card-header>
-    <img mat-card-image [src]="imageSrc" [alt]="title">
-    <mat-card-content>
-      <p>
-       {{description}}
-      </p>
-    </mat-card-content>
-  </mat-card>
+<mat-card class="main-card mat-elevation-z3">
+  <mat-card-header>
+    <mat-card-title>{{ title }}</mat-card-title>
+    <mat-card-subtitle>{{ format }}</mat-card-subtitle>
+    <div class="social">
+      <span> <mat-icon>visibility</mat-icon> {{ social?.views }} </span>
+      &nbsp;&nbsp;
+      <span>
+        <mat-icon>comment</mat-icon>
+        {{ social?.comments }}
+      </span>
+    </div>
+  </mat-card-header>
+  <mat-card-content class="content">
+    <div class="image-wrapper">
+      <img mat-card-image [src]="imageSrc" [alt]="title" />
+    </div>
+    <div class="info-wrapper">
+      <div class="info-item">
+        <h4>Descripción:</h4>
+        <p>
+          {{ description }}
+        </p>
+      </div>
+      <div class="info-item">
+        <h4>Contribuciones:</h4>
+        <div
+          class="contribution-item"
+          *ngFor="let contribution of contributions"
+        >
+          <strong
+            >{{ contribution.entity.name }}
+            {{ contribution.entity.lastname }}</strong
+          >
+          <br />
+          <span>{{ contribution.rol }}</span>
+        </div>
+      </div>
+      <div class="info-item">
+        <h4>Palabras clave:</h4>
+        <p>
+          {{ keywords?.join(', ') }}
+        </p>
+      </div>
+      <div class="info-item">
+        <h4>Fecha de publicación:</h4>
+        <p>
+          {{ publishDate }}
+        </p>
+      </div>
+      <div class="info-item">
+        <h4>Formato:</h4>
+        <p>
+          {{ format }}
+        </p>
+      </div>
+      <div class="info-item">
+        <h4>Licencia:</h4>
+        <p>
+          {{ rights?.copyright }}
+        </p>
+      </div>
+      <div class="info-item">
+        <h4>Descargas por tamaño:</h4>
+        <div class="download-item" *ngFor="let alternate of alternates">
+          <a class="download-button"
+            *ngIf="isResourceInSameDomain; else iconTemplate"
+            [href]="getResourceDownloadUrl(alternate)"
+            [download]="entrypointName"
+          >
+            <mat-icon>get_app</mat-icon> {{ getSizeLabel(alternate) }}
+          </a>
+          <ng-template #iconTemplate>
+            <span class="download-button" (click)="openResourceInNewWindow(alternate)">
+              <mat-icon>get_app</mat-icon>
+              {{ getSizeLabel(alternate) }}
+            </span>
+          </ng-template>
+        </div>
+      </div>
+    </div>
+  </mat-card-content>
+  <div class="view-metadata-link" (click)="showMetadata()">
+    Ver metadatos en formato JSON
+  </div>
+</mat-card>
 
 
+<ng-template #metadataRef>
+  <div class="metadata-json">
+    <button mat-button mat-dialog-close><mat-icon>close</mat-icon></button>
+    <pre>{{ resourceData | json }}</pre>
+    <button mat-raised-button color="primary" mat-dialog-close>Cerrar</button>
+  </div>
+</ng-template>
 
-
-
-
-
-
-
-
-
-
-
-
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<pre>
-{{resourceData | json}}
-</pre>

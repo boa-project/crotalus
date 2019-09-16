@@ -1,8 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HashLocationStrategy, LocationStrategy } from '@angular/common';
-import { MatFormFieldModule, MatInputModule, MatButtonModule, MatCardModule, MatIconModule, MatTooltipModule, MatSnackBarModule, MatProgressSpinnerModule } from "@angular/material";
-
+import { MatFormFieldModule, MatInputModule, MatButtonModule, MatCardModule, MatIconModule, MatTooltipModule, MatSnackBarModule, MatProgressSpinnerModule, MatDialogModule } from "@angular/material";
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { SearchComponent } from './search/search.component';
@@ -39,6 +38,7 @@ import { HeaderComponent } from './shared-components/header/header.component';
     MatTooltipModule,
     MatSnackBarModule,
     MatProgressSpinnerModule,
+    MatDialogModule
   ],
   providers: [
     AppSettingsServiceProvider,
