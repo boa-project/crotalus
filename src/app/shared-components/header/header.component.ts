@@ -18,4 +18,14 @@ export class HeaderComponent implements OnInit {
   ngOnInit() {
   }
 
+  showInfoDialog(template: string) {
+
+    const refMessageToShow = template === 'info' ? this.infoTextRef : this.helpTextRef;
+
+    this.dialog.open(refMessageToShow, {
+      panelClass: 'info-modal'
+    });
+  }
+
+
 }
