@@ -23,7 +23,8 @@ export class HeaderComponent implements OnInit {
     const refMessageToShow = template === 'info' ? this.infoTextRef : this.helpTextRef;
 
     this.dialog.open(refMessageToShow, {
-      panelClass: 'info-modal'
+      panelClass: 'info-modal',
+      width: '400px',
     });
   }
 

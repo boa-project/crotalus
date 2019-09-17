@@ -1,4 +1,4 @@
-<mat-card class="image-item-card">
+<mat-card class="image-item-card mat-elevation-z2">
   <div class="image-wrapper">
     <app-image-handler [imageUrl]="getThumbnailUrl()"></app-image-handler>
     <div class="open-details-overlay" (click)="openDetails()">
@@ -20,17 +20,26 @@
         </span>
       </div>
       <div class="right">
-        <span [class.download-icon]="!isResourceInSameDomain">
-          <a *ngIf="isResourceInSameDomain; else iconTemplate" 
-            class="download-icon"
-            [href]="getResourceDownloadUrl()"
-            [download]="imageItem.manifest.entrypoint"
-          >
-            <mat-icon>get_app</mat-icon>
-          </a>
-          <ng-template #iconTemplate>
-            <mat-icon (click)="openResourceInNewWindow()">get_app</mat-icon>
-          </ng-template>
+
+        <mat-menu #downloadMenu="matMenu" xPosition="before">
+          <ng-container *ngFor="let alternate of alternates">
+              <a mat-menu-item
+              *ngIf="isResourceInSameDomain; else iconTemplate"
+              [href]="getResourceDownloadUrl(alternate)"
+              [download]="entrypointName"
+            >
+              {{ getSizeLabel(alternate) }}
+            </a>
+            <ng-template #iconTemplate>
+              <span mat-menu-item (click)="openResourceInNewWindow(alternate)">
+                {{ getSizeLabel(alternate) }}
+              </span>
+            </ng-template>
+          </ng-container>
+        </mat-menu>
+
+        <span class="download-icon">
+          <mat-icon [matMenuTriggerFor]="downloadMenu">get_app</mat-icon>
         </span>
       </div>
 

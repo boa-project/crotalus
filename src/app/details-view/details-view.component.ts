@@ -69,7 +69,7 @@ export class DetailsViewComponent implements OnInit {
 
   getResourceDownloadUrl(size: string): string {
     if (size === 'original') {
-      return `${this.resourceAboutUrl}/!/${this.resourceData.manifest.entrypoint}`;
+      return `${this.resourceAboutUrl}/!/${this.manifest.entrypoint}`;
     } else {
       return `${this.resourceAboutUrl}/!/.alternate/${this.manifest.entrypoint}/${size}`;
     }
