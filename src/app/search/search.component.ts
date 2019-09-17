@@ -11,7 +11,7 @@ import { Router } from '@angular/router';
 })
 export class SearchComponent {
 
-  valueToSearch: string = 'estudiantes';
+  valueToSearch: string;
   results: any[];
   snackBarRef: MatSnackBarRef<SimpleSnackBar>;
   resultsSize: number;
@@ -24,7 +24,6 @@ export class SearchComponent {
     private searchService: SearchService,
     private changeDetector: ChangeDetectorRef,
     private snackBar: MatSnackBar,
-    private router: Router,
     appSettings: AppSettingsService,
   ) {
     this.resultsSize = appSettings.options.resultsResponseSize;
