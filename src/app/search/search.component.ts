@@ -1,8 +1,9 @@
 import { Component, HostListener, ChangeDetectorRef } from '@angular/core';
 import { SearchService } from '../services/search.service';
-import { MatSnackBar, MatSnackBarRef, SimpleSnackBar } from '@angular/material';
+import { MatSnackBar, MatSnackBarRef, SimpleSnackBar, MatDialog } from '@angular/material';
 import { AppSettingsService } from '../services/app-settings.service';
 import { Router } from '@angular/router';
+import { DetailsViewComponent } from '../details-view/details-view.component';
 
 @Component({
   selector: 'app-search',
@@ -24,6 +25,7 @@ export class SearchComponent {
     private searchService: SearchService,
     private changeDetector: ChangeDetectorRef,
     private snackBar: MatSnackBar,
+    public dialog: MatDialog,
     appSettings: AppSettingsService,
   ) {
     this.resultsSize = appSettings.options.resultsResponseSize;
@@ -87,12 +89,12 @@ export class SearchComponent {
   }
 
   showResourceDetails(aboutString: string) {
-    const baseUrl = window.location.origin;
-    const test = encodeURIComponent(aboutString);
-    console.log(test);
-    
-    window.open(`${baseUrl}/details/${encodeURIComponent(aboutString)}`, '_blank');
-    // this.router.navigate(['details', aboutString]);
+    this.dialog.open( DetailsViewComponent, {
+      panelClass: 'details-view-modal',
+      data: {
+        aboutString: aboutString,
+      }
+    });
   }
 
   get shouldShowMoreResultsSpinner(): boolean {

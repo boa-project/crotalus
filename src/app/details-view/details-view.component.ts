@@ -1,10 +1,11 @@
-import { Component, OnInit, ViewChild, TemplateRef } from '@angular/core';
+import { Component, OnInit, ViewChild, TemplateRef, Inject } from '@angular/core';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { switchMap, mergeMap } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { SearchService } from '../services/search.service';
 import { BoaResource, Contribution, BoaResourceSocial, BoaResourceManifest } from '../models/boa-resource.interface';
-import { MatDialog } from '@angular/material';
+import { MatDialog, MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
+
 
 @Component({
   selector: 'app-details-view',
@@ -29,7 +30,8 @@ export class DetailsViewComponent implements OnInit {
   resourceDomain: string;
   entrypointName: string;
   alternates = ['original'];
-
+  metadataDialogRef: MatDialogRef<any>;
+  
   @ViewChild('metadataRef') metadataTemplateRef: TemplateRef<any>;
 
   constructor(
@@ -37,8 +39,9 @@ export class DetailsViewComponent implements OnInit {
     private router: Router,
     private searchService: SearchService,
     public dialog: MatDialog,
+    @Inject(MAT_DIALOG_DATA) public data: any,
   ) {
-    this.resourceAboutUrl = this.route.snapshot.paramMap.get('about');
+    this.resourceAboutUrl = data.aboutString;
   }
 
   ngOnInit() {
@@ -100,9 +103,13 @@ export class DetailsViewComponent implements OnInit {
   }
 
   showMetadata(): void {
-    this.dialog.open(this.metadataTemplateRef, {
+    this.metadataDialogRef = this.dialog.open(this.metadataTemplateRef, {
       panelClass: 'metadata-modal'
     });
+  }
+
+  closeMetadataModal(): void {
+    this.metadataDialogRef.close();
   }
 
   get isResourceInSameDomain(): boolean {

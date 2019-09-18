@@ -1,6 +1,7 @@
-<app-header></app-header>
-
-<mat-card class="main-card mat-elevation-z3">
+<div class="close-button-wrapper">
+  <button class="close-button" mat-button mat-dialog-close><mat-icon>close</mat-icon></button>
+</div>
+<mat-card class="main-card mat-elevation-z0">
   <mat-card-header>
     <mat-card-title>{{ title }}</mat-card-title>
     <mat-card-subtitle>{{ format }}</mat-card-subtitle>
@@ -90,9 +91,9 @@
 
 <ng-template #metadataRef>
   <div class="metadata-json">
-    <button mat-button mat-dialog-close><mat-icon>close</mat-icon></button>
+    <button  class="close-icon" mat-button (click)="closeMetadataModal()"><mat-icon>close</mat-icon></button>
     <pre>{{ resourceData | json }}</pre>
-    <button mat-raised-button color="primary" mat-dialog-close>Cerrar</button>
+    <button mat-raised-button color="primary" (click)="closeMetadataModal()">Cerrar</button>
   </div>
 </ng-template>
 

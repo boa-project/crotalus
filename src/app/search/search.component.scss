@@ -102,3 +102,22 @@
   background-color: $accent2;
   color: #FFF;
 }
+
+::ng-deep .details-view-modal {
+  max-height: 96vh;
+
+  .mat-dialog-container {
+    button {
+      margin: 0;
+    
+      &:focus {
+      outline: 0;
+      }
+    }
+    
+    .mat-button .mat-button-focus-overlay {
+      opacity: 0;
+    }
+  }
+}
+
