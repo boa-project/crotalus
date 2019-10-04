@@ -350,16 +350,16 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 
 
-@angular/material/icon
-
 @angular/animations
 MIT
 
-@angular/material/button
+@angular/material/progress-spinner
+
+@angular/material/icon
 
 @angular/material/card
 
-@angular/material/progress-spinner
+@angular/material/button
 
 @angular/material/menu
 

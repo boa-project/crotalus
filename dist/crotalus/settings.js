@@ -1,3 +1,4 @@
+
 (function (window) {
   window.__appSettings = window.__appSettings || {};
 
@@ -17,5 +18,11 @@
     cacheLife: 60000,
   };
 
-  window.__appSettings.debug = true;
+  window.__appSettings.siteDescription = '';
+
+  window.__appSettings.companyLogoFileName = '';
+
+  window.__appSettings.aboutInfo = '';
+
 }(this));
+
