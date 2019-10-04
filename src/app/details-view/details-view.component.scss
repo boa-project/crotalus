@@ -11,6 +11,10 @@ mat-card.main-card {
     padding: 0 16px;
   }
 
+  .loading-spinner {
+    margin: 100px;
+  }
+
   .mat-card-header {
     position: relative;
 
@@ -69,20 +73,11 @@ mat-card.main-card {
     }
 
     .image-wrapper {
-      flex: 0 1 700px;
       padding: 16px 0;
       margin: 0 auto;
       display: flex;
       justify-content: center;
       align-items: center;
-
-      img {
-        max-width: 100%;
-        margin: 0;
-        border-radius: 4px;
-        width: auto;
-        max-height: 720px;
-      }
     }
 
     .info-wrapper {
@@ -96,6 +91,7 @@ mat-card.main-card {
       .info-item {
         padding-left: 8px;
         margin-bottom: 20px;
+        max-width: 700px;
 
         h4 {
           margin-left: -8px;
@@ -104,6 +100,40 @@ mat-card.main-card {
           font-size: 20px;
           font-weight: bold;
           color: #333;
+          text-align: left;
+        }
+
+        &.downloads {
+          text-align: right;
+        }
+
+        &.copyright {
+
+          p {
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+          }
+
+          .license-link {
+            display: inline-flex;
+            align-items: center;
+            text-decoration: none;
+            background-color: #ddd;
+            padding: 5px;
+            border-radius: 3px;
+
+            &:hover {
+              opacity: 0.6;
+            }
+          }
+
+          .version-wrapper {
+            display: inline-block;
+            text-align: center;
+            margin: 0 5px 0 10px;
+            font-size: 0.8em;
+          }
         }
       }
 
@@ -115,11 +145,17 @@ mat-card.main-card {
         border-radius: 4px;
         text-align: right;
         margin: 8px 16px 8px 0;
+        line-height: 18px;
+
+        span.rol {
+          font-size: 0.95em;
+          font-style: oblique;
+          opacity: 0.9;
+        }
 
         span {
-          font-size: 0.9em;
-          font-style: oblique;
-          opacity: 0.7;
+          font-size: 0.75em;
+          opacity: 0.75;
         }
       }
 
@@ -182,12 +218,12 @@ mat-card.main-card {
         padding: 10px;
         margin-right: -10px;
       }
-    
+
       &:focus {
       outline: 0;
       }
     }
-    
+
     .mat-button .mat-button-focus-overlay {
       opacity: 0;
     }

@@ -19,6 +19,7 @@ export class DetailsViewComponent implements OnInit {
   manifest: BoaResourceManifest;
   title: string;
   description: string;
+  alternateBaseRef: string;
   format: string;
   imageSrc: string;
   keywords: string[];
@@ -31,7 +32,8 @@ export class DetailsViewComponent implements OnInit {
   entrypointName: string;
   alternates = ['original'];
   metadataDialogRef: MatDialogRef<any>;
-  
+  readonly MAX_COMPANY_LABEL_LENGTH = 30;
+
   @ViewChild('metadataRef') metadataTemplateRef: TemplateRef<any>;
 
   constructor(
@@ -56,11 +58,12 @@ export class DetailsViewComponent implements OnInit {
 
   assignLocalVariables(): void {
     const metadata = this.resourceData.metadata;
+    this.alternateBaseRef = this.resourceData.id.split('/content/')[1];
     this.manifest = this.resourceData.manifest;
     this.title = metadata.general.title.none;
     this.description = metadata.general.description.none;
     this.format = metadata.technical.format;
-    this.imageSrc = `${this.resourceAboutUrl}/!/.alternate/${this.manifest.entrypoint}/${this.manifest.alternate[0]}`;
+    this.imageSrc = `${this.resourceAboutUrl}/!/.alternate/${this.alternateBaseRef}/${this.manifest.alternate[1]}`;
     this.keywords = metadata.general.keywords.none;
     this.contributions = metadata.lifecycle.contribution;
     this.publishDate = this.manifest.lastpublished.split('T')[0];
@@ -74,7 +77,7 @@ export class DetailsViewComponent implements OnInit {
     if (size === 'original') {
       return `${this.resourceAboutUrl}/!/${this.manifest.entrypoint}`;
     } else {
-      return `${this.resourceAboutUrl}/!/.alternate/${this.manifest.entrypoint}/${size}`;
+      return `${this.resourceAboutUrl}/!/.alternate/${this.alternateBaseRef}/${size}`;
     }
   }
 
@@ -112,7 +115,46 @@ export class DetailsViewComponent implements OnInit {
     this.metadataDialogRef.close();
   }
 
+  imageLoadError(): void {
+    this.imageSrc = this.getResourceDownloadUrl('original');
+  }
+
+  cropContributionCompanyLabel(company: string): any {
+    return company.length > this.MAX_COMPANY_LABEL_LENGTH;
+  }
+
+  getCompanyStringToShow(company: string): any {
+    return company.length > this.MAX_COMPANY_LABEL_LENGTH ? company.slice(0, this.MAX_COMPANY_LABEL_LENGTH) : company;
+  }
+
   get isResourceInSameDomain(): boolean {
     return this.currentDomain === this.resourceDomain;
   }
+
+  get copyrightUrl(): string {
+    if (this.rights.copyright === 'cc0') {
+      return 'https://creativecommons.org/publicdomain/zero/1.0/deed.es';
+    } else {
+      const [license, version] = this.rights.copyright.split('cc ')[1].split(' ');
+      return `http://creativecommons.org/licenses/${license}/${version}/`;
+    }
+  }
+
+  get copyrightImageUrl(): string {
+    if (this.rights.copyright === 'cc0') {
+      return 'https://licensebuttons.net/l/zero/1.0/88x31.png';
+    } else {
+      const [license, version] = this.rights.copyright.split('cc ')[1].split(' ');
+      return `https://licensebuttons.net/l/${license}/${version}/88x31.png`;
+    }
+  }
+
+  get copyrightVersion(): any {
+    if (this.rights.copyright === 'cc0') {
+      return false;
+    } else {
+      return this.rights.copyright.split(' ').pop();
+    }
+  }
+
 }

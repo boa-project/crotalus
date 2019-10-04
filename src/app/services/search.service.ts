@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { forkJoin, Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
-import { AppSettingsService } from './app-settings.service';
+import { AppSettings } from './app-settings.service';
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +16,7 @@ export class SearchService {
   catalogues: any[];
 
 
-  constructor(private http: HttpClient, private appSettings:AppSettingsService) {
+  constructor(private http: HttpClient, private appSettings:AppSettings) {
     this.apiUri = appSettings.apiUri;
     this.filters = appSettings.filters;
     this.catalogues = appSettings.catalogues;
@@ -32,7 +32,7 @@ export class SearchService {
     )
     return forkJoin([...requestsArray]).pipe(
       tap(() => {
-        this.apiRequestsCounter += 1; 
+        this.apiRequestsCounter += 1;
       })
     );
   }

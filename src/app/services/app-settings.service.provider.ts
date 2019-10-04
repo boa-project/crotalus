@@ -1,8 +1,8 @@
-import { AppSettingsService } from './app-settings.service';
+import { AppSettings } from './app-settings.service';
 
 export const AppSettingsServiceFactory = () => {
   // Create env
-  const appSettings = new AppSettingsService();
+  const appSettings = new AppSettings();
 
   // Read environment variables from browser window
   const browserWindow = window || {};
@@ -22,7 +22,7 @@ export const AppSettingsServiceFactory = () => {
 };
 
 export const AppSettingsServiceProvider = {
-  provide: AppSettingsService,
+  provide: AppSettings,
   useFactory: AppSettingsServiceFactory,
   deps: [],
 };

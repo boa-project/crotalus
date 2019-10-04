@@ -1,4 +1,4 @@
-export class AppSettingsService {
+export class AppSettings {
 
   // The values that are defined here are the default values that can
   // be overridden by settings.js
@@ -20,7 +20,12 @@ export class AppSettingsService {
     cacheLife: 120000, // 120 segs
   };
 
-  public debug = false;
+  public siteDescription = '';
+
+  public companyLogoFileName = '';
+
+  public aboutInfo = '';
+
 
   constructor() {
   }

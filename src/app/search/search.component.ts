@@ -1,7 +1,7 @@
 import { Component, HostListener, ChangeDetectorRef } from '@angular/core';
 import { SearchService } from '../services/search.service';
 import { MatSnackBar, MatSnackBarRef, SimpleSnackBar, MatDialog } from '@angular/material';
-import { AppSettingsService } from '../services/app-settings.service';
+import { AppSettings } from '../services/app-settings.service';
 import { Router } from '@angular/router';
 import { DetailsViewComponent } from '../details-view/details-view.component';
 
@@ -26,7 +26,7 @@ export class SearchComponent {
     private changeDetector: ChangeDetectorRef,
     private snackBar: MatSnackBar,
     public dialog: MatDialog,
-    appSettings: AppSettingsService,
+    appSettings: AppSettings,
   ) {
     this.resultsSize = appSettings.options.resultsResponseSize;
     this.minLetters = appSettings.options.minLetters;

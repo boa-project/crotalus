@@ -2,18 +2,20 @@
   <mat-icon class="logo-icon" color="primary">image_search</mat-icon>
   <div class="title mat-primary">
     Crotalus
-
   </div>
-      <div class="help-icons">
-        <mat-icon (click)="showInfoDialog('help')">help</mat-icon>
-        <mat-icon (click)="showInfoDialog('info')">info</mat-icon>
-      </div>
+</div>
+
+<div class="site-description" *ngIf="siteDescription.length || siteAboutInfo.length">
+  <p class="text">
+    <span *ngIf="siteDescription.length">{{siteDescription}}</span>
+    <span *ngIf="siteAboutInfo.length" [class.no-description]="!siteDescription.length"><mat-icon (click)="showInfoDialog('info')">info</mat-icon></span>
+  </p>
+</div>
+
+<div class="company-logo" *ngIf="companyLogoFileName.length">
+  <img [src]="companyLogoPath" alt="">
 </div>
 
 <ng-template #infoTextRef>
-  <p>Recursos educativos digitales abiertos (REDA) producidos durante el proyecto RutaTIC.</p>
-</ng-template>
-
-<ng-template #helpTextRef>
-  <p>Crotalus permite buscar y obtener los recursos multimediales producidos en el proyecto de investigación RutaTIC y que están a disposición de la comunidad bajo licencia Creative Commons, para que la comunidad puedan hacer uso de ellos en sus proyectos.</p>
+  <p>{{siteAboutInfo}}</p>
 </ng-template>

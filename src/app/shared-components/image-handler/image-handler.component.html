@@ -1,5 +1,14 @@
-<div class="image-wrapper">
+<div class="image-box"
+  [ngStyle]="{'min-width': placeholderWidth, 'min-height': placeholderHeight, 'max-width': imageMaxWidth, 'max-height': imageMaxHeight}"
+  [class.no-background]="transparentBackground && imageVisible"
+>
   <i *ngIf="!imageVisible"></i>
   <mat-icon *ngIf="!imageVisible">image</mat-icon>
-  <img [hidden]="!imageVisible" [src]="imageUrl" alt="" (load)="showImage()">
+  <img
+    [hidden]="!imageVisible"
+    [src]="imageUrl"
+    [alt]="imageAlt"
+    (load)="showImage()"
+    (error)="imageLoadError.emit()"
+    >
 </div>

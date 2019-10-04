@@ -28,13 +28,13 @@
   text-align: center;
   margin: 0 auto;
   min-width: 340px;
-  
+
   .mat-form-field {
     width: 78%;
     margin-right: 2%;
     min-width: 320px;
   }
-  
+
   ::ng-deep {
     .mat-input-element {
       font-size: 18px;
@@ -103,21 +103,28 @@
   color: #FFF;
 }
 
-::ng-deep .details-view-modal {
-  max-height: 96vh;
+::ng-deep{
+  .details-view-modal {
+    max-height: 96vh;
 
-  .mat-dialog-container {
-    button {
-      margin: 0;
-    
-      &:focus {
-      outline: 0;
+    .mat-dialog-container {
+      button {
+        margin: 0;
+
+        &:focus {
+        outline: 0;
+        }
+      }
+
+      .mat-button .mat-button-focus-overlay {
+        opacity: 0;
       }
     }
-    
-    .mat-button .mat-button-focus-overlay {
-      opacity: 0;
-    }
+
+  }
+
+  .mat-simple-snackbar {
+    font-weight: normal;
   }
 }
 
