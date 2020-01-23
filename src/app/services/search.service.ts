@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 // import { initialConfig } from "../initialConfig";
 import { HttpClient } from '@angular/common/http';
 import { forkJoin, Observable } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { tap, map } from 'rxjs/operators';
 import { AppSettings } from './app-settings.service';
 
 @Injectable({
@@ -33,6 +33,18 @@ export class SearchService {
     return forkJoin([...requestsArray]).pipe(
       tap(() => {
         this.apiRequestsCounter += 1;
+      }),
+      map((results: any[]) => { 
+        // debugger;
+        return results[0].map(result => {
+          // debugger;
+          if (result.manifest.entrypoint.includes('.mp4')) {
+            result['type'] = 'video';
+          } else {
+            result['type'] = 'image';
+          }
+          return result;
+        });
       })
     );
   }

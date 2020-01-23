@@ -12,7 +12,7 @@ import { DetailsViewComponent } from '../details-view/details-view.component';
 })
 export class SearchComponent {
 
-  valueToSearch: string;
+  valueToSearch: string='**a**';
   results: any[];
   snackBarRef: MatSnackBarRef<SimpleSnackBar>;
   resultsSize: number;
@@ -26,7 +26,7 @@ export class SearchComponent {
     private changeDetector: ChangeDetectorRef,
     private snackBar: MatSnackBar,
     public dialog: MatDialog,
-    appSettings: AppSettings,
+    private appSettings: AppSettings,
   ) {
     this.resultsSize = appSettings.options.resultsResponseSize;
     this.minLetters = appSettings.options.minLetters;
@@ -49,9 +49,25 @@ export class SearchComponent {
     }
     this.isSearching = true;
     this.searchService.search(this.valueToSearch, firstCall).subscribe(results => {
+
+      const resultsToShow = {
+        images: [],
+        videos: []
+      }
+      results.forEach(result => {
+        if (result.manifest.entrypoint.includes('.mp4')) {
+          resultsToShow.videos.push(result);
+        } else {
+          resultsToShow.images.push(result);
+        }
+      })
+
+      console.log(resultsToShow);
+
+
       this.searchDone = true;
       this.isSearching = false;
-      const lastResults = results[0];
+      const lastResults = results;
       if (lastResults.length > 0 && lastResults.length < this.resultsSize) {
         this.results.push(...lastResults);
         this.noMoreResults = true;

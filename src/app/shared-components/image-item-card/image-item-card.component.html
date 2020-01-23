@@ -9,17 +9,25 @@
     <mat-card-title #titleRef [matTooltip]="imageItem.metadata.general.title.none" matTooltipPosition="above"
       [matTooltipDisabled]="shouldDisableTooltip(titleRef)">{{imageItem.metadata.general.title.none}}</mat-card-title>
     <mat-card-subtitle>
-      <div class="left">
-        <span>
-          <mat-icon>visibility</mat-icon> {{imageItem.social.views}}
-        </span>
-        &nbsp;&nbsp;
-        <span>
-          <mat-icon>comment</mat-icon>
-          {{imageItem.social.comments}}
-        </span>
+
+      <div class="item-type">
+        <ng-container [ngSwitch]="imageItem.type">
+            <span *ngSwitchCase="'image'"><mat-icon>image</mat-icon> imagen</span>
+            <span *ngSwitchCase="'video'"><mat-icon>videocam</mat-icon> video</span>
+        </ng-container>
+        
       </div>
-      <div class="right">
+
+      <div class="actions">
+        <div class="social-stats">
+          <span>
+            <mat-icon>visibility</mat-icon> {{imageItem.social.views}}
+          </span>
+          <span>
+            <mat-icon>comment</mat-icon>
+            {{imageItem.social.comments}}
+          </span>
+        </div>
 
         <mat-menu #downloadMenu="matMenu" xPosition="before">
           <ng-container *ngFor="let alternate of alternates">
@@ -39,7 +47,11 @@
         </mat-menu>
 
         <span class="download-icon">
-          <mat-icon [matMenuTriggerFor]="downloadMenu">get_app</mat-icon>
+          <mat-icon *ngIf="imageItem.type == image; else noMenuTemplate" [matMenuTriggerFor]="downloadMenu">get_app</mat-icon>
+          <ng-template #noMenuTemplate>
+            <mat-icon>get_app</mat-icon>
+          </ng-template>
+          
         </span>
       </div>
 
