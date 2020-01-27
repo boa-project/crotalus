@@ -12,6 +12,7 @@ export class ImageItemCardComponent implements OnInit {
   currentDomain: string;
   resourceDomain: string;
   alternates = ['original'];
+  mouseover = false;
 
   constructor() { }
 
@@ -24,6 +25,12 @@ export class ImageItemCardComponent implements OnInit {
   getThumbnailUrl(): string {
     // return `${this.imageItem.about}/!/${this.imageItem.manifest.customicon}`;
     return this.imageItem.manifest.customicon;
+  }
+
+
+  getPreviewUrl(): string {
+    const alternateBaseRef = this.imageItem.id.split('/content/')[1];
+    return `${this.imageItem.about}/!/.alternate/${alternateBaseRef}/preview.gif`;
   }
 
   shouldDisableTooltip(titleElement): boolean {
@@ -72,6 +79,14 @@ export class ImageItemCardComponent implements OnInit {
           break;
       }
     }
+  }
+
+  onMouseover(): void {
+    this.mouseover = true;
+  }
+
+  onMouseleave(): void {
+    this.mouseover = false;
   }
 
   get isResourceInSameDomain(): boolean {

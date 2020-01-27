@@ -5,10 +5,16 @@
   <i *ngIf="!imageVisible"></i>
   <mat-icon *ngIf="!imageVisible">image</mat-icon>
   <img
-    [hidden]="!imageVisible"
+    [hidden]="!imageVisible || mouseover"
     [src]="imageUrl"
     [alt]="imageAlt"
     (load)="showImage()"
     (error)="imageLoadError.emit()"
-    >
+  >
+  <img
+    [hidden]="!previewLoaded || !mouseover "
+    [src]="localPreviewUrl"
+    [alt]="imageAlt"
+  >
+
 </div>

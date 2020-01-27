@@ -1,6 +1,15 @@
 <mat-card class="image-item-card mat-elevation-z2">
-  <div class="image-wrapper">
-    <app-image-handler [imageUrl]="getThumbnailUrl()"></app-image-handler>
+  <div class="image-wrapper" (mouseover) = "onMouseover()" (mouseleave) = "onMouseleave()">
+
+    <ng-container [ngSwitch]="imageItem.type">
+      <app-image-handler *ngSwitchCase="'image'" [imageUrl]="getThumbnailUrl()"></app-image-handler>
+      <app-image-handler *ngSwitchCase="'video'"
+        [imageUrl]="getThumbnailUrl()"
+        [previewUrl]="getPreviewUrl()"
+        [mouseover]="mouseover">
+      </app-image-handler>
+    </ng-container>
+
     <div class="open-details-overlay" (click)="openDetails()">
       <mat-icon>open_in_new</mat-icon>
     </div>
@@ -15,7 +24,7 @@
             <span *ngSwitchCase="'image'"><mat-icon>image</mat-icon> imagen</span>
             <span *ngSwitchCase="'video'"><mat-icon>videocam</mat-icon> video</span>
         </ng-container>
-        
+
       </div>
 
       <div class="actions">
@@ -51,7 +60,7 @@
           <ng-template #noMenuTemplate>
             <mat-icon>get_app</mat-icon>
           </ng-template>
-          
+
         </span>
       </div>
 
