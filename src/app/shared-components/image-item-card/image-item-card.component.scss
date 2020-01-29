@@ -31,13 +31,14 @@ mat-card.image-item-card {
       -moz-user-select: none;
       -ms-user-select: none;
       user-select: none;
-      
+      z-index: 3;
+
       .mat-icon {
         color: rgba(255,255,255,0.8);
         @include icon-size(60px);
       }
     }
-    
+
     &:hover .open-details-overlay {
       opacity: 1;
       transition: opacity 120ms ease-in-out;
@@ -81,24 +82,26 @@ mat-card.image-item-card {
       color: #555;
       padding: 0px 6px 0px 2px;
       border-radius: 2px;
-      font-size: 14px;
+      font-size: 16px;
       display: -webkit-box;
       display: flex;
       -webkit-box-pack: justify;
       justify-content: space-between;
-      margin-top: 3px;
+      margin-top: 1px;
       font-family: "Cabin Sketch", cursive;
 
       .mat-icon {
-        height: 18px;
-        width: 20px;
-        line-height: 18px;
+        height: 20px;
+        width: 21px;
+        line-height: 20px;
         text-align: center;
         vertical-align: sub;
-        font-size: 18px;
+        font-size: 23px;
+        margin-right: 4px;
+        margin-top: 1px;
       }
     }
-    
+
     .actions {
       display: flex;
       .mat-icon {
@@ -138,7 +141,7 @@ mat-card.image-item-card {
 
     }
   }
-  
+
 
 }
 
