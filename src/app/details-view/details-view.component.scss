@@ -4,7 +4,7 @@
   display: block;
   padding-top: 40px;
   position: relative;
-  
+
   .item-type {
     position: absolute;
     padding: 14px 22px;
@@ -61,7 +61,7 @@ mat-card.main-card {
 
     .social {
       position: absolute;
-      right: 20px;
+      right: 0;
       height: 100%;
       display: flex;
       justify-content: center;
@@ -70,10 +70,6 @@ mat-card.main-card {
 
       @media (max-width: 600px) {
         align-items: flex-end;
-      }
-
-      span {
-        margin-left: 15px;
       }
 
       .mat-icon {
@@ -105,8 +101,8 @@ mat-card.main-card {
 
 
   .content {
-    display: flex;
-    background-color: #f7f7f7;
+    // display: flex;
+    // background-color: #f7f7f7;
     font-size: 17px;
 
     @media (max-width: 1200px) {
@@ -119,6 +115,12 @@ mat-card.main-card {
       display: flex;
       justify-content: center;
       align-items: center;
+
+      video {
+        max-width: 700px;
+        width: 96%;
+        margin: 0 auto;
+      }
     }
 
     .info-wrapper {
@@ -142,10 +144,6 @@ mat-card.main-card {
           font-weight: bold;
           color: #333;
           text-align: left;
-        }
-
-        &.downloads {
-          text-align: right;
         }
 
         &.copyright {

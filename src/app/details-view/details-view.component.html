@@ -8,7 +8,7 @@
         <mat-icon>videocam</mat-icon>
         <span>video</span>
     </span>
-    
+
   </ng-container>
 </div>
 <div class="close-button-wrapper">
@@ -18,9 +18,7 @@
   <mat-spinner class="loading-spinner" *ngIf="!resourceData; else detailsTemplate"></mat-spinner>
   <ng-template #detailsTemplate>
     <mat-card-header>
-      <div class="mat-card-header-text">
-        <mat-card-title>{{ title }}</mat-card-title>
-      </div>
+      <mat-card-title>{{ title }}</mat-card-title>
       <div class="social">
         <span> <mat-icon>visibility</mat-icon> {{ social?.views }} </span>
         &nbsp;&nbsp;
@@ -32,22 +30,26 @@
     </mat-card-header>
     <mat-card-content class="content">
       <div class="image-wrapper">
+        <ng-container [ngSwitch]="itemType">
           <app-image-handler
+            *ngSwitchCase="'image'"
             [imageUrl]="imageSrc"
             [imageAlt]="title"
             [placeholderWidth]="'350px'"
             [placeholderHeight]="'350px'"
             [imageMaxWidth]="'700px'"
             [imageMaxHeight]="'700px'"
+            [backgroundColor]="'transparent'"
             transparentBackground="'true'"
             (imageLoadError)="imageLoadError()"
           ></app-image-handler>
 
-          <!-- <video controls>
+          <video *ngSwitchCase="'video'" controls>
             <source [src]="originalFileUrl" type="video/mp4">
             <source [src]="originalFileUrl" type="video/ogg">
             Your browser does not support the video tag.
-          </video> -->
+          </video>
+        </ng-container>
       </div>
       <div class="info-wrapper">
         <div class="info-item">

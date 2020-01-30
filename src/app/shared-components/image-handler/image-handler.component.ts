@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, SimpleChanges, OnChanges, OnInit, ChangeDetectorRef, ChangeDetectionStrategy, ViewChild, ElementRef } from '@angular/core';
+import { Component, Input, Output, EventEmitter, SimpleChanges, OnChanges, ViewChild, ElementRef } from '@angular/core';
 
 @Component({
   selector: 'app-image-handler',
@@ -16,26 +16,24 @@ export class ImageHandlerComponent implements OnChanges {
   @Input() transparentBackground = false;
   @Input() previewUrl?: string;
   @Input() mouseover?: boolean;
+  @Input() backgroundColor?: string;
   @Output() imageLoadError = new EventEmitter();
   @ViewChild('previewBox') previewBox: ElementRef;
   imageVisible = false;
   previewLoaded = false;
   localPreviewUrl: string;
 
-  constructor(private changeDetector: ChangeDetectorRef) { }
-
-  // ngOnInit(): void {
-
-  // }
+  constructor(private elementRef: ElementRef ) { }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.hasOwnProperty('previewUrl') && changes.previewUrl) {
-      // this.loadPreview();
       this.setBackgroundImg();
     }
     if (changes.hasOwnProperty('mouseover') && this.previewUrl) {
-      // this.resetPreview();
       this.resetPreview();
+    }
+    if (changes.hasOwnProperty('backgroundColor')) {
+      this.elementRef.nativeElement.querySelector('.loader-background').style.backgroundColor = this.backgroundColor;
     }
   }
 
@@ -44,32 +42,16 @@ export class ImageHandlerComponent implements OnChanges {
     this.imageVisible = true;
   }
 
-  loadPreview(): void {
-    // this.localPreviewUrl = this.previewUrl;
-    // const img = new Image();
-    // img.src = this.previewUrl;
-    // img.onload = () => {
-    //   console.log('preview ready!!! --------');
-    //   this.previewLoaded = true;
-    // };
-  }
-
   resetPreview(): void {
-    // if (this.mouseover && this.previewLoaded) {
     if (this.mouseover) {
       this.setBackgroundImg();
       this.previewBox.nativeElement.style.zIndex = '2';
-      // this.localPreviewUrl = '';
-      // this.changeDetector.detectChanges();
-      // this.localPreviewUrl = this.previewUrl;
-      // this.changeDetector.detectChanges();
     } else {
       this.previewBox.nativeElement.style.zIndex = '0';
     }
   }
 
   setBackgroundImg(): void {
-    console.log('plase reset!!');
     this.previewBox.nativeElement.style.backgroundImage = `url('')`;
     this.previewBox.nativeElement.style.backgroundImage = `url('${this.previewUrl}')`;
   }
