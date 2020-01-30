@@ -1,3 +1,16 @@
+<div class="item-type">
+  <ng-container [ngSwitch]="itemType">
+    <span *ngSwitchCase="'image'">
+        <mat-icon>image</mat-icon>
+        <span>imagen</span>
+    </span>
+    <span *ngSwitchCase="'video'">
+        <mat-icon>videocam</mat-icon>
+        <span>video</span>
+    </span>
+    
+  </ng-container>
+</div>
 <div class="close-button-wrapper">
   <button class="close-button" mat-button mat-dialog-close><mat-icon>close</mat-icon></button>
 </div>
@@ -5,8 +18,9 @@
   <mat-spinner class="loading-spinner" *ngIf="!resourceData; else detailsTemplate"></mat-spinner>
   <ng-template #detailsTemplate>
     <mat-card-header>
-      <mat-card-title>{{ title }}</mat-card-title>
-      <mat-card-subtitle>{{ format }}</mat-card-subtitle>
+      <div class="mat-card-header-text">
+        <mat-card-title>{{ title }}</mat-card-title>
+      </div>
       <div class="social">
         <span> <mat-icon>visibility</mat-icon> {{ social?.views }} </span>
         &nbsp;&nbsp;
@@ -28,6 +42,12 @@
             transparentBackground="'true'"
             (imageLoadError)="imageLoadError()"
           ></app-image-handler>
+
+          <!-- <video controls>
+            <source [src]="originalFileUrl" type="video/mp4">
+            <source [src]="originalFileUrl" type="video/ogg">
+            Your browser does not support the video tag.
+          </video> -->
       </div>
       <div class="info-wrapper">
         <div class="info-item">

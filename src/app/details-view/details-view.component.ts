@@ -32,6 +32,7 @@ export class DetailsViewComponent implements OnInit {
   entrypointName: string;
   alternates = ['original'];
   metadataDialogRef: MatDialogRef<any>;
+  itemType: string;
   readonly MAX_COMPANY_LABEL_LENGTH = 30;
 
   @ViewChild('metadataRef') metadataTemplateRef: TemplateRef<any>;
@@ -63,6 +64,7 @@ export class DetailsViewComponent implements OnInit {
     this.title = metadata.general.title.none;
     this.description = metadata.general.description.none;
     this.format = metadata.technical.format;
+    this.itemType = this.format.split('/')[0];
     this.imageSrc = `${this.resourceAboutUrl}/!/.alternate/${this.alternateBaseRef}/${this.manifest.alternate[1]}`;
     this.keywords = metadata.general.keywords.none;
     this.contributions = metadata.lifecycle.contribution;
@@ -75,7 +77,7 @@ export class DetailsViewComponent implements OnInit {
 
   getResourceDownloadUrl(size: string): string {
     if (size === 'original') {
-      return `${this.resourceAboutUrl}/!/${this.manifest.entrypoint}`;
+      return this.originalFileUrl;
     } else {
       return `${this.resourceAboutUrl}/!/.alternate/${this.alternateBaseRef}/${size}`;
     }
@@ -155,6 +157,10 @@ export class DetailsViewComponent implements OnInit {
     } else {
       return this.rights.copyright.split(' ').pop();
     }
+  }
+
+  get originalFileUrl(): string {
+    return `${this.resourceAboutUrl}/!/${this.manifest.entrypoint}`;
   }
 
 }

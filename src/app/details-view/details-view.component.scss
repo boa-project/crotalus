@@ -1,5 +1,46 @@
 @import "global/variables";
 
+:host {
+  display: block;
+  padding-top: 40px;
+  position: relative;
+  
+  .item-type {
+    position: absolute;
+    padding: 14px 22px;
+    color: #555;
+    background-color: #e5e5e5;
+    border-radius: 4px 0;
+    font-size: 18px;
+    font-weight: 400;
+    top: -24px;
+    left: -24px;
+
+    .mat-icon {
+      height: 26px;
+      width: 30px;
+      line-height: 26px;
+      text-align: center;
+      vertical-align: top;
+      font-size: 34px;
+      margin-right: 10px;
+    }
+  }
+
+  .close-button-wrapper {
+    position: absolute;
+    top: -10px;
+    right: 0;
+
+    button .mat-icon {
+      height: 26px;
+      width: 26px;
+      line-height: 26px;
+      font-size: 32px;
+    }
+  }
+}
+
 mat-card.main-card {
   padding: 0;
 
