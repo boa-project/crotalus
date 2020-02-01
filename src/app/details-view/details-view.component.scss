@@ -1,42 +1,92 @@
+@import 'global/mixins';
 @import "global/variables";
 
 :host {
   display: block;
-  padding-top: 40px;
   position: relative;
+
+  .fixed-top-info {
+    background-color: #fff;
+    border-bottom: 2px solid #555;
+    color: #555;
+    display: -webkit-box;
+    display: flex;
+    -webkit-box-pack: start;
+    justify-content: flex-start;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 3;
+    width: 100%;
+    -webkit-box-align: center;
+    align-items: center;
+    height: 36px;
+    box-shadow: 0px 0px 6px -1px rgba(0, 0, 0, 0.8);
+
+    .icon {
+      display: flex;
+      align-items: center;
+      height: 100%;
+      padding: 0 5px;
+      .mat-icon {
+        @include icon-size(28px);
+      }
+    }
+
+    .title {
+      padding: 0 6px;
+      flex-grow: 1;
+      height: 100%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      font-family: "Cabin Sketch", cursive;
+      font-size: 1.1rem;
+      white-space: nowrap;
+      line-height: 2;
+    }
+
+    span:last-child .mat-button {
+      min-width: 30px;
+    }
+  }
+
+  mat-dialog-content {
+    position: relative;
+    padding-top: 45px;
+    margin: 0;
+    max-height: 96vh;
+  }
 
   .item-type {
     position: absolute;
-    padding: 14px 22px;
+    padding: 9px 13px;
     color: #555;
     background-color: #e5e5e5;
     border-radius: 4px 0;
-    font-size: 18px;
+    font-size: 16px;
     font-weight: 400;
-    top: -24px;
-    left: -24px;
+    top: 0px;
+    left: 0;
 
     .mat-icon {
+      @include icon-size(30px);
       height: 26px;
-      width: 30px;
-      line-height: 26px;
       text-align: center;
-      vertical-align: top;
-      font-size: 34px;
-      margin-right: 10px;
+      vertical-align: bottom;
+      margin-right: 3px;
     }
   }
 
   .close-button-wrapper {
     position: absolute;
-    top: -10px;
+    top: 4px;
     right: 0;
 
     button .mat-icon {
       height: 26px;
       width: 26px;
       line-height: 26px;
-      font-size: 32px;
+      font-size: 30px;
     }
   }
 }
@@ -48,32 +98,27 @@ mat-card.main-card {
     font-weight: 400;
   }
 
-  > * {
-    padding: 0 16px;
-  }
-
   .loading-spinner {
     margin: 100px;
   }
 
   .mat-card-header {
     position: relative;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
 
     .social {
-      position: absolute;
-      right: 0;
-      height: 100%;
       display: flex;
       justify-content: center;
       align-items: center;
       color: #673ab7;
-
-      @media (max-width: 600px) {
-        align-items: flex-end;
-      }
+      font-size: 14px;
+      margin-left: 10px;
 
       .mat-icon {
         vertical-align: bottom;
+        @include icon-size(20px);
       }
     }
   }
@@ -89,6 +134,12 @@ mat-card.main-card {
       letter-spacing: 0.015em;
       font-family: "Cabin Sketch", cursive;
       color: #555;
+
+      @media (max-width: 600px) {
+        margin-bottom: 10px;
+        font-size: 22px;
+        line-height: 1.3;
+      }
     }
 
     .mat-card-subtitle {
@@ -101,13 +152,7 @@ mat-card.main-card {
 
 
   .content {
-    // display: flex;
-    // background-color: #f7f7f7;
     font-size: 17px;
-
-    @media (max-width: 1200px) {
-      flex-wrap: wrap;
-    }
 
     .image-wrapper {
       padding: 16px 0;
@@ -125,10 +170,11 @@ mat-card.main-card {
 
     .info-wrapper {
       flex: 1 0 400px;
-      padding: 16px 16px 16px 20px;
+      padding: 16px;
 
       @media (max-width: 600px) {
         flex-basis: 250px;
+        padding: 6px;
       }
 
       .info-item {
@@ -199,7 +245,11 @@ mat-card.main-card {
 
       .download-item {
         display: inline-flex;
-        margin-top: 10px;
+        margin-top: 2px;
+
+        @media (max-width: 600px) {
+          margin-top: 12px;
+        }
 
         &:not(:last-child) {
           margin-right: 20px;
@@ -237,6 +287,10 @@ mat-card.main-card {
 }
 
 ::ng-deep {
+  .details-view-modal > .mat-dialog-container {
+    padding: 0;
+  }
+
   .metadata-modal .mat-dialog-container {
     max-height: 70vh;
     max-width: 66vw;

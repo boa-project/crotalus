@@ -1,4 +1,5 @@
-import { Component, OnInit, ViewChild, TemplateRef, Inject } from '@angular/core';
+import { fadeInVertical } from './../shared-components/animations/fade-in-vertical';
+import { Component, OnInit, ViewChild, TemplateRef, Inject, ElementRef, HostListener } from '@angular/core';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { switchMap, mergeMap } from 'rxjs/operators';
 import { Observable } from 'rxjs';
@@ -10,7 +11,8 @@ import { MatDialog, MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 @Component({
   selector: 'app-details-view',
   templateUrl: './details-view.component.html',
-  styleUrls: ['./details-view.component.scss']
+  styleUrls: ['./details-view.component.scss'],
+  animations: [fadeInVertical]
 })
 export class DetailsViewComponent implements OnInit {
 
@@ -33,14 +35,18 @@ export class DetailsViewComponent implements OnInit {
   alternates = ['original'];
   metadataDialogRef: MatDialogRef<any>;
   itemType: string;
+  showTopInfo = false;
   readonly MAX_COMPANY_LABEL_LENGTH = 30;
+  readonly TITLE_BOTTOM_MARGIN = 5; // value set from CSS
 
   @ViewChild('metadataRef') metadataTemplateRef: TemplateRef<any>;
+  @ViewChild('titleRef') titleRef: ElementRef<any>;
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private searchService: SearchService,
+    private element: ElementRef,
     public dialog: MatDialog,
     @Inject(MAT_DIALOG_DATA) public data: any,
   ) {
@@ -101,6 +107,9 @@ export class DetailsViewComponent implements OnInit {
         case 'thumb.png':
           return 'Miniatura';
 
+        case 'preview.gif':
+          return 'Vista previa';
+
         default:
           break;
       }
@@ -127,6 +136,15 @@ export class DetailsViewComponent implements OnInit {
 
   getCompanyStringToShow(company: string): any {
     return company.length > this.MAX_COMPANY_LABEL_LENGTH ? company.slice(0, this.MAX_COMPANY_LABEL_LENGTH) : company;
+  }
+
+  contentScrollHandler(): void {
+    const boxTop = this.element.nativeElement.getBoundingClientRect().top;
+    const headerBottom = this.titleRef.nativeElement.getBoundingClientRect().bottom - this.TITLE_BOTTOM_MARGIN;
+    const showldShowInfo = boxTop >= headerBottom;
+    if (showldShowInfo !== this.showTopInfo) {
+      this.showTopInfo = showldShowInfo;
+    }
   }
 
   get isResourceInSameDomain(): boolean {

@@ -1,11 +1,11 @@
-import { Component, Input, Output, EventEmitter, SimpleChanges, OnChanges, ViewChild, ElementRef } from '@angular/core';
+import { Component, Input, Output, EventEmitter, SimpleChanges, OnChanges, ViewChild, ElementRef, AfterViewInit, ChangeDetectorRef } from '@angular/core';
 
 @Component({
   selector: 'app-image-handler',
   templateUrl: './image-handler.component.html',
   styleUrls: ['./image-handler.component.scss'],
 })
-export class ImageHandlerComponent implements OnChanges {
+export class ImageHandlerComponent implements OnChanges, AfterViewInit {
   readonly minimumSize = '250px';
   @Input() imageUrl: string;
   @Input() imageAlt = '';
@@ -23,7 +23,7 @@ export class ImageHandlerComponent implements OnChanges {
   previewLoaded = false;
   localPreviewUrl: string;
 
-  constructor(private elementRef: ElementRef ) { }
+  constructor(private elementRef: ElementRef, private changeDetector: ChangeDetectorRef) { }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.hasOwnProperty('previewUrl') && changes.previewUrl) {
@@ -37,9 +37,20 @@ export class ImageHandlerComponent implements OnChanges {
     }
   }
 
+  ngAfterViewInit(): void {
+    const componetWidth = this.elementRef.nativeElement.offsetWidth;
+    if (componetWidth < parseInt(this.placeholderWidth.split('px')[0], 10)) {
+      this.placeholderWidth = `${componetWidth}px`;
+      this.placeholderHeight = `${componetWidth}px`;
+    }
+    this.changeDetector.detectChanges();
+  }
 
   showImage(): void {
+    this.placeholderWidth = 'auto';
+    this.placeholderHeight = 'auto';
     this.imageVisible = true;
+    this.changeDetector.detectChanges();
   }
 
   resetPreview(): void {

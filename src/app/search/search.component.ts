@@ -107,6 +107,7 @@ export class SearchComponent {
   showResourceDetails(aboutString: string) {
     this.dialog.open( DetailsViewComponent, {
       panelClass: 'details-view-modal',
+      maxWidth: '90vw',
       data: {
         aboutString: aboutString,
       }

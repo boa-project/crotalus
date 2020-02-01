@@ -1,148 +1,154 @@
-<div class="item-type">
+<div class="fixed-top-info" *ngIf="showTopInfo" [@visibilityChanged]>
   <ng-container [ngSwitch]="itemType">
-    <span *ngSwitchCase="'image'">
+    <span class="icon" *ngSwitchCase="'image'">
+      <mat-icon>image</mat-icon>
+    </span>
+    <span class="icon" *ngSwitchCase="'video'">
+      <mat-icon>videocam</mat-icon>
+    </span>
+  </ng-container>
+  <span class="title">{{ title }}</span>
+  <span><button class="close-button" mat-button mat-dialog-close>
+      <mat-icon>close</mat-icon>
+    </button></span>
+</div>
+
+<mat-dialog-content (scroll)="contentScrollHandler()">
+  <div class="item-type">
+    <ng-container [ngSwitch]="itemType">
+      <span *ngSwitchCase="'image'">
         <mat-icon>image</mat-icon>
         <span>imagen</span>
-    </span>
-    <span *ngSwitchCase="'video'">
+      </span>
+      <span *ngSwitchCase="'video'">
         <mat-icon>videocam</mat-icon>
         <span>video</span>
-    </span>
-
-  </ng-container>
-</div>
-<div class="close-button-wrapper">
-  <button class="close-button" mat-button mat-dialog-close><mat-icon>close</mat-icon></button>
-</div>
-<mat-card class="main-card mat-elevation-z0">
-  <mat-spinner class="loading-spinner" *ngIf="!resourceData; else detailsTemplate"></mat-spinner>
-  <ng-template #detailsTemplate>
-    <mat-card-header>
-      <mat-card-title>{{ title }}</mat-card-title>
-      <div class="social">
-        <span> <mat-icon>visibility</mat-icon> {{ social?.views }} </span>
-        &nbsp;&nbsp;
-        <span>
-          <mat-icon>comment</mat-icon>
-          {{ social?.comments }}
-        </span>
-      </div>
-    </mat-card-header>
-    <mat-card-content class="content">
-      <div class="image-wrapper">
-        <ng-container [ngSwitch]="itemType">
-          <app-image-handler
-            *ngSwitchCase="'image'"
-            [imageUrl]="imageSrc"
-            [imageAlt]="title"
-            [placeholderWidth]="'350px'"
-            [placeholderHeight]="'350px'"
-            [imageMaxWidth]="'700px'"
-            [imageMaxHeight]="'700px'"
-            [backgroundColor]="'transparent'"
-            transparentBackground="'true'"
-            (imageLoadError)="imageLoadError()"
-          ></app-image-handler>
-
-          <video *ngSwitchCase="'video'" controls>
-            <source [src]="originalFileUrl" type="video/mp4">
-            <source [src]="originalFileUrl" type="video/ogg">
-            Your browser does not support the video tag.
-          </video>
-        </ng-container>
-      </div>
-      <div class="info-wrapper">
-        <div class="info-item">
-          <h4>Descripción:</h4>
-          <p>
-            {{ description }}
-          </p>
+      </span>
+    </ng-container>
+  </div>
+  <div class="close-button-wrapper">
+    <button class="close-button" mat-button mat-dialog-close>
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+  <mat-card class="main-card mat-elevation-z0">
+    <mat-spinner class="loading-spinner" *ngIf="!resourceData; else detailsTemplate"></mat-spinner>
+    <ng-template #detailsTemplate>
+      <mat-card-header>
+        <mat-card-title #titleRef>{{ title }}</mat-card-title>
+        <div class="social">
+          <span>
+            <mat-icon>visibility</mat-icon>{{ social?.views }}
+          </span>
+          &nbsp;&nbsp;
+          <span>
+            <mat-icon>comment</mat-icon>
+            {{ social?.comments }}
+          </span>
         </div>
-        <div class="info-item">
-          <h4>Contribuciones:</h4>
-          <div
-            class="contribution-item"
-            *ngFor="let contribution of contributions"
-          >
-            <strong>{{ contribution.entity.name }} {{ contribution.entity.lastname }}</strong>
-            <br />
-            <span class="rol">{{ contribution.rol }}</span>
-            <br />
-            <span>{{ contribution.date.split('T')[0] }}</span>
-            <br />
-            <span class="company"
-              [matTooltip]="contribution.entity.company"
-              [matTooltipDisabled]="!cropContributionCompanyLabel(contribution.entity.company)"
-            >
-              {{ contribution.entity.company.length < 31 ? contribution.entity.company : contribution.entity.company.slice(0,30) }}
-              <span *ngIf="cropContributionCompanyLabel(contribution.entity.company)">...</span>
-            </span>
+      </mat-card-header>
+      <mat-card-content class="content">
+        <div class="image-wrapper">
+          <ng-container [ngSwitch]="itemType">
+            <app-image-handler *ngSwitchCase="'image'" [imageUrl]="imageSrc" [imageAlt]="title"
+              [placeholderWidth]="'350px'" [placeholderHeight]="'350px'" [imageMaxWidth]="'700px'"
+              [imageMaxHeight]="'700px'" [backgroundColor]="'transparent'" transparentBackground="'true'"
+              (imageLoadError)="imageLoadError()"></app-image-handler>
+
+            <video *ngSwitchCase="'video'" controls>
+              <source [src]="originalFileUrl" type="video/mp4">
+              <source [src]="originalFileUrl" type="video/ogg">
+              Your browser does not support the video tag.
+            </video>
+          </ng-container>
+        </div>
+        <div class="info-wrapper">
+          <div class="info-item">
+            <h4>Descripción:</h4>
+            <p>
+              {{ description }}
+            </p>
           </div>
-        </div>
-        <div class="info-item">
-          <h4>Palabras clave:</h4>
-          <p>
-            {{ keywords?.join(', ') }}
-          </p>
-        </div>
-        <div class="info-item">
-          <h4>Fecha de publicación:</h4>
-          <p>
-            {{ publishDate }}
-          </p>
-        </div>
-        <div class="info-item">
-          <h4>Formato:</h4>
-          <p>
-            {{ format }}
-          </p>
-        </div>
-        <div class="info-item copyright">
-          <h4>Licencia:</h4>
-          <p *ngIf="rights && rights.copyright">
-            <img [src]="copyrightImageUrl" alt="">
-            <span class="version-wrapper" *ngIf="copyrightVersion">
-              Versión:
+          <div class="info-item">
+            <h4>Contribuciones:</h4>
+            <div class="contribution-item" *ngFor="let contribution of contributions">
+              <strong>{{ contribution.entity.name }} {{ contribution.entity.lastname }}</strong>
               <br />
-              {{ copyrightVersion }}
-            </span>
-            <a class="license-link" [href]="copyrightUrl" target="_blank">
-              <mat-icon>open_in_new</mat-icon>
-            </a>
-          </p>
-        </div>
-        <div class="info-item downloads">
-          <h4>Descargas por tamaño:</h4>
-          <div class="download-item" *ngFor="let alternate of alternates">
-            <a class="download-button"
-              *ngIf="isResourceInSameDomain; else iconTemplate"
-              [href]="getResourceDownloadUrl(alternate)"
-              [download]="entrypointName"
-            >
-              <mat-icon>get_app</mat-icon> {{ getSizeLabel(alternate) }}
-            </a>
-            <ng-template #iconTemplate>
-              <span class="download-button" (click)="openResourceInNewWindow(alternate)">
-                <mat-icon>get_app</mat-icon>
-                {{ getSizeLabel(alternate) }}
+              <span class="rol">{{ contribution.rol }}</span>
+              <br />
+              <span>{{ contribution.date.split('T')[0] }}</span>
+              <br />
+              <span class="company" [matTooltip]="contribution.entity.company"
+                [matTooltipDisabled]="!cropContributionCompanyLabel(contribution.entity.company)">
+                {{ contribution.entity.company.length < 31 ? contribution.entity.company : contribution.entity.company.slice(0,30) }}
+                <span *ngIf="cropContributionCompanyLabel(contribution.entity.company)">...</span>
               </span>
-            </ng-template>
+            </div>
+          </div>
+          <div class="info-item">
+            <h4>Palabras clave:</h4>
+            <p>
+              {{ keywords?.join(', ') }}
+            </p>
+          </div>
+          <div class="info-item">
+            <h4>Fecha de publicación:</h4>
+            <p>
+              {{ publishDate }}
+            </p>
+          </div>
+          <div class="info-item">
+            <h4>Formato:</h4>
+            <p>
+              {{ format }}
+            </p>
+          </div>
+          <div class="info-item copyright">
+            <h4>Licencia:</h4>
+            <p *ngIf="rights && rights.copyright">
+              <img [src]="copyrightImageUrl" alt="">
+              <span class="version-wrapper" *ngIf="copyrightVersion">
+                Versión:
+                <br />
+                {{ copyrightVersion }}
+              </span>
+              <a class="license-link" [href]="copyrightUrl" target="_blank">
+                <mat-icon>open_in_new</mat-icon>
+              </a>
+            </p>
+          </div>
+          <div class="info-item downloads">
+            <h4>Descargas por tamaño:</h4>
+            <div class="download-item" *ngFor="let alternate of alternates">
+              <a class="download-button" *ngIf="isResourceInSameDomain; else iconTemplate"
+                [href]="getResourceDownloadUrl(alternate)" [download]="entrypointName">
+                <mat-icon>get_app</mat-icon> {{ getSizeLabel(alternate) }}
+              </a>
+              <ng-template #iconTemplate>
+                <span class="download-button" (click)="openResourceInNewWindow(alternate)">
+                  <mat-icon>get_app</mat-icon>
+                  {{ getSizeLabel(alternate) }}
+                </span>
+              </ng-template>
+            </div>
           </div>
         </div>
+      </mat-card-content>
+      <div class="view-metadata-link" (click)="showMetadata()">
+        Ver metadatos en formato JSON
       </div>
-    </mat-card-content>
-    <div class="view-metadata-link" (click)="showMetadata()">
-      Ver metadatos en formato JSON
+    </ng-template>
+  </mat-card>
+
+
+  <ng-template #metadataRef>
+    <div class="metadata-json">
+      <button class="close-icon" mat-button (click)="closeMetadataModal()">
+        <mat-icon>close</mat-icon>
+      </button>
+      <pre>{{ resourceData | json }}</pre>
+      <button mat-raised-button color="primary" (click)="closeMetadataModal()">Cerrar</button>
     </div>
   </ng-template>
-</mat-card>
 
-
-<ng-template #metadataRef>
-  <div class="metadata-json">
-    <button  class="close-icon" mat-button (click)="closeMetadataModal()"><mat-icon>close</mat-icon></button>
-    <pre>{{ resourceData | json }}</pre>
-    <button mat-raised-button color="primary" (click)="closeMetadataModal()">Cerrar</button>
-  </div>
-</ng-template>
-
+</mat-dialog-content>
