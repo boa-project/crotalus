@@ -4,11 +4,12 @@
 $indicators-size: 16px;
 
 mat-card.image-item-card {
-  height: 322px;
+  height: 325px;
   margin: 25px 30px;
   max-width: 380px;
-  padding: 32px 0 0;
+  padding: 35px 0 0;
   border-radius: 2px;
+  min-width: 250px;
 
 
   .image-wrapper {
@@ -31,13 +32,14 @@ mat-card.image-item-card {
       -moz-user-select: none;
       -ms-user-select: none;
       user-select: none;
-      
+      z-index: 3;
+
       .mat-icon {
         color: rgba(255,255,255,0.8);
         @include icon-size(60px);
       }
     }
-    
+
     &:hover .open-details-overlay {
       opacity: 1;
       transition: opacity 120ms ease-in-out;
@@ -64,18 +66,59 @@ mat-card.image-item-card {
 
   mat-card-subtitle {
     position: absolute;
-    height: 32px;
+    height: 35px;
     top: 0px;
     right: 0px;
     margin: 0;
-    padding: 4px 4px 4px 8px;
-    font-size: 15px;
+    padding: 6px 5px;
+    font-size: 13px;
     background-color: #ffffff;
     color: $primary;
     border-radius: 2px 2px 0 0;
     width: 100%;
     display: flex;
     justify-content: space-between;
+
+    .item-type span {
+      color: #555;
+      padding: 0px 6px 0px 2px;
+      border-radius: 2px;
+      font-size: 16px;
+      display: -webkit-box;
+      display: flex;
+      -webkit-box-pack: justify;
+      justify-content: space-between;
+      margin-top: 1px;
+      font-family: "Cabin Sketch", cursive;
+
+      .mat-icon {
+        height: 20px;
+        width: 21px;
+        line-height: 20px;
+        text-align: center;
+        vertical-align: sub;
+        font-size: 23px;
+        margin-right: 4px;
+        margin-top: 1px;
+      }
+    }
+
+    .actions {
+      display: flex;
+      .mat-icon {
+        @include icon-size($indicators-size);
+        vertical-align: sub;
+      }
+    }
+
+    .social-stats {
+      padding-top: 3px;
+
+      span:not(:last-child) {
+        margin-right: 2px;
+      }
+    }
+
 
     .download-icon {
       font-size: 15px;
@@ -90,6 +133,7 @@ mat-card.image-item-card {
       border-radius: 2px;
       transition: background 100ms ease-in-out;
       cursor: pointer;
+      margin-left: 10px;
 
       &:hover {
         background: rgba($primary, 0.75);
@@ -97,18 +141,15 @@ mat-card.image-item-card {
       }
 
       .mat-icon {
-        height: 24px;
-        width: 24px;
-        line-height: 24px;
-        text-align: center;
+        width: 100%;
+        height: 100%;
+        padding: 4px;
       }
-    }
 
-    .mat-icon {
-      @include icon-size($indicators-size);
-      vertical-align: sub;
     }
   }
+
+
 }
 
 ::ng-deep {

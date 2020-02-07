@@ -1,29 +1,37 @@
 import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
+import getSizeLabel from "../../helpers/getSizeLabel";
 
 @Component({
-  selector: 'app-image-item-card',
-  templateUrl: './image-item-card.component.html',
-  styleUrls: ['./image-item-card.component.scss']
+  selector: 'app-image-video-item-card',
+  templateUrl: './image-video-item-card.component.html',
+  styleUrls: ['./image-video-item-card.component.scss']
 })
-export class ImageItemCardComponent implements OnInit {
+export class ImageVideoItemCardComponent implements OnInit {
 
-  @Input() imageItem: any;
+  @Input() itemInfo: any;
   @Output() openDetailsEmitter = new EventEmitter();
   currentDomain: string;
   resourceDomain: string;
   alternates = ['original'];
+  mouseover = false;
 
   constructor() { }
 
   ngOnInit() {
     this.currentDomain = window.location.hostname;
-    this.resourceDomain = this.imageItem.about.split('://')[1].split('/')[0];
-    this.alternates = [...this.alternates, ...this.imageItem.manifest.alternate];
+    this.resourceDomain = this.itemInfo.about.split('://')[1].split('/')[0];
+    this.alternates = [...this.alternates, ...this.itemInfo.manifest.alternate];
   }
 
   getThumbnailUrl(): string {
     // return `${this.imageItem.about}/!/${this.imageItem.manifest.customicon}`;
-    return this.imageItem.manifest.customicon;
+    return this.itemInfo.manifest.customicon;
+  }
+
+
+  getPreviewUrl(): string {
+    const alternateBaseRef = this.itemInfo.id.split('/content/')[1];
+    return `${this.itemInfo.about}/!/.alternate/${alternateBaseRef}/preview.gif`;
   }
 
   shouldDisableTooltip(titleElement): boolean {
@@ -44,9 +52,9 @@ export class ImageItemCardComponent implements OnInit {
 
   getResourceDownloadUrl(size: string): string {
     if (size === 'original') {
-      return `${this.imageItem.about}/!/${this.imageItem.manifest.entrypoint}`;
+      return `${this.itemInfo.about}/!/${this.itemInfo.manifest.entrypoint}`;
     } else {
-      return `${this.imageItem.about}/!/.alternate/${this.imageItem.manifest.entrypoint}/${size}`;
+      return `${this.itemInfo.about}/!/.alternate/${this.itemInfo.manifest.entrypoint}/${size}`;
     }
   }
 
@@ -55,23 +63,15 @@ export class ImageItemCardComponent implements OnInit {
   }
 
   getSizeLabel(size: string) {
-    if (size === 'original') {
-      return 'Original';
-    } else {
-      switch (size) {
-        case 'medium.png':
-          return 'Mediano';
+    return getSizeLabel(size);
+  }
 
-        case 'small.png':
-          return 'Pequeño';
+  onMouseover(): void {
+    this.mouseover = true;
+  }
 
-        case 'thumb.png':
-          return 'Miniatura';
-
-        default:
-          break;
-      }
-    }
+  onMouseleave(): void {
+    this.mouseover = false;
   }
 
   get isResourceInSameDomain(): boolean {

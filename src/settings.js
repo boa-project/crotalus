@@ -9,7 +9,7 @@
   ];
 
   window.__appSettings.filters = [
-    { meta: 'metadata.technical.format', value: ['image'] }
+    { meta: 'metadata.technical.format', value: ['image', 'video'] }
   ];
 
   window.__appSettings.options = {
@@ -25,4 +25,3 @@
   window.__appSettings.aboutInfo = '';
 
 }(this));
-

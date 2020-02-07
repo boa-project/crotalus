@@ -1,16 +1,19 @@
-import { Component, OnInit, ViewChild, TemplateRef, Inject } from '@angular/core';
+import { fadeInVertical } from './../shared-components/animations/fade-in-vertical';
+import { Component, OnInit, ViewChild, TemplateRef, Inject, ElementRef, HostListener } from '@angular/core';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { switchMap, mergeMap } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { SearchService } from '../services/search.service';
 import { BoaResource, Contribution, BoaResourceSocial, BoaResourceManifest } from '../models/boa-resource.interface';
 import { MatDialog, MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
+import getSizeLabel from '../helpers/getSizeLabel';
 
 
 @Component({
   selector: 'app-details-view',
   templateUrl: './details-view.component.html',
-  styleUrls: ['./details-view.component.scss']
+  styleUrls: ['./details-view.component.scss'],
+  animations: [fadeInVertical]
 })
 export class DetailsViewComponent implements OnInit {
 
@@ -32,14 +35,19 @@ export class DetailsViewComponent implements OnInit {
   entrypointName: string;
   alternates = ['original'];
   metadataDialogRef: MatDialogRef<any>;
+  itemType: string;
+  showTopInfo = false;
   readonly MAX_COMPANY_LABEL_LENGTH = 30;
+  readonly TITLE_BOTTOM_MARGIN = 5; // value set from CSS
 
   @ViewChild('metadataRef') metadataTemplateRef: TemplateRef<any>;
+  @ViewChild('titleRef') titleRef: ElementRef<any>;
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private searchService: SearchService,
+    private element: ElementRef,
     public dialog: MatDialog,
     @Inject(MAT_DIALOG_DATA) public data: any,
   ) {
@@ -63,6 +71,7 @@ export class DetailsViewComponent implements OnInit {
     this.title = metadata.general.title.none;
     this.description = metadata.general.description.none;
     this.format = metadata.technical.format;
+    this.itemType = this.format.split('/')[0];
     this.imageSrc = `${this.resourceAboutUrl}/!/.alternate/${this.alternateBaseRef}/${this.manifest.alternate[1]}`;
     this.keywords = metadata.general.keywords.none;
     this.contributions = metadata.lifecycle.contribution;
@@ -75,7 +84,7 @@ export class DetailsViewComponent implements OnInit {
 
   getResourceDownloadUrl(size: string): string {
     if (size === 'original') {
-      return `${this.resourceAboutUrl}/!/${this.manifest.entrypoint}`;
+      return this.originalFileUrl;
     } else {
       return `${this.resourceAboutUrl}/!/.alternate/${this.alternateBaseRef}/${size}`;
     }
@@ -86,28 +95,14 @@ export class DetailsViewComponent implements OnInit {
   }
 
   getSizeLabel(size: string) {
-    if (size === 'original') {
-      return 'Original';
-    } else {
-      switch (size) {
-        case 'medium.png':
-          return 'Mediano';
-
-        case 'small.png':
-          return 'Pequeño';
-
-        case 'thumb.png':
-          return 'Miniatura';
-
-        default:
-          break;
-      }
-    }
+    return getSizeLabel(size);
   }
 
   showMetadata(): void {
     this.metadataDialogRef = this.dialog.open(this.metadataTemplateRef, {
-      panelClass: 'metadata-modal'
+      panelClass: 'metadata-modal',
+      maxWidth: '90vw',
+      // maxHeight: '90vw',
     });
   }
 
@@ -125,6 +120,15 @@ export class DetailsViewComponent implements OnInit {
 
   getCompanyStringToShow(company: string): any {
     return company.length > this.MAX_COMPANY_LABEL_LENGTH ? company.slice(0, this.MAX_COMPANY_LABEL_LENGTH) : company;
+  }
+
+  contentScrollHandler(): void {
+    const boxTop = this.element.nativeElement.getBoundingClientRect().top;
+    const headerBottom = this.titleRef.nativeElement.getBoundingClientRect().bottom - this.TITLE_BOTTOM_MARGIN;
+    const showldShowInfo = boxTop >= headerBottom;
+    if (showldShowInfo !== this.showTopInfo) {
+      this.showTopInfo = showldShowInfo;
+    }
   }
 
   get isResourceInSameDomain(): boolean {
@@ -155,6 +159,10 @@ export class DetailsViewComponent implements OnInit {
     } else {
       return this.rights.copyright.split(' ').pop();
     }
+  }
+
+  get originalFileUrl(): string {
+    return `${this.resourceAboutUrl}/!/${this.manifest.entrypoint}`;
   }
 
 }

@@ -1,4 +1,97 @@
+@import 'global/mixins';
 @import "global/variables";
+@import "global/responsive-breakpoints";
+
+:host {
+  display: block;
+  position: relative;
+
+  .fixed-top-info {
+    background-color: #fff;
+    border-bottom: 2px solid #555;
+    color: #555;
+    display: -webkit-box;
+    display: flex;
+    -webkit-box-pack: start;
+    justify-content: flex-start;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 3;
+    width: 100%;
+    -webkit-box-align: center;
+    align-items: center;
+    height: 36px;
+    box-shadow: 0px 0px 6px -1px rgba(0, 0, 0, 0.8);
+
+    .icon {
+      display: flex;
+      align-items: center;
+      height: 100%;
+      padding: 0 5px;
+      .mat-icon {
+        @include icon-size(28px);
+      }
+    }
+
+    .title {
+      padding: 0 6px;
+      flex-grow: 1;
+      height: 100%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      font-family: "Cabin Sketch", cursive;
+      font-size: 1.1rem;
+      white-space: nowrap;
+      line-height: 2;
+    }
+
+    span:last-child .mat-button {
+      min-width: 30px;
+    }
+  }
+
+  mat-dialog-content.details-content {
+    position: relative;
+    padding-top: 45px;
+    margin: 0;
+    max-height: 96vh;
+    min-height: 360px;
+  }
+
+  .item-type {
+    position: absolute;
+    padding: 9px 13px;
+    color: #555;
+    background-color: #e5e5e5;
+    border-radius: 4px 0;
+    font-size: 16px;
+    font-weight: 400;
+    top: 0px;
+    left: 0;
+
+    .mat-icon {
+      @include icon-size(30px);
+      height: 26px;
+      text-align: center;
+      vertical-align: bottom;
+      margin-right: 3px;
+    }
+  }
+
+  .close-button-wrapper {
+    position: absolute;
+    top: 4px;
+    right: 0;
+
+    button .mat-icon {
+      height: 26px;
+      width: 26px;
+      line-height: 26px;
+      font-size: 30px;
+    }
+  }
+}
 
 mat-card.main-card {
   padding: 0;
@@ -7,36 +100,27 @@ mat-card.main-card {
     font-weight: 400;
   }
 
-  > * {
-    padding: 0 16px;
-  }
-
   .loading-spinner {
     margin: 100px;
   }
 
   .mat-card-header {
     position: relative;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
 
     .social {
-      position: absolute;
-      right: 20px;
-      height: 100%;
       display: flex;
       justify-content: center;
       align-items: center;
       color: #673ab7;
-
-      @media (max-width: 600px) {
-        align-items: flex-end;
-      }
-
-      span {
-        margin-left: 15px;
-      }
+      font-size: 14px;
+      margin-left: 10px;
 
       .mat-icon {
         vertical-align: bottom;
+        @include icon-size(20px);
       }
     }
   }
@@ -52,6 +136,12 @@ mat-card.main-card {
       letter-spacing: 0.015em;
       font-family: "Cabin Sketch", cursive;
       color: #555;
+
+      @media #{$small} {
+        margin-bottom: 10px;
+        font-size: 22px;
+        line-height: 1.3;
+      }
     }
 
     .mat-card-subtitle {
@@ -64,13 +154,7 @@ mat-card.main-card {
 
 
   .content {
-    display: flex;
-    background-color: #f7f7f7;
     font-size: 17px;
-
-    @media (max-width: 1200px) {
-      flex-wrap: wrap;
-    }
 
     .image-wrapper {
       padding: 16px 0;
@@ -78,14 +162,21 @@ mat-card.main-card {
       display: flex;
       justify-content: center;
       align-items: center;
+
+      video {
+        max-width: 700px;
+        width: 96%;
+        margin: 0 auto;
+      }
     }
 
     .info-wrapper {
       flex: 1 0 400px;
-      padding: 16px 16px 16px 20px;
+      padding: 16px;
 
-      @media (max-width: 600px) {
+      @media #{$small} {
         flex-basis: 250px;
+        padding: 6px;
       }
 
       .info-item {
@@ -103,10 +194,6 @@ mat-card.main-card {
           text-align: left;
         }
 
-        &.downloads {
-          text-align: right;
-        }
-
         &.copyright {
 
           p {
@@ -119,7 +206,6 @@ mat-card.main-card {
             display: inline-flex;
             align-items: center;
             text-decoration: none;
-            background-color: #ddd;
             padding: 5px;
             border-radius: 3px;
 
@@ -161,7 +247,11 @@ mat-card.main-card {
 
       .download-item {
         display: inline-flex;
-        margin-top: 10px;
+        margin-top: 2px;
+
+        @media #{$small} {
+          margin-top: 12px;
+        }
 
         &:not(:last-child) {
           margin-right: 20px;
@@ -199,25 +289,35 @@ mat-card.main-card {
 }
 
 ::ng-deep {
+  .details-view-modal > .mat-dialog-container {
+    padding: 0;
+  }
+
   .metadata-modal .mat-dialog-container {
-    max-height: 70vh;
-    max-width: 66vw;
+    max-height: 90vh;
+    max-width: 86vw;
     text-align: right;
-    padding: 8px 16px;
+    padding: 4px 24px 10px;
+
+    .mat-dialog-content {
+      max-height: inherit;
+    }
 
     pre {
       text-align: left;
-      max-height: calc(70vh - 180px);
+      max-height: calc(90vh - 90px);
+      border-radius: 4px;
     }
 
     button {
-      margin: 10px 0;
+      margin: 0;
+      min-width: 20px;
+      padding: 10px;
+      margin-right: -10px;
 
-      .close-icon {
-        margin: 0;
-        padding: 10px;
-        margin-right: -10px;
-      }
+        .mat-icon {
+          @include icon-size(28px);
+        }
 
       &:focus {
       outline: 0;
@@ -228,8 +328,4 @@ mat-card.main-card {
       opacity: 0;
     }
   }
-}
-
-.close-button-wrapper {
-  text-align: right;
 }

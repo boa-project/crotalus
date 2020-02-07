@@ -2,7 +2,6 @@ import { Component, HostListener, ChangeDetectorRef } from '@angular/core';
 import { SearchService } from '../services/search.service';
 import { MatSnackBar, MatSnackBarRef, SimpleSnackBar, MatDialog } from '@angular/material';
 import { AppSettings } from '../services/app-settings.service';
-import { Router } from '@angular/router';
 import { DetailsViewComponent } from '../details-view/details-view.component';
 
 @Component({
@@ -12,7 +11,7 @@ import { DetailsViewComponent } from '../details-view/details-view.component';
 })
 export class SearchComponent {
 
-  valueToSearch: string;
+  valueToSearch: string = '**a**';
   results: any[];
   snackBarRef: MatSnackBarRef<SimpleSnackBar>;
   resultsSize: number;
@@ -26,7 +25,7 @@ export class SearchComponent {
     private changeDetector: ChangeDetectorRef,
     private snackBar: MatSnackBar,
     public dialog: MatDialog,
-    appSettings: AppSettings,
+    private appSettings: AppSettings,
   ) {
     this.resultsSize = appSettings.options.resultsResponseSize;
     this.minLetters = appSettings.options.minLetters;
@@ -49,9 +48,20 @@ export class SearchComponent {
     }
     this.isSearching = true;
     this.searchService.search(this.valueToSearch, firstCall).subscribe(results => {
+      const resultsToShow = {
+        images: [],
+        videos: []
+      };
+      results.forEach(result => {
+        if (result.manifest.entrypoint.includes('.mp4')) {
+          resultsToShow.videos.push(result);
+        } else {
+          resultsToShow.images.push(result);
+        }
+      });
       this.searchDone = true;
       this.isSearching = false;
-      const lastResults = results[0];
+      const lastResults = results;
       if (lastResults.length > 0 && lastResults.length < this.resultsSize) {
         this.results.push(...lastResults);
         this.noMoreResults = true;
@@ -89,8 +99,9 @@ export class SearchComponent {
   }
 
   showResourceDetails(aboutString: string) {
-    this.dialog.open( DetailsViewComponent, {
+    this.dialog.open(DetailsViewComponent, {
       panelClass: 'details-view-modal',
+      maxWidth: '90vw',
       data: {
         aboutString: aboutString,
       }

@@ -1,5 +1,9 @@
 @import 'global/mixins';
 @import 'global/variables';
+@import 'global/responsive-breakpoints';
+
+$crotalus-logo-small-size: 60px;
+$crotalus-logo-small-side-padding: 30px;
 
 :host{
   display: flex;
@@ -8,11 +12,11 @@
     justify-content: space-between;
   }
 
-  @media screen and (max-width: 950px) {
+  @media #{$big} {
     margin-bottom: 20px;
   }
 
-  @media screen and (max-width: 580px) {
+  @media #{$small} {
     flex-wrap: wrap;
     justify-content: space-between;
   }
@@ -26,14 +30,25 @@
   position: relative;
   margin-bottom: 36px;
 
-  @media screen and (max-width: 580px) {
+  @media #{$small} {
     order: 2;
+    padding-left: $crotalus-logo-small-side-padding;
+    padding-right: $crotalus-logo-small-side-padding;
+    margin-top: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 22px;
   }
 
   .mat-icon.logo-icon {
     transform: rotateZ(-15deg);
     @include icon-size(80px);
-    display: inline-block
+    display: inline-block;
+
+    @media #{$small} {
+      @include icon-size($crotalus-logo-small-size);
+    }
   }
 
   .title {
@@ -43,6 +58,10 @@
     bottom: -25px;
     transform: rotateZ(-10deg);
     color: $primary;
+
+    @media #{$small} {
+      font-size: 23px;
+    }
   }
 
 
@@ -77,10 +96,11 @@
   padding: 0;
   margin: 0 15px;
 
-  @media screen and (max-width: 580px) {
+  @media #{$small} {
     order: 1;
     margin-top: 0;
     padding-top: 5px;
+    width: 100%;
   }
 
   .text {
@@ -109,7 +129,7 @@
   span.no-description .mat-icon {
     margin: 0;
 
-    @media screen and (max-width: 580px) {
+    @media #{$small} {
       margin-left: 78vw;
     }
   }
@@ -120,14 +140,25 @@
   height: 140px;
   box-sizing: border-box;
 
-  @media screen and (max-width: 580px) {
+  @media #{$small} {
     order: 3;
+    padding: 0 20px;
+    height: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    max-width: calc(100% - #{$crotalus-logo-small-size + (2 * $crotalus-logo-small-side-padding)});
   }
 
   img {
     max-height: 100%;
     height: 100%;
     border-radius: 4px;
+
+    @media #{$small} {
+      max-width: 100%;
+      height: auto;
+    }
   }
 }
 
