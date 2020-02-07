@@ -1,7 +1,7 @@
 <mat-card class="image-item-card mat-elevation-z2">
   <div class="image-wrapper" (mouseover) = "onMouseover()" (mouseleave) = "onMouseleave()">
 
-    <ng-container [ngSwitch]="imageItem.type">
+    <ng-container [ngSwitch]="itemInfo.type">
       <app-image-handler *ngSwitchCase="'image'" [imageUrl]="getThumbnailUrl()"></app-image-handler>
       <app-image-handler *ngSwitchCase="'video'"
         [imageUrl]="getThumbnailUrl()"
@@ -15,12 +15,15 @@
     </div>
   </div>
   <mat-card-content>
-    <mat-card-title #titleRef [matTooltip]="imageItem.metadata.general.title.none" matTooltipPosition="above"
-      [matTooltipDisabled]="shouldDisableTooltip(titleRef)">{{imageItem.metadata.general.title.none}}</mat-card-title>
+    <mat-card-title #titleRef
+    matTooltipPosition="above"
+    [matTooltip]="itemInfo.metadata.general.title.none"
+    [matTooltipDisabled]="shouldDisableTooltip(titleRef)">
+      {{itemInfo.metadata.general.title.none}}
+    </mat-card-title>
     <mat-card-subtitle>
-
       <div class="item-type">
-        <ng-container [ngSwitch]="imageItem.type">
+        <ng-container [ngSwitch]="itemInfo.type">
             <span *ngSwitchCase="'image'"><mat-icon>image</mat-icon> imagen</span>
             <span *ngSwitchCase="'video'"><mat-icon>videocam</mat-icon> video</span>
         </ng-container>
@@ -29,11 +32,11 @@
       <div class="actions">
         <div class="social-stats">
           <span>
-            <mat-icon>visibility</mat-icon> {{imageItem.social.views}}
+            <mat-icon>visibility</mat-icon> {{itemInfo.social.views}}
           </span>
           <span>
             <mat-icon>comment</mat-icon>
-            {{imageItem.social.comments}}
+            {{itemInfo.social.comments}}
           </span>
         </div>
 

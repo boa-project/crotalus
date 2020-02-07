@@ -1,5 +1,6 @@
 @import 'global/mixins';
 @import 'global/variables';
+@import 'global/responsive-breakpoints';
 
 $crotalus-logo-small-size: 60px;
 $crotalus-logo-small-side-padding: 30px;
@@ -11,12 +12,11 @@ $crotalus-logo-small-side-padding: 30px;
     justify-content: space-between;
   }
 
-  @media screen and (max-width: 950px) {
+  @media #{$big} {
     margin-bottom: 20px;
   }
 
-  //TODO: create breakpoints common variables and set small devices up to 780px
-  @media screen and (max-width: 580px) {
+  @media #{$small} {
     flex-wrap: wrap;
     justify-content: space-between;
   }
@@ -30,7 +30,7 @@ $crotalus-logo-small-side-padding: 30px;
   position: relative;
   margin-bottom: 36px;
 
-  @media screen and (max-width: 580px) {
+  @media #{$small} {
     order: 2;
     padding-left: $crotalus-logo-small-side-padding;
     padding-right: $crotalus-logo-small-side-padding;
@@ -46,7 +46,7 @@ $crotalus-logo-small-side-padding: 30px;
     @include icon-size(80px);
     display: inline-block;
 
-    @media screen and (max-width: 580px) {
+    @media #{$small} {
       @include icon-size($crotalus-logo-small-size);
     }
   }
@@ -59,7 +59,7 @@ $crotalus-logo-small-side-padding: 30px;
     transform: rotateZ(-10deg);
     color: $primary;
 
-    @media screen and (max-width: 580px) {
+    @media #{$small} {
       font-size: 23px;
     }
   }
@@ -96,10 +96,11 @@ $crotalus-logo-small-side-padding: 30px;
   padding: 0;
   margin: 0 15px;
 
-  @media screen and (max-width: 580px) {
+  @media #{$small} {
     order: 1;
     margin-top: 0;
     padding-top: 5px;
+    width: 100%;
   }
 
   .text {
@@ -128,7 +129,7 @@ $crotalus-logo-small-side-padding: 30px;
   span.no-description .mat-icon {
     margin: 0;
 
-    @media screen and (max-width: 580px) {
+    @media #{$small} {
       margin-left: 78vw;
     }
   }
@@ -139,7 +140,7 @@ $crotalus-logo-small-side-padding: 30px;
   height: 140px;
   box-sizing: border-box;
 
-  @media screen and (max-width: 580px) {
+  @media #{$small} {
     order: 3;
     padding: 0 20px;
     height: auto;
@@ -154,7 +155,7 @@ $crotalus-logo-small-side-padding: 30px;
     height: 100%;
     border-radius: 4px;
 
-    @media screen and (max-width: 580px) {
+    @media #{$small} {
       max-width: 100%;
       height: auto;
     }

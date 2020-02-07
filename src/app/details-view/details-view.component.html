@@ -13,7 +13,7 @@
     </button></span>
 </div>
 
-<mat-dialog-content (scroll)="contentScrollHandler()">
+<mat-dialog-content class="details-content" (scroll)="contentScrollHandler()">
   <div class="item-type" *ngIf="resourceData">
     <ng-container [ngSwitch]="itemType">
       <span *ngSwitchCase="'image'">
@@ -146,8 +146,9 @@
       <button class="close-icon" mat-button (click)="closeMetadataModal()">
         <mat-icon>close</mat-icon>
       </button>
-      <pre>{{ resourceData | json }}</pre>
-      <button mat-raised-button color="primary" (click)="closeMetadataModal()">Cerrar</button>
+      <mat-dialog-content>
+        <pre>{{ resourceData | json }}</pre>
+      </mat-dialog-content>
     </div>
   </ng-template>
 

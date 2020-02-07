@@ -100,7 +100,9 @@ export class DetailsViewComponent implements OnInit {
 
   showMetadata(): void {
     this.metadataDialogRef = this.dialog.open(this.metadataTemplateRef, {
-      panelClass: 'metadata-modal'
+      panelClass: 'metadata-modal',
+      maxWidth: '90vw',
+      // maxHeight: '90vw',
     });
   }
 

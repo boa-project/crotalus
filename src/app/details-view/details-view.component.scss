@@ -1,5 +1,6 @@
 @import 'global/mixins';
 @import "global/variables";
+@import "global/responsive-breakpoints";
 
 :host {
   display: block;
@@ -50,7 +51,7 @@
     }
   }
 
-  mat-dialog-content {
+  mat-dialog-content.details-content {
     position: relative;
     padding-top: 45px;
     margin: 0;
@@ -136,7 +137,7 @@ mat-card.main-card {
       font-family: "Cabin Sketch", cursive;
       color: #555;
 
-      @media (max-width: 600px) {
+      @media #{$small} {
         margin-bottom: 10px;
         font-size: 22px;
         line-height: 1.3;
@@ -173,7 +174,7 @@ mat-card.main-card {
       flex: 1 0 400px;
       padding: 16px;
 
-      @media (max-width: 600px) {
+      @media #{$small} {
         flex-basis: 250px;
         padding: 6px;
       }
@@ -248,7 +249,7 @@ mat-card.main-card {
         display: inline-flex;
         margin-top: 2px;
 
-        @media (max-width: 600px) {
+        @media #{$small} {
           margin-top: 12px;
         }
 
@@ -293,24 +294,30 @@ mat-card.main-card {
   }
 
   .metadata-modal .mat-dialog-container {
-    max-height: 70vh;
-    max-width: 66vw;
+    max-height: 90vh;
+    max-width: 86vw;
     text-align: right;
-    padding: 8px 16px;
+    padding: 4px 24px 10px;
+
+    .mat-dialog-content {
+      max-height: inherit;
+    }
 
     pre {
       text-align: left;
-      max-height: calc(70vh - 180px);
+      max-height: calc(90vh - 90px);
+      border-radius: 4px;
     }
 
     button {
-      margin: 10px 0;
+      margin: 0;
+      min-width: 20px;
+      padding: 10px;
+      margin-right: -10px;
 
-      .close-icon {
-        margin: 0;
-        padding: 10px;
-        margin-right: -10px;
-      }
+        .mat-icon {
+          @include icon-size(28px);
+        }
 
       &:focus {
       outline: 0;
@@ -321,8 +328,4 @@ mat-card.main-card {
       opacity: 0;
     }
   }
-}
-
-.close-button-wrapper {
-  text-align: right;
 }
