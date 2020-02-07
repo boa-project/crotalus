@@ -54,7 +54,7 @@ export class ImageHandlerComponent implements OnChanges, AfterViewInit {
   }
 
   resetPreview(): void {
-    if (this.mouseover) {
+    if (this.mouseover && this.imageVisible) {
       this.setBackgroundImg();
       this.previewBox.nativeElement.style.zIndex = '2';
     } else {

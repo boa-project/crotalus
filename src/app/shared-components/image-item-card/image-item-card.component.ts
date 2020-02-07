@@ -1,4 +1,5 @@
 import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
+import getSizeLabel from "../../helpers/getSizeLabel";
 
 @Component({
   selector: 'app-image-item-card',
@@ -62,23 +63,7 @@ export class ImageItemCardComponent implements OnInit {
   }
 
   getSizeLabel(size: string) {
-    if (size === 'original') {
-      return 'Original';
-    } else {
-      switch (size) {
-        case 'medium.png':
-          return 'Mediano';
-
-        case 'small.png':
-          return 'Pequeño';
-
-        case 'thumb.png':
-          return 'Miniatura';
-
-        default:
-          break;
-      }
-    }
+    return getSizeLabel(size);
   }
 
   onMouseover(): void {

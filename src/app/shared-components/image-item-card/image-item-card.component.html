@@ -53,13 +53,8 @@
             </ng-template>
           </ng-container>
         </mat-menu>
-
         <span class="download-icon">
-          <mat-icon *ngIf="imageItem.type == image; else noMenuTemplate" [matMenuTriggerFor]="downloadMenu">get_app</mat-icon>
-          <ng-template #noMenuTemplate>
-            <mat-icon>get_app</mat-icon>
-          </ng-template>
-
+          <mat-icon *ngIf="alternates.length" [matMenuTriggerFor]="downloadMenu">get_app</mat-icon>
         </span>
       </div>
 

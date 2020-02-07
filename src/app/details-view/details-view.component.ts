@@ -6,6 +6,7 @@ import { Observable } from 'rxjs';
 import { SearchService } from '../services/search.service';
 import { BoaResource, Contribution, BoaResourceSocial, BoaResourceManifest } from '../models/boa-resource.interface';
 import { MatDialog, MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
+import getSizeLabel from '../helpers/getSizeLabel';
 
 
 @Component({
@@ -94,26 +95,7 @@ export class DetailsViewComponent implements OnInit {
   }
 
   getSizeLabel(size: string) {
-    if (size === 'original') {
-      return 'Original';
-    } else {
-      switch (size) {
-        case 'medium.png':
-          return 'Mediano';
-
-        case 'small.png':
-          return 'Pequeño';
-
-        case 'thumb.png':
-          return 'Miniatura';
-
-        case 'preview.gif':
-          return 'Vista previa';
-
-        default:
-          break;
-      }
-    }
+    return getSizeLabel(size);
   }
 
   showMetadata(): void {

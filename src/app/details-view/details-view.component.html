@@ -14,7 +14,7 @@
 </div>
 
 <mat-dialog-content (scroll)="contentScrollHandler()">
-  <div class="item-type">
+  <div class="item-type" *ngIf="resourceData">
     <ng-container [ngSwitch]="itemType">
       <span *ngSwitchCase="'image'">
         <mat-icon>image</mat-icon>
