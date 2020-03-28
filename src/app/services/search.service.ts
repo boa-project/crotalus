@@ -1,5 +1,5 @@
+import { BoaResource } from './../models/boa-resource.interface';
 import { Injectable } from '@angular/core';
-// import { initialConfig } from "../initialConfig";
 import { HttpClient } from '@angular/common/http';
 import { forkJoin, Observable } from 'rxjs';
 import { tap, map } from 'rxjs/operators';
@@ -16,7 +16,7 @@ export class SearchService {
   catalogues: any[];
 
 
-  constructor(private http: HttpClient, private appSettings:AppSettings) {
+  constructor(private http: HttpClient, private appSettings: AppSettings) {
     this.apiUri = appSettings.apiUri;
     this.filters = appSettings.filters;
     this.catalogues = appSettings.catalogues;
@@ -29,29 +29,25 @@ export class SearchService {
     const cataloguesToSearchIn = this.catalogues.map(catalog => catalog.key);
     const requestsArray = cataloguesToSearchIn.map(catalogueKey =>
       this.http.get(this.createCatalogRequestUrl(value, catalogueKey))
-    )
+    );
     return forkJoin([...requestsArray]).pipe(
       tap(() => {
         this.apiRequestsCounter += 1;
       }),
-      map((results: any[]) => { 
-        // debugger;
-        return results[0].map(result => {
-          // debugger;
-          if (result.manifest.entrypoint.includes('.mp4')) {
-            result['type'] = 'video';
-          } else {
-            result['type'] = 'image';
-          }
-          return result;
+      map((multipleReposResults: any[]) => {
+        return multipleReposResults.map((singleRepoResults: BoaResource[]) => {
+          return singleRepoResults.map((result: BoaResource) => {
+            result['type'] = result.metadata.technical.format.split('/')[0];
+            return result;
+          });
         });
-      })
+      }),
     );
   }
 
 
   createCatalogRequestUrl(value: string, catalogKey: string) {
-    return `${this.apiUri}/c/${catalogKey}/resources.json?q=${value}&${this.generateRequestParams()}`
+    return `${this.apiUri}/c/${catalogKey}/resources.json?q=${value}&${this.generateRequestParams()}`;
   }
 
   generateRequestParams() {

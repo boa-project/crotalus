@@ -24,7 +24,6 @@ export class ImageVideoItemCardComponent implements OnInit {
   }
 
   getThumbnailUrl(): string {
-    // return `${this.imageItem.about}/!/${this.imageItem.manifest.customicon}`;
     return this.itemInfo.manifest.customicon;
   }
 
@@ -38,21 +37,13 @@ export class ImageVideoItemCardComponent implements OnInit {
     return titleElement.offsetWidth === titleElement.scrollWidth;
   }
 
-  // getResourceDownloadUrl(): string {
-  //   return `${this.imageItem.about}/!/${this.imageItem.manifest.entrypoint}`;
-  // }
-
-  // openResourceInNewWindow(): void {
-  //   window.open(this.getResourceDownloadUrl(), '_blank');
-  // }
-
   openDetails(): void {
     this.openDetailsEmitter.emit();
   }
 
   getResourceDownloadUrl(size: string): string {
     if (size === 'original') {
-      return `${this.itemInfo.about}/!/${this.itemInfo.manifest.entrypoint}`;
+      return this.originalFileUrl;
     } else {
       return `${this.itemInfo.about}/!/.alternate/${this.itemInfo.manifest.entrypoint}/${size}`;
     }
@@ -76,6 +67,18 @@ export class ImageVideoItemCardComponent implements OnInit {
 
   get isResourceInSameDomain(): boolean {
     return this.currentDomain === this.resourceDomain;
+  }
+
+  get originalFileUrl(): string {
+    if (this.itemInfo.manifest.hasOwnProperty('entrypoint')) {
+      return `${this.itemInfo.about}/!/${this.itemInfo.manifest.entrypoint}`;
+    }
+
+    if (this.itemInfo.manifest.hasOwnProperty('url')) {
+      return this.itemInfo.manifest.url;
+    }
+
+    return `${this.itemInfo.about}/!/`;
   }
 
 }

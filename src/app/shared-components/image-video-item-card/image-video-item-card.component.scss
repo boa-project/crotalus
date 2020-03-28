@@ -3,17 +3,20 @@
 
 $indicators-size: 16px;
 
-mat-card.image-item-card {
+mat-card.image-video-item-card {
   height: 325px;
+  width: 250px;
   margin: 25px 30px;
-  max-width: 380px;
   padding: 35px 0 0;
   border-radius: 2px;
-  min-width: 250px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
 
 
   .image-wrapper {
     position: relative;
+    flex: 1 0 auto;
 
     .open-details-overlay {
       position: absolute;
@@ -46,11 +49,16 @@ mat-card.image-item-card {
     }
   }
 
+  .mat-card-content {
+    flex-basis: 40px;
+    display: flex;
+    align-items: center;
+  }
+
 
   mat-card-title {
     font-size: 17px;
     font-weight: bold;
-    position: absolute;
     bottom: 7px;
     left: 0;
     right: 0;

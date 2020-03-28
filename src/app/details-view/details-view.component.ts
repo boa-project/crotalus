@@ -162,7 +162,14 @@ export class DetailsViewComponent implements OnInit {
   }
 
   get originalFileUrl(): string {
-    return `${this.resourceAboutUrl}/!/${this.manifest.entrypoint}`;
-  }
+    if (this.manifest.hasOwnProperty('entrypoint')) {
+      return `${this.resourceAboutUrl}/!/${this.manifest.entrypoint}`;
+    }
 
+    if (this.manifest.hasOwnProperty('url')) {
+      return this.manifest.url;
+    }
+
+    return `${this.resourceAboutUrl}/!/`;
+  }
 }

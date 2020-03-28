@@ -1,22 +1,26 @@
-const getSizeLabel = (size: string) => {
-  if (size === 'original') {
+const getSizeLabel = (alternate: string) => {
+  if (alternate === 'original') {
     return 'Original';
   } else {
+    const size = alternate.split('.')[0];
     switch (size) {
-      case 'medium.png':
+      case 'medium':
         return 'Mediano';
 
-      case 'small.png':
+      case 'small':
         return 'Pequeño';
 
-      case 'thumb.png':
+      case 'thumb':
         return 'Miniatura';
 
-      case 'preview.gif':
+      case 'high':
+        return 'HD';
+
+      case 'preview':
         return 'Vista previa';
 
       default:
-        break;
+        return alternate;
     }
   }
 };

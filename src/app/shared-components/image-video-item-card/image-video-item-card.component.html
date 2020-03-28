@@ -1,4 +1,4 @@
-<mat-card class="image-item-card mat-elevation-z2">
+<mat-card class="image-video-item-card mat-elevation-z2">
   <div class="image-wrapper" (mouseover) = "onMouseover()" (mouseleave) = "onMouseleave()">
 
     <ng-container [ngSwitch]="itemInfo.type">
@@ -45,7 +45,6 @@
               <a mat-menu-item
               *ngIf="isResourceInSameDomain; else iconTemplate"
               [href]="getResourceDownloadUrl(alternate)"
-              [download]="entrypointName"
             >
               {{ getSizeLabel(alternate) }}
             </a>

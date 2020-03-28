@@ -63,13 +63,13 @@
           </ng-container>
         </div>
         <div class="info-wrapper">
-          <div class="info-item">
+          <div class="info-item" *ngIf="description">
             <h4>Descripción:</h4>
             <p>
               {{ description }}
             </p>
           </div>
-          <div class="info-item">
+          <div class="info-item" *ngIf="contributions.length">
             <h4>Contribuciones:</h4>
             <div class="contribution-item" *ngFor="let contribution of contributions">
               <strong>{{ contribution.entity.name }} {{ contribution.entity.lastname }}</strong>
@@ -85,27 +85,27 @@
               </span>
             </div>
           </div>
-          <div class="info-item">
+          <div class="info-item" *ngIf="keywords && keywords?.join(', ').length">
             <h4>Palabras clave:</h4>
             <p>
               {{ keywords?.join(', ') }}
             </p>
           </div>
-          <div class="info-item">
+          <div class="info-item" *ngIf="publishDate">
             <h4>Fecha de publicación:</h4>
             <p>
               {{ publishDate }}
             </p>
           </div>
-          <div class="info-item">
+          <div class="info-item" *ngIf="format">
             <h4>Formato:</h4>
             <p>
               {{ format }}
             </p>
           </div>
-          <div class="info-item copyright">
+          <div class="info-item copyright" *ngIf="rights && rights.copyright">
             <h4>Licencia:</h4>
-            <p *ngIf="rights && rights.copyright">
+            <p>
               <img [src]="copyrightImageUrl" alt="">
               <span class="version-wrapper" *ngIf="copyrightVersion">
                 Versión:

@@ -1,4 +1,5 @@
 export interface BoaResource {
+  catalog_id: string;
   manifest: BoaResourceManifest;
   metadata: BoaResourceMetadata;
   social: BoaResourceSocial;
@@ -11,9 +12,13 @@ export interface BoaResourceManifest {
   type: string;
   is_a: string;
   lastpublished: string;
-  entrypoint: string;
   alternate: string[];
   customicon: string;
+  entrypoint?: string;
+  conexion_type?: string;
+  author?: string;
+  url?: string;
+  version?: number;
 }
 
 interface BoaResourceMetadata {
@@ -21,30 +26,30 @@ interface BoaResourceMetadata {
     title: {
       none: string;
     };
-    identifier: any[];
-    language: string[];
+    identifier?: any[];
+    language?: string[];
     description: {
       none: string;
     };
-    keywords: {
+    keywords?: {
       none: string[];
     };
   };
-  lifecycle: {
+  lifecycle?: {
     contribution: Contribution[];
   };
   technical: {
     format: string;
     location: string;
   };
-  rights: {
+  rights?: {
     cost: string;
     copyright: string;
     description: {
       none: string;
     };
   };
-  annotation: any[];
+  annotation?: any[];
 }
 
 export interface Contribution {

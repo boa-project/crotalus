@@ -19,16 +19,21 @@ export class SearchComponent {
   searchDone = false;
   isSearching = false;
   noMoreResults = false;
+  searchAvailableFilters: string[];
 
   constructor(
     private searchService: SearchService,
     private changeDetector: ChangeDetectorRef,
     private snackBar: MatSnackBar,
     public dialog: MatDialog,
-    private appSettings: AppSettings,
+    appSettings: AppSettings,
   ) {
     this.resultsSize = appSettings.options.resultsResponseSize;
     this.minLetters = appSettings.options.minLetters;
+    this.searchAvailableFilters = appSettings.filters.filter(
+      filterObject => filterObject.meta === 'metadata.technical.format'
+    )[0].value;
+
   }
 
   search(firstCall: boolean): void {
@@ -47,21 +52,10 @@ export class SearchComponent {
       this.noMoreResults = false;
     }
     this.isSearching = true;
-    this.searchService.search(this.valueToSearch, firstCall).subscribe(results => {
-      const resultsToShow = {
-        images: [],
-        videos: []
-      };
-      results.forEach(result => {
-        if (result.manifest.entrypoint.includes('.mp4')) {
-          resultsToShow.videos.push(result);
-        } else {
-          resultsToShow.images.push(result);
-        }
-      });
+    this.searchService.search(this.valueToSearch, firstCall).subscribe((results: any[]) => {
       this.searchDone = true;
       this.isSearching = false;
-      const lastResults = results;
+      const lastResults = results.flat();
       if (lastResults.length > 0 && lastResults.length < this.resultsSize) {
         this.results.push(...lastResults);
         this.noMoreResults = true;
