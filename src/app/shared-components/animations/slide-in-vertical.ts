@@ -1,6 +1,6 @@
 import { animate, style, transition, group, trigger } from '@angular/animations';
 
-export const fadeInVertical = trigger('visibilityChanged', [
+export const slideInVertical = trigger('visibilityChangedSlide', [
   transition(':enter', [
     style({ transform: 'translateY(-40px)' }),
     group([

@@ -1,11 +1,9 @@
 <mat-card class="image-video-item-card mat-elevation-z2">
-  <div class="image-wrapper" (mouseover) = "onMouseover()" (mouseleave) = "onMouseleave()">
+  <div class="image-wrapper" (mouseover)="onMouseover()" (mouseleave)="onMouseleave()">
 
     <ng-container [ngSwitch]="itemInfo.type">
       <app-image-handler *ngSwitchCase="'image'" [imageUrl]="getThumbnailUrl()"></app-image-handler>
-      <app-image-handler *ngSwitchCase="'video'"
-        [imageUrl]="getThumbnailUrl()"
-        [previewUrl]="getPreviewUrl()"
+      <app-image-handler *ngSwitchCase="'video'" [imageUrl]="getThumbnailUrl()" [previewUrl]="getVideoPreviewUrl"
         [mouseover]="mouseover">
       </app-image-handler>
     </ng-container>
@@ -15,17 +13,19 @@
     </div>
   </div>
   <mat-card-content>
-    <mat-card-title #titleRef
-    matTooltipPosition="above"
-    [matTooltip]="itemInfo.metadata.general.title.none"
-    [matTooltipDisabled]="shouldDisableTooltip(titleRef)">
+    <mat-card-title #titleRef matTooltipPosition="above" [matTooltip]="itemInfo.metadata.general.title.none"
+      [matTooltipDisabled]="shouldDisableTooltip(titleRef)">
       {{itemInfo.metadata.general.title.none}}
     </mat-card-title>
     <mat-card-subtitle>
       <div class="item-type">
         <ng-container [ngSwitch]="itemInfo.type">
-            <span *ngSwitchCase="'image'"><mat-icon>image</mat-icon> imagen</span>
-            <span *ngSwitchCase="'video'"><mat-icon>videocam</mat-icon> video</span>
+          <span *ngSwitchCase="'image'">
+            <mat-icon>image</mat-icon> imagen
+          </span>
+          <span *ngSwitchCase="'video'">
+            <mat-icon>videocam</mat-icon> video
+          </span>
         </ng-container>
       </div>
 
@@ -42,12 +42,15 @@
 
         <mat-menu #downloadMenu="matMenu" xPosition="before">
           <ng-container *ngFor="let alternate of alternates">
-              <a mat-menu-item
-              *ngIf="isResourceInSameDomain; else iconTemplate"
-              [href]="getResourceDownloadUrl(alternate)"
-            >
-              {{ getSizeLabel(alternate) }}
-            </a>
+            <span mat-menu-item *ngIf="isResourceInSameDomain; else iconTemplate" class="multiple-icons-menu-item" disableRipple="'true'">
+              <span (click)="$event.stopPropagation();">{{ getSizeLabel(alternate) }}</span>
+              <span class="icons-wrapper">
+                <mat-icon (click)="openResourceInNewWindow(alternate)">open_in_new</mat-icon>
+                <a [href]="getResourceDownloadUrl(alternate)" [download]="entrypointName">
+                  <mat-icon>get_app</mat-icon>
+                </a>
+              </span>
+            </span>
             <ng-template #iconTemplate>
               <span mat-menu-item (click)="openResourceInNewWindow(alternate)">
                 {{ getSizeLabel(alternate) }}

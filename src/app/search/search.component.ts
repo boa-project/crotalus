@@ -110,7 +110,7 @@ export class SearchComponent {
     return window.pageYOffset > window.innerHeight;
   }
 
-  @HostListener("window:scroll", [])
+  @HostListener('window:scroll', [])
   onWindowScroll() {
     if (
       !this.noMoreResults &&

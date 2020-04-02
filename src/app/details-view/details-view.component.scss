@@ -55,8 +55,8 @@
     position: relative;
     padding-top: 45px;
     margin: 0;
-    max-height: 96vh;
-    min-height: 360px;
+    max-height: 90vh;
+    min-height: 300px;
   }
 
   .item-type {
@@ -162,11 +162,43 @@ mat-card.main-card {
       display: flex;
       justify-content: center;
       align-items: center;
+      position: relative;
 
-      video {
+      video,
+      .video-error-message {
         max-width: 700px;
         width: 96%;
         margin: 0 auto;
+      }
+
+      .video-error-message {
+        $font-size: 19;
+        position: absolute;
+        max-width: 700px;
+        color: #FFF;
+        font-size: #{$font-size + 'px'};
+        text-align: center;
+        display: flex;
+        justify-content: center;
+        align-content: center;
+        flex-direction: column;
+        padding: 20px 5px 5px;
+        background: rgba(0,0,0,0.8);
+
+        @media screen and (max-width: 768px){
+          $font-size: 14;
+          font-size: #{$font-size + 'px'};
+        }
+
+        .main {
+          font-size: 1.37em;
+
+          .mat-icon {
+            @include icon-size(#{(2.74 * $font-size) + 'px'});
+            margin-right: 6px;
+            vertical-align: bottom;
+          }
+        }
       }
     }
 
@@ -259,34 +291,95 @@ mat-card.main-card {
 
         .download-button {
           display: flex;
-          justify-content: center;
+          justify-content: space-between;
           align-items: center;
-          text-decoration: none;
-          background: rgba($primary, 0.45);
-          color: #FFF;
-          border-radius: 4px;
-          transition: background 100ms ease-in-out;
-          cursor: pointer;
-          padding: 4px 9px 4px 5px;
+          padding: 0;
+          margin: 16px;
+          color: rgba(0, 0, 0, 0.87);
+          border-bottom: 1px dotted rgba(0,0,0,0.54);
+          padding-left: 4px;
 
           &:hover {
-            background: rgba($primary, 0.75);
+            background: rgba(0,0,0,.04);
+            cursor: pointer;
             transition: background 100ms ease-in-out;
+          }
+
+          .label {
+            padding: 4px 0;
+          }
+
+          .mat-icon {
+            width: 36px;
+            height: 30px;
+            padding-top: 2px;
+            padding-bottom: 0;
+            color: rgba(0, 0, 0, 0.54);
+            margin: 0;
+            vertical-align: sub;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-left: 4px;
           }
         }
       }
     }
   }
+
+  .view-metadata-link {
+    position: absolute;
+    bottom: 0px;
+    right: -11px;
+    font-size: 13px;
+    cursor: pointer;
+    color: $primary;
+  }
+
+  .multiple-icons-action {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0;
+    margin: 16px;
+    color: rgba(0, 0, 0, 0.87);
+    border-bottom: 1px dotted rgba(0,0,0,0.54);
+    padding-left: 4px;
+
+    .label {
+      padding: 4px 0;
+    }
+
+    .icons-wrapper {
+      margin-left: 2px;
+      margin-right: 0;
+
+      & > * {
+        padding: 6px 6px 4px;
+
+        &:hover {
+          background: rgba(0,0,0,.04);
+          cursor: pointer;
+          transition: background 100ms ease-in-out;
+        }
+      }
+
+      & > .mat-icon {
+        width: 36px;
+        height: 30px;
+        padding-top: 2px;
+        padding-bottom: 0;
+      }
+
+      .mat-icon {
+        color: rgba(0, 0, 0, 0.54);
+        margin: 0;
+        vertical-align: sub;
+      }
+    }
+  }
 }
 
-.view-metadata-link {
-  position: absolute;
-  bottom: 0px;
-  right: -11px;
-  font-size: 13px;
-  cursor: pointer;
-  color: $primary;
-}
 
 ::ng-deep {
   .details-view-modal > .mat-dialog-container {

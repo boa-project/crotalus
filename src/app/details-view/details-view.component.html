@@ -1,4 +1,4 @@
-<div class="fixed-top-info" *ngIf="showTopInfo" [@visibilityChanged]>
+<div class="fixed-top-info" *ngIf="showTopInfo" [@visibilityChangedSlide]>
   <ng-container [ngSwitch]="itemType">
     <span class="icon" *ngSwitchCase="'image'">
       <mat-icon>image</mat-icon>
@@ -53,13 +53,21 @@
             <app-image-handler *ngSwitchCase="'image'" [imageUrl]="imageSrc" [imageAlt]="title"
               [placeholderWidth]="'350px'" [placeholderHeight]="'350px'" [imageMaxWidth]="'700px'"
               [imageMaxHeight]="'700px'" [backgroundColor]="'transparent'" transparentBackground="'true'"
-              (imageLoadError)="imageLoadError()"></app-image-handler>
+              (imageLoadError)="imageLoadError()">
+            </app-image-handler>
 
-            <video *ngSwitchCase="'video'" controls>
-              <source [src]="originalFileUrl" type="video/mp4">
-              <source [src]="originalFileUrl" type="video/ogg">
-              Your browser does not support the video tag.
-            </video>
+            <ng-container *ngSwitchCase="'video'">
+              <video controls>
+                <source [src]="detailsViewVideoUrl" [type]="format" (error)="handleVideoError($event)">
+              </video>
+              <div *ngIf="showVideoError" class="video-error-message" [@visibilityChangedFade] >
+                <p class="main">
+                  <mat-icon>sentiment_dissatisfied</mat-icon>
+                  <span>Lo sentimos!!.</span>
+                </p>
+                <p class="message">Este video no está disponible en este momento</p>
+              </div>
+            </ng-container>
           </ng-container>
         </div>
         <div class="info-wrapper">
@@ -120,14 +128,19 @@
           <div class="info-item downloads">
             <h4>Descargas por tamaño:</h4>
             <div class="download-item" *ngFor="let alternate of alternates">
-              <a class="download-button" *ngIf="isResourceInSameDomain; else iconTemplate"
-                [href]="getResourceDownloadUrl(alternate)" [download]="entrypointName">
-                <mat-icon>get_app</mat-icon> {{ getSizeLabel(alternate) }}
-              </a>
+              <span class="multiple-icons-action" *ngIf="isResourceInSameDomain; else iconTemplate">
+                <span class="label">{{ getSizeLabel(alternate) }}</span>
+                <span class="icons-wrapper">
+                  <mat-icon (click)="openResourceInNewWindow(alternate)">open_in_new</mat-icon>
+                  <a [href]="getResourceDownloadUrl(alternate)" [download]="entrypointName">
+                    <mat-icon>get_app</mat-icon>
+                  </a>
+                </span>
+              </span>
               <ng-template #iconTemplate>
                 <span class="download-button" (click)="openResourceInNewWindow(alternate)">
+                  <span class="label">{{ getSizeLabel(alternate) }}</span>
                   <mat-icon>get_app</mat-icon>
-                  {{ getSizeLabel(alternate) }}
                 </span>
               </ng-template>
             </div>

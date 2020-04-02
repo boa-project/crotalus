@@ -13,8 +13,7 @@
 
 
 <ng-container *ngIf="searchDone || (results && results.length > 0)">
-  <div class="results-wrapper" *ngIf="results && results.length, else noResultsTemplate"
-    (scroll)="onResultsScrolled($event)">
+  <div class="results-wrapper" *ngIf="results && results.length, else noResultsTemplate">
     <ng-container *ngFor="let result of results">
       <app-image-video-item-card [itemInfo]="result" (openDetailsEmitter)="showResourceDetails(result.about)"></app-image-video-item-card>
     </ng-container>

@@ -1,8 +1,7 @@
-import { fadeInVertical } from './../shared-components/animations/fade-in-vertical';
+import { simpleFadeIn } from './../shared-components/animations/simple-fade-in';
+import { slideInVertical } from './../shared-components/animations/slide-in-vertical';
 import { Component, OnInit, ViewChild, TemplateRef, Inject, ElementRef, HostListener } from '@angular/core';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
-import { switchMap, mergeMap } from 'rxjs/operators';
-import { Observable } from 'rxjs';
 import { SearchService } from '../services/search.service';
 import { BoaResource, Contribution, BoaResourceSocial, BoaResourceManifest } from '../models/boa-resource.interface';
 import { MatDialog, MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
@@ -13,7 +12,7 @@ import getSizeLabel from '../helpers/getSizeLabel';
   selector: 'app-details-view',
   templateUrl: './details-view.component.html',
   styleUrls: ['./details-view.component.scss'],
-  animations: [fadeInVertical]
+  animations: [simpleFadeIn, slideInVertical]
 })
 export class DetailsViewComponent implements OnInit {
 
@@ -37,6 +36,7 @@ export class DetailsViewComponent implements OnInit {
   metadataDialogRef: MatDialogRef<any>;
   itemType: string;
   showTopInfo = false;
+  showVideoError = false;
   readonly MAX_COMPANY_LABEL_LENGTH = 30;
   readonly TITLE_BOTTOM_MARGIN = 5; // value set from CSS
 
@@ -78,7 +78,7 @@ export class DetailsViewComponent implements OnInit {
     this.publishDate = this.manifest.lastpublished.split('T')[0];
     this.rights = metadata.rights;
     this.social = this.resourceData.social;
-    this.entrypointName = this.manifest.entrypoint.split('.')[0];
+    this.entrypointName = this.manifest.hasOwnProperty('entrypoint') ? this.manifest.entrypoint.split('.')[0] : '';
     this.alternates = [...this.alternates, ...this.manifest.alternate];
   }
 
@@ -102,7 +102,6 @@ export class DetailsViewComponent implements OnInit {
     this.metadataDialogRef = this.dialog.open(this.metadataTemplateRef, {
       panelClass: 'metadata-modal',
       maxWidth: '90vw',
-      // maxHeight: '90vw',
     });
   }
 
@@ -161,15 +160,30 @@ export class DetailsViewComponent implements OnInit {
     }
   }
 
+  get detailsViewVideoUrl(): string {
+    const mediumSizeAlternate = this.alternates.filter(alternate => alternate.includes('medium'));
+    if (mediumSizeAlternate.length) {
+      return this.getResourceDownloadUrl(mediumSizeAlternate[0]);
+    } else {
+      return this.originalFileUrl;
+    }
+  }
+
   get originalFileUrl(): string {
     if (this.manifest.hasOwnProperty('entrypoint')) {
       return `${this.resourceAboutUrl}/!/${this.manifest.entrypoint}`;
     }
 
-    if (this.manifest.hasOwnProperty('url')) {
+    if (this.manifest.hasOwnProperty('url') && this.manifest.url) {
       return this.manifest.url;
     }
 
     return `${this.resourceAboutUrl}/!/`;
+  }
+
+  handleVideoError() {
+    setTimeout(() => {
+      this.showVideoError = true;
+    }, 800);
   }
 }

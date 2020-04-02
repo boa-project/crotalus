@@ -1,5 +1,5 @@
 import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
-import getSizeLabel from "../../helpers/getSizeLabel";
+import getSizeLabel from '../../helpers/getSizeLabel';
 
 @Component({
   selector: 'app-image-video-item-card',
@@ -14,23 +14,20 @@ export class ImageVideoItemCardComponent implements OnInit {
   resourceDomain: string;
   alternates = ['original'];
   mouseover = false;
+  entrypointName: string;
+  alternateBaseRef: string;
 
   constructor() { }
 
   ngOnInit() {
     this.currentDomain = window.location.hostname;
-    this.resourceDomain = this.itemInfo.about.split('://')[1].split('/')[0];
+    this.resourceDomain = this.originalFileUrl.split('://')[1].split('/')[0];
+    this.alternateBaseRef = this.itemInfo.id.split('/content/')[1];
     this.alternates = [...this.alternates, ...this.itemInfo.manifest.alternate];
   }
 
   getThumbnailUrl(): string {
     return this.itemInfo.manifest.customicon;
-  }
-
-
-  getPreviewUrl(): string {
-    const alternateBaseRef = this.itemInfo.id.split('/content/')[1];
-    return `${this.itemInfo.about}/!/.alternate/${alternateBaseRef}/preview.gif`;
   }
 
   shouldDisableTooltip(titleElement): boolean {
@@ -45,7 +42,8 @@ export class ImageVideoItemCardComponent implements OnInit {
     if (size === 'original') {
       return this.originalFileUrl;
     } else {
-      return `${this.itemInfo.about}/!/.alternate/${this.itemInfo.manifest.entrypoint}/${size}`;
+      this.entrypointName = this.itemInfo.manifest.entrypoint;
+      return `${this.itemInfo.about}/!/.alternate/${this.alternateBaseRef}/${size}`;
     }
   }
 
@@ -69,12 +67,16 @@ export class ImageVideoItemCardComponent implements OnInit {
     return this.currentDomain === this.resourceDomain;
   }
 
+  get getVideoPreviewUrl(): string {
+    return this.alternates.includes('preview.gif') ? this.getResourceDownloadUrl('preview.gif') : '';
+  }
+
   get originalFileUrl(): string {
     if (this.itemInfo.manifest.hasOwnProperty('entrypoint')) {
       return `${this.itemInfo.about}/!/${this.itemInfo.manifest.entrypoint}`;
     }
 
-    if (this.itemInfo.manifest.hasOwnProperty('url')) {
+    if (this.itemInfo.manifest.hasOwnProperty('url') && this.itemInfo.manifest.url.length) {
       return this.itemInfo.manifest.url;
     }
 
