@@ -168,9 +168,12 @@ export class DetailsViewComponent implements OnInit {
   }
 
   get detailsViewVideoUrl(): string {
-    const mediumSizeAlternate = this.alternates.filter(alternate => alternate.includes('medium'));
-    if (mediumSizeAlternate.length) {
-      return this.getResourceDownloadUrl(mediumSizeAlternate[0]);
+    let selectedSizeAlternate = this.alternates.filter(alternate => alternate.includes('small'));
+    if (!selectedSizeAlternate.length) {
+      selectedSizeAlternate = this.alternates.filter(alternate => alternate.includes('medium'));
+    }
+    if (selectedSizeAlternate.length) {
+      return this.getResourceDownloadUrl(selectedSizeAlternate[0]);
     } else {
       return this.originalFileUrl;
     }
