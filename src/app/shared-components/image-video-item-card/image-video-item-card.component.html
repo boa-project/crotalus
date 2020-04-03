@@ -46,7 +46,7 @@
               <span (click)="$event.stopPropagation();">{{ getSizeLabel(alternate) }}</span>
               <span class="icons-wrapper">
                 <mat-icon (click)="openResourceInNewWindow(alternate)">open_in_new</mat-icon>
-                <a [href]="getResourceDownloadUrl(alternate)" [download]="entrypointName">
+                <a [href]="getRelativeDownloadUrl(alternate)" [download]="entrypointName">
                   <mat-icon>get_app</mat-icon>
                 </a>
               </span>

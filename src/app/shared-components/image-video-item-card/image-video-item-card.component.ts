@@ -47,6 +47,13 @@ export class ImageVideoItemCardComponent implements OnInit {
     }
   }
 
+  getRelativeDownloadUrl(size: string): string {
+    const resourceDownloadUrl = this.getResourceDownloadUrl(size);
+    const firstIndexOfPath = resourceDownloadUrl.indexOf('/', 7);
+    const relativePath = resourceDownloadUrl.slice(firstIndexOfPath);
+    return relativePath;
+  }
+
   openResourceInNewWindow(size: string): void {
     window.open(this.getResourceDownloadUrl(size), '_blank');
   }
