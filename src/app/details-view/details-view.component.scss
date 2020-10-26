@@ -1,54 +1,65 @@
-@import "global/variables";
+@import "global/mixins";
+
+@include item-type-tag;
 
 :host {
   display: block;
-  padding-top: 40px;
   position: relative;
-  
-  .item-type {
-    position: absolute;
-    padding: 14px 22px;
-    color: #555;
-    background-color: #e5e5e5;
-    border-radius: 4px 0;
-    font-size: 18px;
-    font-weight: 400;
-    top: -24px;
-    left: -24px;
 
-    .mat-icon {
-      height: 26px;
-      width: 30px;
-      line-height: 26px;
-      text-align: center;
-      vertical-align: top;
-      font-size: 34px;
-      margin-right: 10px;
+  .top-info-bar {
+    @include types-with-colors;
+    display: flex;
+    height: 25px;
+    justify-content: space-between;
+    margin: 0 0 10px;
+    max-width: 100%;
+    overflow-x: visible;
+
+    .quick-info {
+      display: flex;
     }
-  }
 
-  .close-button-wrapper {
-    position: absolute;
-    top: -10px;
-    right: 0;
+    .social {
+      align-items: center;
+      display: inline-flex;
+      font-size: .85rem;
+      justify-content: center;
+      padding-left: 10px;
 
-    button .mat-icon {
-      height: 26px;
-      width: 26px;
-      line-height: 26px;
-      font-size: 32px;
+      .mat-icon {
+        @include icon-size(18px);
+        vertical-align: bottom;
+      }
+    }
+
+    .close-button-wrapper .mat-button {
+      margin-right: -20px;
+      margin-top: -5px;
+      position: relative;
+
+
+      .mat-icon {
+        font-size: 32px;
+        height: 26px;
+        line-height: 26px;
+        width: 26px;
+      }
     }
   }
 }
 
-mat-card.main-card {
+.top-info-bar {
+  @include types-with-colors;
+}
+
+.main-card {
   padding: 0;
 
   * {
     font-weight: 400;
   }
 
-  > * {
+  > *:not(.top-info-bar) {
     padding: 0 16px;
   }
 
@@ -58,41 +69,19 @@ mat-card.main-card {
 
   .mat-card-header {
     position: relative;
-
-    .social {
-      position: absolute;
-      right: 20px;
-      height: 100%;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      color: #673ab7;
-
-      @media (max-width: 600px) {
-        align-items: flex-end;
-      }
-
-      span {
-        margin-left: 15px;
-      }
-
-      .mat-icon {
-        vertical-align: bottom;
-      }
-    }
   }
 
   ::ng-deep .mat-card-header-text {
     margin: 0;
 
     .mat-card-title {
-      margin-bottom: 5px;
-      margin-top: 8px;
+      color: #555;
+      font-family: "Cabin Sketch", cursive;
       font-size: 26px;
       font-weight: bold;
       letter-spacing: 0.015em;
-      font-family: "Cabin Sketch", cursive;
-      color: #555;
+      margin-bottom: 5px;
+      margin-top: 8px;
     }
 
     .mat-card-subtitle {
@@ -105,8 +94,6 @@ mat-card.main-card {
 
 
   .content {
-    display: flex;
-    background-color: #f7f7f7;
     font-size: 17px;
 
     @media (max-width: 1200px) {
@@ -114,11 +101,11 @@ mat-card.main-card {
     }
 
     .image-wrapper {
-      padding: 16px 0;
-      margin: 0 auto;
+      align-items: center;
       display: flex;
       justify-content: center;
-      align-items: center;
+      margin: 0 auto;
+      padding: 16px 0;
     }
 
     .info-wrapper {
@@ -130,17 +117,17 @@ mat-card.main-card {
       }
 
       .info-item {
-        padding-left: 8px;
         margin-bottom: 20px;
         max-width: 700px;
+        padding-left: 8px;
 
         h4 {
-          margin-left: -8px;
-          margin-top: 8px;
-          margin-bottom: 4px;
+          color: #333;
           font-size: 20px;
           font-weight: bold;
-          color: #333;
+          margin-bottom: 4px;
+          margin-left: -8px;
+          margin-top: 8px;
           text-align: left;
         }
 
@@ -151,17 +138,17 @@ mat-card.main-card {
         &.copyright {
 
           p {
+            align-items: center;
             display: flex;
             justify-content: flex-start;
-            align-items: center;
           }
 
           .license-link {
-            display: inline-flex;
             align-items: center;
-            text-decoration: none;
-            padding: 5px;
             border-radius: 3px;
+            display: inline-flex;
+            padding: 5px;
+            text-decoration: none;
 
             &:hover {
               opacity: 0.6;
@@ -170,22 +157,22 @@ mat-card.main-card {
 
           .version-wrapper {
             display: inline-block;
-            text-align: center;
-            margin: 0 5px 0 10px;
             font-size: 0.8em;
+            margin: 0 5px 0 10px;
+            text-align: center;
           }
         }
       }
 
       .contribution-item {
-        margin-bottom: 16px;
-        display: inline-block;
         background: #e5e5e5;
-        padding: 6px 10px;
         border-radius: 4px;
-        text-align: right;
-        margin: 8px 16px 8px 0;
+        display: inline-block;
         line-height: 18px;
+        margin: 8px 16px 8px 0;
+        margin-bottom: 16px;
+        padding: 6px 10px;
+        text-align: right;
 
         span.rol {
           font-size: 0.95em;
@@ -204,20 +191,20 @@ mat-card.main-card {
         margin-top: 10px;
 
         &:not(:last-child) {
-          margin-right: 20px;
+          margin-right: 25px;
         }
 
         .download-button {
+          align-items: center;
+          background: rgba($primary, 0.45);
+          border-radius: 4px;
+          color: #FFF;
+          cursor: pointer;
           display: flex;
           justify-content: center;
-          align-items: center;
-          text-decoration: none;
-          background: rgba($primary, 0.45);
-          color: #FFF;
-          border-radius: 4px;
-          transition: background 100ms ease-in-out;
-          cursor: pointer;
           padding: 4px 9px 4px 5px;
+          text-decoration: none;
+          transition: background 100ms ease-in-out;
 
           &:hover {
             background: rgba($primary, 0.75);
@@ -260,7 +247,7 @@ mat-card.main-card {
       }
 
       &:focus {
-      outline: 0;
+        outline: 0;
       }
     }
 

@@ -1,9 +1,11 @@
 import { Injectable } from '@angular/core';
-// import { initialConfig } from "../initialConfig";
 import { HttpClient } from '@angular/common/http';
 import { forkJoin, Observable } from 'rxjs';
 import { tap, map } from 'rxjs/operators';
 import { AppSettings } from './app-settings.service';
+import { SearchTypes, DocumentFormats } from '../models/search-type.enum';
+import { BoaResource, BoaRepository, BoaCatalog } from '../models/boa-resource.interface';
+import { getResourceType } from "../helpers";
 
 @Injectable({
   providedIn: 'root'
@@ -12,63 +14,103 @@ export class SearchService {
 
   private apiUri: string;
   private apiRequestsCounter: number;
-  filters: any[];
-  catalogues: any[];
-
+  private typesToSearchQueryString: string;
+  private options: any;
+  private repositories: BoaRepository[];
+  // filters: any[];
 
   constructor(private http: HttpClient, private appSettings:AppSettings) {
-    this.apiUri = appSettings.apiUri;
-    this.filters = appSettings.filters;
-    this.catalogues = appSettings.catalogues;
+    this.repositories = appSettings.repositories;
+    this.options = appSettings.options;
+    // this.filters = appSettings.filters;
   }
 
-  search(value: string, firstCall: boolean): Observable<any[]> {
+  search(value: string, firstCall: boolean, searchType: SearchTypes): Observable<BoaResource[][]> {
     if (firstCall) {
       this.apiRequestsCounter = 0;
     }
-    const cataloguesToSearchIn = this.catalogues.map(catalog => catalog.key);
-    const requestsArray = cataloguesToSearchIn.map(catalogueKey =>
-      this.http.get(this.createCatalogRequestUrl(value, catalogueKey))
-    )
-    return forkJoin([...requestsArray]).pipe(
+    this.setTypeFilterForSearch(searchType);
+    return this.createSearchRequest(value);
+  }
+
+  createSearchRequest(value: string): Observable<BoaResource[][]> {
+    const requestToPerform = this.repositories.map(
+      (repository: BoaRepository) => {
+        return this.http.get(this.createRepositoryRequestUrl(value, repository)).pipe(
+          map((singleRepoResults: BoaResource[]) => {
+            return singleRepoResults.map((result: BoaResource) => {
+              result.type = getResourceType(result);
+              result.repositoryName = `${repository.name} / ${this.getCatalogTitle(repository, result.catalog_id)}`;
+              return result;
+            });
+          }),
+        );
+      }
+    );
+
+    return forkJoin([...requestToPerform]).pipe(
       tap(() => {
         this.apiRequestsCounter += 1;
-      }),
-      map((results: any[]) => { 
-        // debugger;
-        return results[0].map(result => {
-          // debugger;
-          if (result.manifest.entrypoint.includes('.mp4')) {
-            result['type'] = 'video';
-          } else {
-            result['type'] = 'image';
-          }
-          return result;
-        });
       })
     );
   }
 
+  getCatalogTitle(repository: BoaRepository, catalogId: string): string {
+    return repository.catalogs.find(catalog => catalog.key === catalogId).title;
+  }
 
-  createCatalogRequestUrl(value: string, catalogKey: string) {
-    return `${this.apiUri}/c/${catalogKey}/resources.json?q=${value}&${this.generateRequestParams()}`
+  createRepositoryRequestUrl(value: string, repository: BoaRepository) {
+    const repoCatalogues = repository.catalogs.map((catalog: BoaCatalog) => catalog.key).join('|');
+    return `${repository.api}c/[${repoCatalogues}]/resources.json?q=${value}&${this.generateRequestParams()}`;
   }
 
   generateRequestParams() {
-    const responseSize = this.appSettings.options.resultsResponseSize;
+    const responseSize = this.options.resultsResponseSize;
     const resultsOffset = responseSize * this.apiRequestsCounter;
     const searchParams = `(n)=${responseSize}&(s)=${resultsOffset}`;
-    const filters = this.filters.map(filter => {
-      return filter.value.reduce((prevValue, actualItem, index) => {
-        return prevValue + (index !== 0 ? '&' : '') + `(meta)[${filter.meta}][${index}]=${actualItem}`
-      }, '');
-    });
-    return `${searchParams}&${filters.join('&')}`
+    const filters = this.typesToSearchQueryString;
+    // TODO: Include license filter in search
+    // const generatedRequestParams = this.includeLicenses ?
+    //   `${searchParams}${filters ? '&'+filters : ''}&${this.licensesFilterParam}` : `${searchParams}${filters ? '&'+filters : ''}`;
+    const generatedRequestParams = `${searchParams}${filters ? '&'+filters : ''}`;
+    return generatedRequestParams;
   }
 
   getResourceAbout(about: string) {
     return this.http.get(about);
   }
+
+  setTypeFilterForSearch(searchType: SearchTypes) {
+    const metadataType = 'metadata.technical.format';
+    if (searchType === SearchTypes.all) {
+      this.typesToSearchQueryString = '';
+    } else if (searchType === SearchTypes.document) {
+      this.typesToSearchQueryString = DocumentFormats.reduce((prevValue, actualItem, index) => {
+        return prevValue + (index !== 0 ? '&' : '') + `(meta)[${metadataType}][${index}]="${actualItem}"`;
+      }, '');
+    } else if (searchType === SearchTypes.didacticUnit) {
+      this.typesToSearchQueryString = '(meta)[metadata.educational.learning_resource_type]="temathic unit"'
+    } else {
+      this.typesToSearchQueryString = `(meta)[${metadataType}]=${searchType}`;
+    }
+  }
+
+  // createCatalogRequestUrl(value: string, catalogKey: string) {
+  //   return `${this.apiUri}/c/${catalogKey}/resources.json?q=${value}&${this.generateRequestParams()}`
+  // }
+
+  // generateRequestParams() {
+  //   const responseSize = this.appSettings.options.resultsResponseSize;
+  //   const resultsOffset = responseSize * this.apiRequestsCounter;
+  //   const searchParams = `(n)=${responseSize}&(s)=${resultsOffset}`;
+  //   const filters = this.filters.map(filter => {
+  //     return filter.value.reduce((prevValue, actualItem, index) => {
+  //       return prevValue + (index !== 0 ? '&' : '') + `(meta)[${filter.meta}][${index}]=${actualItem}`
+  //     }, '');
+  //   });
+  //   return `${searchParams}&${filters.join('&')}`
+  // }
+
 }
 
 

@@ -1,54 +1,66 @@
-<div class="item-type">
-  <ng-container [ngSwitch]="itemType">
-    <span *ngSwitchCase="'image'">
-        <mat-icon>image</mat-icon>
-        <span>imagen</span>
-    </span>
-    <span *ngSwitchCase="'video'">
-        <mat-icon>videocam</mat-icon>
-        <span>video</span>
-    </span>
-    
-  </ng-container>
-</div>
-<div class="close-button-wrapper">
-  <button class="close-button" mat-button mat-dialog-close><mat-icon>close</mat-icon></button>
-</div>
 <mat-card class="main-card mat-elevation-z0">
   <mat-spinner class="loading-spinner" *ngIf="!resourceData; else detailsTemplate"></mat-spinner>
   <ng-template #detailsTemplate>
+    <div class="top-info-bar"
+    [ngClass]="{'image-type': itemType === searchTypes.image,
+    'video-type': itemType === searchTypes.video,
+    'audio-type': itemType === searchTypes.audio,
+    'document-type': itemType === searchTypes.document }">
+    <div class="quick-info">
+      <mat-chip class="item-type-tag">
+        <mat-icon>{{getItemTypeIcon(itemType)}}</mat-icon>
+        <span>{{format.split('/')[1]}}</span>
+      </mat-chip>
+      <div class="social">
+        <span *ngIf="showViews">
+          <mat-icon>visibility</mat-icon> {{ social.views }}
+        </span>
+        &nbsp;&nbsp;
+        <span *ngIf="showComments">
+          <mat-icon>comment</mat-icon>
+          {{ social.comments }}
+        </span>
+      </div>
+    </div>
+
+      <!-- TODO: Add respoitory name when delivered by API -->
+      <!-- <span class="repository-name">{{resourceData.repositoryName}}</span> -->
+      <div class="close-button-wrapper">
+        <button class="close-button" mat-button mat-dialog-close>
+          <mat-icon>close</mat-icon>
+        </button>
+      </div>
+    </div>
     <mat-card-header>
       <div class="mat-card-header-text">
         <mat-card-title>{{ title }}</mat-card-title>
       </div>
-      <div class="social">
-        <span> <mat-icon>visibility</mat-icon> {{ social?.views }} </span>
-        &nbsp;&nbsp;
-        <span>
-          <mat-icon>comment</mat-icon>
-          {{ social?.comments }}
-        </span>
-      </div>
     </mat-card-header>
     <mat-card-content class="content">
-      <div class="image-wrapper">
-          <app-image-handler
-            [imageUrl]="imageSrc"
-            [imageAlt]="title"
-            [placeholderWidth]="'350px'"
-            [placeholderHeight]="'350px'"
-            [imageMaxWidth]="'700px'"
-            [imageMaxHeight]="'700px'"
-            transparentBackground="'true'"
-            (imageLoadError)="imageLoadError()"
-          ></app-image-handler>
 
-          <!-- <video controls>
-            <source [src]="originalFileUrl" type="video/mp4">
-            <source [src]="originalFileUrl" type="video/ogg">
-            Your browser does not support the video tag.
-          </video> -->
+      <div class="player-wrapper">
+        <ng-container [ngSwitch]="true">
+
+          <app-image-player *ngSwitchCase="itemType === searchTypes.image" [imageItem]="resourceData">
+          </app-image-player>
+
+          <app-video-player *ngSwitchCase="itemType === searchTypes.video" [videoItem]="resourceData">
+          </app-video-player>
+
+          <app-audio-player *ngSwitchCase="itemType === searchTypes.audio" [audioSrc]="audioSrc"></app-audio-player>
+
+          <app-html-player *ngSwitchCase="itemType === searchTypes.document && showDocumentPlayer" [data]="resourceData"
+            (openDocument)="openResourceInNewWindow('original')"></app-html-player>
+
+          <ng-container *ngSwitchDefault>
+            <div class="image-wrapper" *ngIf="manifest">
+              <img [src]="manifest.customicon" alt="miniatura del OVA">
+            </div>
+          </ng-container>
+
+        </ng-container>
       </div>
+
       <div class="info-wrapper">
         <div class="info-item">
           <h4>Descripción:</h4>
@@ -58,20 +70,15 @@
         </div>
         <div class="info-item">
           <h4>Contribuciones:</h4>
-          <div
-            class="contribution-item"
-            *ngFor="let contribution of contributions"
-          >
+          <div class="contribution-item" *ngFor="let contribution of contributions">
             <strong>{{ contribution.entity.name }} {{ contribution.entity.lastname }}</strong>
             <br />
             <span class="rol">{{ contribution.rol }}</span>
             <br />
             <span>{{ contribution.date.split('T')[0] }}</span>
             <br />
-            <span class="company"
-              [matTooltip]="contribution.entity.company"
-              [matTooltipDisabled]="!cropContributionCompanyLabel(contribution.entity.company)"
-            >
+            <span class="company" [matTooltip]="contribution.entity.company"
+              [matTooltipDisabled]="!cropContributionCompanyLabel(contribution.entity.company)">
               {{ contribution.entity.company.length < 31 ? contribution.entity.company : contribution.entity.company.slice(0,30) }}
               <span *ngIf="cropContributionCompanyLabel(contribution.entity.company)">...</span>
             </span>
@@ -112,11 +119,8 @@
         <div class="info-item downloads">
           <h4>Descargas por tamaño:</h4>
           <div class="download-item" *ngFor="let alternate of alternates">
-            <a class="download-button"
-              *ngIf="isResourceInSameDomain; else iconTemplate"
-              [href]="getResourceDownloadUrl(alternate)"
-              [download]="entrypointName"
-            >
+            <a class="download-button" *ngIf="isResourceInSameDomain; else iconTemplate"
+              [href]="getResourceDownloadUrl(alternate)" [download]="entrypointName">
               <mat-icon>get_app</mat-icon> {{ getSizeLabel(alternate) }}
             </a>
             <ng-template #iconTemplate>
@@ -138,9 +142,10 @@
 
 <ng-template #metadataRef>
   <div class="metadata-json">
-    <button  class="close-icon" mat-button (click)="closeMetadataModal()"><mat-icon>close</mat-icon></button>
+    <button class="close-icon" mat-button (click)="closeMetadataModal()">
+      <mat-icon>close</mat-icon>
+    </button>
     <pre>{{ resourceData | json }}</pre>
     <button mat-raised-button color="primary" (click)="closeMetadataModal()">Cerrar</button>
   </div>
 </ng-template>
-

@@ -5,7 +5,8 @@ import { Observable } from 'rxjs';
 import { SearchService } from '../services/search.service';
 import { BoaResource, Contribution, BoaResourceSocial, BoaResourceManifest } from '../models/boa-resource.interface';
 import { MatDialog, MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
-
+import { SearchTypes } from '../models/search-type.enum';
+import * as Helpers from './../helpers'
 
 @Component({
   selector: 'app-details-view',
@@ -14,25 +15,28 @@ import { MatDialog, MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 })
 export class DetailsViewComponent implements OnInit {
 
-  resourceAboutUrl: string;
-  resourceData: BoaResource;
-  manifest: BoaResourceManifest;
-  title: string;
-  description: string;
   alternateBaseRef: string;
+  alternates = ['original'];
+  audioSrc: string;
+  contributions: Contribution[];
+  currentDomain: string;
+  description: string;
+  entrypointName: string;
   format: string;
   imageSrc: string;
-  keywords: string[];
-  publishDate: string;
-  rights: any;
-  contributions: Contribution[];
-  social: BoaResourceSocial;
-  currentDomain: string;
-  resourceDomain: string;
-  entrypointName: string;
-  alternates = ['original'];
-  metadataDialogRef: MatDialogRef<any>;
   itemType: string;
+  keywords: string[];
+  manifest: BoaResourceManifest;
+  metadataDialogRef: MatDialogRef<any>;
+  publishDate: string;
+  resourceAboutUrl: string;
+  resourceData: BoaResource;
+  resourceDomain: string;
+  rights: any;
+  social: BoaResourceSocial;
+  searchTypes = SearchTypes;
+  title: string;
+
   readonly MAX_COMPANY_LABEL_LENGTH = 30;
 
   @ViewChild('metadataRef') metadataTemplateRef: TemplateRef<any>;
@@ -64,7 +68,7 @@ export class DetailsViewComponent implements OnInit {
     this.title = metadata.general.title.none;
     this.description = metadata.general.description.none;
     this.format = metadata.technical.format;
-    this.itemType = this.format.split('/')[0];
+    this.itemType = Helpers.getResourceType(this.resourceData);
     this.imageSrc = `${this.resourceAboutUrl}/!/.alternate/${this.alternateBaseRef}/${this.manifest.alternate[1]}`;
     this.keywords = metadata.general.keywords.none;
     this.contributions = metadata.lifecycle.contribution;
@@ -73,6 +77,9 @@ export class DetailsViewComponent implements OnInit {
     this.social = this.resourceData.social;
     this.entrypointName = this.manifest.entrypoint.split('.')[0];
     this.alternates = [...this.alternates, ...this.manifest.alternate];
+    if (this.itemType === this.searchTypes.audio) {
+      this.audioSrc = this.originalFileUrl;
+    }
   }
 
   getResourceDownloadUrl(size: string): string {
@@ -88,23 +95,11 @@ export class DetailsViewComponent implements OnInit {
   }
 
   getSizeLabel(size: string) {
-    if (size === 'original') {
-      return 'Original';
-    } else {
-      switch (size) {
-        case 'medium.png':
-          return 'Mediano';
+    return Helpers.getSizeLabel(size);
+  }
 
-        case 'small.png':
-          return 'Pequeño';
-
-        case 'thumb.png':
-          return 'Miniatura';
-
-        default:
-          break;
-      }
-    }
+  getItemTypeIcon(itemType): string {
+    return Helpers.getItemTypeIcon(itemType);
   }
 
   showMetadata(): void {
@@ -131,6 +126,10 @@ export class DetailsViewComponent implements OnInit {
 
   get isResourceInSameDomain(): boolean {
     return this.currentDomain === this.resourceDomain;
+  }
+
+  get showDocumentPlayer(): boolean {
+    return (this.format === 'text/html' || this.format === 'application/pdf')
   }
 
   get copyrightUrl(): string {
@@ -161,6 +160,14 @@ export class DetailsViewComponent implements OnInit {
 
   get originalFileUrl(): string {
     return `${this.resourceAboutUrl}/!/${this.manifest.entrypoint}`;
+  }
+
+  get showViews(): boolean {
+    return this.social && this.social.hasOwnProperty('views') && this.social.views >= 0 ;
+  }
+
+  get showComments(): boolean {
+    return this.social && this.social.hasOwnProperty('comments') && this.social.comments >= 0 ;
   }
 
 }

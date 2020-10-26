@@ -6,19 +6,34 @@
   // window.__appSettings.apiUri = 'https://boa.udea.edu.co/api' /c/engagement/resources.json;
   // window.__appSettings.apiUri = 'https://boa.escuelacorporativa.com/api';
 
-  window.__appSettings.catalogues = [
-    { name: 'Banco de imágenes de Ruta TIC UdeA', key: 'ruta-tic' }
-    // { name: 'test', key: 'engagement' }
-  ];
+  window.__appSettings.repositories = [
+    {
+      "name": "UdeA",
+      "api": "https://boa.udea.edu.co/api/",
+      "version": 1.1,
+      "catalogs": [
+          {
+              "key": "ruta-tic",
+              "title": "RutaTIC",
+              "access": "public",
+              "available": true
+          }
+      ]
+  }
+  ]
 
-  window.__appSettings.filters = [
-    { meta: 'metadata.technical.format', value: ['image', 'video'] }
-  ];
+  // window.__appSettings.catalogues = [
+  //   { name: 'Banco de imágenes de Ruta TIC UdeA', key: 'ruta-tic' }
+  //   // { name: 'test', key: 'engagement' }
+  // ];
+
+  // window.__appSettings.filters = [
+  //   { meta: 'metadata.technical.format', value: ['image', 'video'] }
+  // ];
 
   window.__appSettings.options = {
-    resultsResponseSize: 50,
+    resultsResponseSize: 10,
     minLetters: 3,
-    cacheLife: 60000,
   };
 
   window.__appSettings.siteDescription = 'Recursos educativos digitales abiertos - RutaTIC';

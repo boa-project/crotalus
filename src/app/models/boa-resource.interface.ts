@@ -1,9 +1,26 @@
+export interface BoaRepository {
+  name: string;
+  api: string;
+  version: number;
+  catalogs: BoaCatalog[];
+}
+
+export interface BoaCatalog {
+  key: string;
+  title: string;
+  access: string;
+  available: boolean;
+}
+
 export interface BoaResource {
+  catalog_id: string;
   manifest: BoaResourceManifest;
   metadata: BoaResourceMetadata;
   social: BoaResourceSocial;
   id: string;
   about: string;
+  type?: string;
+  repositoryName?: string;
 }
 
 export interface BoaResourceManifest {
@@ -11,40 +28,44 @@ export interface BoaResourceManifest {
   type: string;
   is_a: string;
   lastpublished: string;
-  entrypoint: string;
   alternate: string[];
   customicon: string;
+  entrypoint?: string;
+  conexion_type?: string;
+  author?: string;
+  url?: string;
+  version?: number;
 }
 
-interface BoaResourceMetadata {
+export interface BoaResourceMetadata {
   general: {
     title: {
       none: string;
     };
-    identifier: any[];
-    language: string[];
+    identifier?: any[];
+    language?: string[];
     description: {
       none: string;
     };
-    keywords: {
+    keywords?: {
       none: string[];
     };
   };
-  lifecycle: {
+  lifecycle?: {
     contribution: Contribution[];
   };
   technical: {
     format: string;
     location: string;
   };
-  rights: {
+  rights?: {
     cost: string;
     copyright: string;
     description: {
       none: string;
     };
   };
-  annotation: any[];
+  annotation?: any[];
 }
 
 export interface Contribution {

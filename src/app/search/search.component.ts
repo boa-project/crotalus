@@ -1,3 +1,5 @@
+import { BoaResource } from './../models/boa-resource.interface';
+import { SearchTypes } from './../models/search-type.enum';
 import { Component, HostListener, ChangeDetectorRef } from '@angular/core';
 import { SearchService } from '../services/search.service';
 import { MatSnackBar, MatSnackBarRef, SimpleSnackBar, MatDialog } from '@angular/material';
@@ -12,7 +14,7 @@ import { DetailsViewComponent } from '../details-view/details-view.component';
 })
 export class SearchComponent {
 
-  valueToSearch: string='**a**';
+  valueToSearch: string='educación';
   results: any[];
   snackBarRef: MatSnackBarRef<SimpleSnackBar>;
   resultsSize: number;
@@ -20,6 +22,8 @@ export class SearchComponent {
   searchDone = false;
   isSearching = false;
   noMoreResults = false;
+  searchType: SearchTypes = SearchTypes.all;
+  audioCurrentlyPlaying: HTMLAudioElement | null = null;
 
   constructor(
     private searchService: SearchService,
@@ -48,26 +52,25 @@ export class SearchComponent {
       this.noMoreResults = false;
     }
     this.isSearching = true;
-    this.searchService.search(this.valueToSearch, firstCall).subscribe(results => {
+    this.searchService.search(this.valueToSearch, firstCall, this.searchType).subscribe((results: BoaResource[][]) => {
 
-      const resultsToShow = {
-        images: [],
-        videos: []
-      }
-      results.forEach(result => {
-        if (result.manifest.entrypoint.includes('.mp4')) {
-          resultsToShow.videos.push(result);
-        } else {
-          resultsToShow.images.push(result);
-        }
-      })
-
-      console.log(resultsToShow);
+      // const resultsToShow = {
+      //   images: [],
+      //   videos: []
+      // }
+      // results.forEach(result => {
+      //   if (result.manifest.entrypoint.includes('.mp4')) {
+      //     resultsToShow.videos.push(result);
+      //   } else {
+      //     resultsToShow.images.push(result);
+      //   }
+      // })
+      const flattenedResults = results.flat();
 
 
       this.searchDone = true;
       this.isSearching = false;
-      const lastResults = results;
+      const lastResults = flattenedResults;
       if (lastResults.length > 0 && lastResults.length < this.resultsSize) {
         this.results.push(...lastResults);
         this.noMoreResults = true;
@@ -104,7 +107,32 @@ export class SearchComponent {
     }
   }
 
+
+  playEvent(event: HTMLAudioElement): void {
+    const audioPlayer = event;
+    if (this.audioCurrentlyPlaying && !audioPlayer.paused) {
+      this.audioCurrentlyPlaying.pause();
+      this.audioCurrentlyPlaying.currentTime = 0;
+      this.audioCurrentlyPlaying = audioPlayer;
+    } else if (!this.audioCurrentlyPlaying && !audioPlayer.paused) {
+      this.audioCurrentlyPlaying = audioPlayer;
+    }
+  }
+
+  shouldClearAudioPlaying(): void {
+    if (this.audioCurrentlyPlaying) {
+      this.clearAudioCurrentlyPlaying();
+    }
+  }
+
+  clearAudioCurrentlyPlaying(): void {
+    this.audioCurrentlyPlaying.pause();
+    this.audioCurrentlyPlaying.currentTime = 0;
+    this.audioCurrentlyPlaying = null;
+  }
+
   showResourceDetails(aboutString: string) {
+    this.shouldClearAudioPlaying();
     this.dialog.open( DetailsViewComponent, {
       panelClass: 'details-view-modal',
       data: {

@@ -1,0 +1,20 @@
+<div class="player-wrapper" *ngIf="audioSrc">
+  <audio #player [src]="audioSrc"></audio>
+  <div class="actions">
+    <button class="main-action" mat-mini-fab (click)="play()" [disabled]="isLoading">
+      <mat-spinner [diameter]="30" [strokeWidth]="3" *ngIf="isLoading; else playIcon"></mat-spinner>
+      <ng-template #playIcon>
+        <mat-icon>{{isPlaying ? 'pause' : 'play_arrow'}}</mat-icon>
+      </ng-template>
+    </button>
+    <button class="secondary-action" (click)="toggleVolume()" mat-icon-button  [disabled]="isLoading">
+      <mat-icon>{{isMuted ? 'volume_off' : 'volume_up'}}</mat-icon>
+    </button>
+  </div>
+  <div class="slider-wrapper" [class.loading]="isLoading">
+    <span class="light-text">{{ currentTimeFormatted }}</span>
+    <mat-slider min="0" [max]="duration" [value]="currentTime" (change)="seek($event)"
+      [disabled]="isLoading || duration === 1" [class.smooth-marker]="smoothMarker"></mat-slider>
+    <span class="light-text">{{ durationFormatted }}</span>
+  </div>
+</div>

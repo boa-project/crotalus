@@ -13,10 +13,10 @@
 
 
 <ng-container *ngIf="searchDone || (results && results.length > 0)">
-  <div class="results-wrapper" *ngIf="results && results.length, else noResultsTemplate"
-    (scroll)="onResultsScrolled($event)">
+  <div class="results-wrapper" *ngIf="results && results.length, else noResultsTemplate">
     <ng-container *ngFor="let result of results">
-      <app-image-item-card [imageItem]="result" (openDetailsEmitter)="showResourceDetails(result.about)"></app-image-item-card>
+      <!-- <app-image-item-card [imageItem]="result" (openDetailsEmitter)="showResourceDetails(result.about)"></app-image-item-card> -->
+      <app-general-result-card [itemInfo]="result" (openDetails)="showResourceDetails(result.about)" (playEvent)="playEvent($event)"></app-general-result-card>
     </ng-container>
     <div *ngIf="shouldShowMoreResultsSpinner" class="more-results-spinner">
       <mat-spinner diameter="40"></mat-spinner>

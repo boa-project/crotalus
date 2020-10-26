@@ -1,5 +1,64 @@
 /* You can add global styles to this file, and also import other style files */
 
+:root {
+  --custom-background: #fafafa;
+  --status-bar-background: #fafafa;
+  --header-background: #ffffff;
+  --search-input-background: #ffffff;
+  --header-search-input-background: #f6f6f6;
+  --details-title-color: #383a3e;
+
+  --all-type-color: #616161;
+  --image-type-color: #674dc7;
+  --video-type-color: #3e7fc6;
+  --audio-type-color: #cc3333;
+  --document-type-color: #2db075;
+  --didactic-unit-type-color: #fa9e45;
+
+
+  /** crotalus **/
+  --color-crotalus: #616161;
+  --color-crotalus-rgb: 97,97,97;
+  --color-crotalus-contrast: #ffffff;
+  --color-crotalus-contrast-rgb: 255,255,255;
+  --color-crotalus-shade: #555555;
+  --color-crotalus-tint: #717171;
+
+  --color-crotalus-controls: #845EC3;
+  --color-crotalus-controls-rgb: 132,94,195;
+  --color-crotalus-controls-contrast: #ffffff;
+  --color-crotalus-controls-contrast-rgb: 255,255,255;
+  --color-crotalus-controls-shade: #7453ac;
+  --color-crotalus-controls-tint: #906ec9;
+
+
+  /** dark **/
+ --color-dark: #222428;
+ --color-dark-rgb: 34, 36, 40;
+ --color-dark-contrast: #ffffff;
+ --color-dark-contrast-rgb: 255, 255, 255;
+ --color-dark-shade: #1e2023;
+ --color-dark-tint: #383a3e;
+
+  /** medium **/
+ --color-medium: #92949c;
+ --color-medium-rgb: 146, 148, 156;
+ --color-medium-contrast: #ffffff;
+ --color-medium-contrast-rgb: 255, 255, 255;
+ --color-medium-shade: #808289;
+ --color-medium-tint: #9d9fa6;
+
+  /** light **/
+ --color-light: #f4f5f8;
+ --color-light-rgb: 244, 245, 248;
+ --color-light-contrast: #000000;
+ --color-light-contrast-rgb: 0, 0, 0;
+ --color-light-shade: #d7d8da;
+ --color-light-tint: #f5f6f9;
+ --color-light-tint-rgb: 245, 246, 249;
+}
+
+
 body {
   margin: 0;
   font-family: Roboto, "Helvetica Neue", sans-serif;

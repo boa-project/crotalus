@@ -1,0 +1,58 @@
+<mat-card *ngIf="itemInfo" class="item-card">
+  <div class="content-wrapper">
+    <div class="top-info-bar" (click)="openDetails.emit()">
+      <mat-chip
+        class="item-type-tag"
+        [ngClass]="{'image-type': itemInfo.type === searchTypes.image,
+        'video-type': itemInfo.type === searchTypes.video,
+        'audio-type': itemInfo.type === searchTypes.audio,
+        'document-type': itemInfo.type === searchTypes.document }"
+        [class.didactic-unit-type]="didacticUnitResult"
+      >
+        <mat-icon>{{getItemTypeIcon(itemInfo.type)}}</mat-icon>
+        <span>{{itemInfo.metadata.technical.format.split('/')[1]}}</span>
+      </mat-chip>
+      <span class="repository-name">{{itemInfo.repositoryName}}</span>
+    </div>
+
+    <div class="custom-row">
+      <div class="card-content-column">
+        <mat-card-header (click)="openDetails.emit()">
+          <mat-card-title *ngIf="showTitle; else noTitleTemplate">{{itemInfo.metadata.general.title.none}}
+          </mat-card-title>
+          <ng-template #noTitleTemplate>
+            <mat-card-title>Sin título definido</mat-card-title>
+          </ng-template>
+        </mat-card-header>
+        <mat-card-content>
+          <p>
+            <app-simple-audio-player class="audio-player" *ngIf="itemInfo.type === searchTypes.audio"
+              [audioSrc]="originalFileUrl" (playEvent)="playEvent.emit($event)"></app-simple-audio-player>
+          </p>
+          <p class="description" *ngIf="showDescription; else noDescriptionTemplate" (click)="openDetails.emit()">
+            {{itemInfo.metadata.general.description.none}}</p>
+          <ng-template #noDescriptionTemplate>
+            <p class="description" (click)="openDetails.emit()">Recurso sin descripción.</p>
+          </ng-template>
+          <p class="keywords ion-hide-sm-down" (click)="openDetails.emit()">
+            <em
+              *ngIf="itemInfo.metadata.general.keywords && !!itemInfo.metadata.general.keywords.none.join(); else noKeywords"><strong>Palabras
+                clave:
+              </strong>{{itemInfo.metadata.general.keywords.none.join(', ')}}</em>
+            <ng-template #noKeywords>
+              <em>Sin palabras clave definidas</em>
+            </ng-template>
+          </p>
+
+        </mat-card-content>
+      </div>
+      <div class="card-thumbnail-column" *ngIf="itemInfo.type !== searchTypes.audio" (click)="openDetails.emit()">
+        <div class="custom-row">
+          <div>
+            <app-image-loader class="image-loader" [imageSrc]="itemInfo.manifest.customicon" altText="miniatura del recurso"></app-image-loader>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  </mat-card>

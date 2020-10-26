@@ -1,0 +1,28 @@
+$wrapper-size: 200px;
+$player-button-background: #f5f6f9;
+
+.wrapper {
+  width: $wrapper-size;
+  height: $wrapper-size;
+  border-radius: $wrapper-size;
+  display: flex;
+  flex-direction: column ;
+  justify-content: center;
+  align-items: center;
+  margin: 20px auto 0;
+  background-color: $player-button-background;
+
+  button {
+    border-radius: #{$wrapper-size};
+    margin: 10px auto;
+    background: var(--document-type-color);
+    height: 54px;
+    width: 54px;
+    color: #fff;
+  }
+
+  .label {
+    color: var(--document-type-color);
+    font-size: 1.1em;
+  }
+}
