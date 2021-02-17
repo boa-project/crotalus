@@ -1,14 +1,22 @@
 @import 'global/mixins';
+@import 'global/variables';
+@import 'global/responsive-breakpoints';
 
 :host {
   display: inline-block;
   margin: auto;
+  max-width: 800px;
+  padding: 0 10px;
+  width: 100%;
 }
 
 mat-card {
-  margin: 0 20px 15px;
-  max-width: 100%;
-  width: 800px;
+  margin: 0 0 15px;
+  width: 100%;
+
+  @media #{$xsmall} {
+    max-width: auto;
+  }
 
   &:hover {
     cursor: pointer;
@@ -31,36 +39,6 @@ mat-card {
   }
 
   @include item-type-tag;
-  // .item-type-tag {
-  //   color: var(--color-crotalus);
-  //   border-color: var(--color-crotalus);
-  //   flex: 0 0 auto;
-  //   background: transparent;
-  //   border: 1px solid;
-  //   border-radius: 20px;
-  //   padding: 1px 9px;
-  //   display: flex;
-  //   justify-content: center;
-  //   align-items: center;
-
-  //   mat-icon {
-  //     color: var(--color-crotalus);
-  //     @include icon-size(18px);
-  //     margin-right: 4px;
-  //   }
-
-
-  //   @each $class, $color in $content-type-colors {
-  //     &.#{$class} {
-  //       color: $color;
-  //       border-color: $color;
-
-  //       mat-icon {
-  //         color: $color;
-  //       }
-  //     }
-  //   }
-  // }
 }
 
 .custom-row {
@@ -69,11 +47,13 @@ mat-card {
 }
 
 .card-content-column {
-  max-width: 100%;
+  width: 100%;
 
   mat-card-header {
     padding-top: 0;
     padding-bottom: 0;
+
+    @include types-with-colors;
   }
 
   mat-card-title {
@@ -89,19 +69,25 @@ mat-card {
   mat-card-content {
     font-size: 14px;
     font-weight: normal;
-    padding: 0 16px
+    padding: 0 16px;
 
-    // @media #{$xsmall} {
-    //   padding-bottom: 0;
-    // }
+    @media #{$xsmall} {
+      padding-bottom: 0;
+    }
+
+    .card-thumbnail-column {
+      justify-content: center;
+      align-items: center;
+    }
   }
 }
 
 p.description {
+  -webkit-box-orient: vertical;
   overflow: hidden;
+  text-align: left;
   display: -webkit-box;
   -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
 }
 
 p.keywords {
@@ -135,25 +121,21 @@ p.keywords {
     margin: 0 auto;
   }
 
-  // @media #{$xsmall} {
-  //   justify-content: space-between;
-  //   align-items: flex-start;
+  @media #{$xsmall} {
+    justify-content: space-between;
+    align-items: flex-start;
 
-  //   // ion-row {
-  //   //   height: 138px;
-  //   //   width: 100%;
-  //   // }
 
-  //   p.keywords {
-  //     overflow: hidden;
-  //     display: -webkit-box;
-  //     -webkit-line-clamp: 5;
-  //     -webkit-box-orient: vertical;
-  //   }
+    p.keywords {
+      overflow: hidden;
+      display: -webkit-box;
+      -webkit-line-clamp: 5;
+      -webkit-box-orient: vertical;
+    }
 
-  //   img {
-  //     max-width: 128px;
-  //     max-height: 128px;
-  //   }
-  // }
+    img {
+      max-width: 128px;
+      max-height: 128px;
+    }
+  }
 }

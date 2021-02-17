@@ -4,7 +4,6 @@ import { Component, HostListener, ChangeDetectorRef } from '@angular/core';
 import { SearchService } from '../services/search.service';
 import { MatSnackBar, MatSnackBarRef, SimpleSnackBar, MatDialog } from '@angular/material';
 import { AppSettings } from '../services/app-settings.service';
-import { Router } from '@angular/router';
 import { DetailsViewComponent } from '../details-view/details-view.component';
 
 @Component({
@@ -14,7 +13,7 @@ import { DetailsViewComponent } from '../details-view/details-view.component';
 })
 export class SearchComponent {
 
-  valueToSearch: string='educación';
+  valueToSearch: string = '***';
   results: any[];
   snackBarRef: MatSnackBarRef<SimpleSnackBar>;
   resultsSize: number;
@@ -135,6 +134,7 @@ export class SearchComponent {
     this.shouldClearAudioPlaying();
     this.dialog.open( DetailsViewComponent, {
       panelClass: 'details-view-modal',
+      maxWidth: '94vw',
       data: {
         aboutString: aboutString,
       }

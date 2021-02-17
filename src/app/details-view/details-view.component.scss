@@ -1,10 +1,57 @@
 @import "global/mixins";
+@import "global/responsive-breakpoints";
+@import "global/variables";
 
 @include item-type-tag;
 
 :host {
   display: block;
   position: relative;
+
+  .fixed-top-info {
+    @include types-with-colors;
+    align-items: center;
+    background-color: #fff;
+    border-bottom: 2px solid ;
+    box-shadow: 0px 0px 6px -1px rgba(0, 0, 0, 0.8);
+    display: flex;
+    height: 48px;
+    left: 0;
+    padding: 0 15px;
+    position: absolute;
+    top: 0;
+    width: 100%;
+    z-index: 3;
+
+    .top-info-bar {
+      margin: 0;
+      width: 100%;
+
+      .quick-info{
+        overflow: hidden;
+      }
+    }
+
+    .item-type-tag {
+      height: 25px;
+      margin-right: 4px;
+    }
+
+    .title {
+      padding: 0 6px;
+      flex-grow: 1;
+      height: 100%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      font-family: "Cabin Sketch", cursive;
+      font-size: 1.1rem;
+      white-space: nowrap;
+    }
+
+    span:last-child .mat-button {
+      min-width: 30px;
+    }
+  }
 
   .top-info-bar {
     @include types-with-colors;
@@ -33,8 +80,10 @@
     }
 
     .close-button-wrapper .mat-button {
-      margin-right: -20px;
+      margin-right: -8px;
       margin-top: -5px;
+      min-width: 40px;
+      padding: 0;
       position: relative;
 
 
@@ -46,204 +95,211 @@
       }
     }
   }
-}
 
-.top-info-bar {
-  @include types-with-colors;
-}
-
-.main-card {
-  padding: 0;
-
-  * {
-    font-weight: 400;
-  }
-
-  > *:not(.top-info-bar) {
-    padding: 0 16px;
-  }
-
-  .loading-spinner {
-    margin: 100px;
-  }
-
-  .mat-card-header {
+  mat-dialog-content.details-content {
+    margin: 0;
+    max-height: 96vh;
+    min-height: 360px;
+    padding: 0;
     position: relative;
   }
 
-  ::ng-deep .mat-card-header-text {
-    margin: 0;
 
-    .mat-card-title {
-      color: #555;
-      font-family: "Cabin Sketch", cursive;
-      font-size: 26px;
-      font-weight: bold;
-      letter-spacing: 0.015em;
-      margin-bottom: 5px;
-      margin-top: 8px;
+
+  .main-card {
+    * {
+      font-weight: 400;
     }
 
-    .mat-card-subtitle {
-      color: rgba(0, 0, 0, 0.54);
-      font-size: 14px;
-      margin-bottom: 8px;
-      margin-left: 4px;
-    }
-  }
-
-
-  .content {
-    font-size: 17px;
-
-    @media (max-width: 1200px) {
-      flex-wrap: wrap;
+    >*:not(.top-info-bar) {
+      padding: 0 16px;
     }
 
-    .image-wrapper {
-      align-items: center;
-      display: flex;
-      justify-content: center;
-      margin: 0 auto;
-      padding: 16px 0;
+    .loading-spinner {
+      margin: 100px;
     }
 
-    .info-wrapper {
-      flex: 1 0 400px;
-      padding: 16px 16px 16px 20px;
+    .mat-card-header {
+      position: relative;
+    }
 
-      @media (max-width: 600px) {
-        flex-basis: 250px;
+    ::ng-deep .mat-card-header-text {
+      margin: 0;
+
+      .mat-card-title {
+        color: #555;
+        font-family: "Cabin Sketch", cursive;
+        font-size: 26px;
+        font-weight: bold;
+        letter-spacing: 0.015em;
+        margin-bottom: 5px;
+        margin-top: 8px;
+        @include types-with-colors;
+      }
+    }
+
+
+    .content {
+      font-size: 17px;
+
+      .image-wrapper {
+        align-items: center;
+        display: flex;
+        justify-content: center;
+        margin: 0 auto;
+        padding: 16px 0;
       }
 
-      .info-item {
-        margin-bottom: 20px;
-        max-width: 700px;
-        padding-left: 8px;
+      .info-wrapper {
+        flex: 1 0 400px;
+        padding: 16px;
 
-        h4 {
-          color: #333;
-          font-size: 20px;
-          font-weight: bold;
-          margin-bottom: 4px;
-          margin-left: -8px;
-          margin-top: 8px;
-          text-align: left;
+        @media #{$small} {
+          flex-basis: 250px;
+          padding: 6px;
         }
 
-        &.downloads {
-          text-align: right;
-        }
+        .info-item {
+          margin-bottom: 20px;
+          max-width: 700px;
+          padding-left: 8px;
 
-        &.copyright {
-
-          p {
-            align-items: center;
-            display: flex;
-            justify-content: flex-start;
+          h4 {
+            color: #333;
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 4px;
+            margin-left: -8px;
+            margin-top: 8px;
+            text-align: left;
           }
 
-          .license-link {
-            align-items: center;
-            border-radius: 3px;
-            display: inline-flex;
-            padding: 5px;
-            text-decoration: none;
+          &.copyright {
 
-            &:hover {
-              opacity: 0.6;
+            p {
+              align-items: center;
+              display: flex;
+              justify-content: flex-start;
+            }
+
+            .license-link {
+              align-items: center;
+              border-radius: 3px;
+              display: inline-flex;
+              padding: 5px;
+              text-decoration: none;
+
+              &:hover {
+                opacity: 0.6;
+              }
+            }
+
+            .version-wrapper {
+              display: inline-block;
+              font-size: 0.8em;
+              margin: 0 5px 0 10px;
+              text-align: center;
             }
           }
+        }
 
-          .version-wrapper {
-            display: inline-block;
-            font-size: 0.8em;
-            margin: 0 5px 0 10px;
-            text-align: center;
+        .contribution-item {
+          background: #e5e5e5;
+          border-radius: 4px;
+          display: inline-block;
+          line-height: 18px;
+          margin: 8px 16px 8px 0;
+          margin-bottom: 16px;
+          padding: 6px 10px;
+          text-align: right;
+
+          span.rol {
+            font-size: 0.95em;
+            font-style: oblique;
+            opacity: 0.9;
+          }
+
+          span {
+            font-size: 0.75em;
+            opacity: 0.75;
           }
         }
-      }
 
-      .contribution-item {
-        background: #e5e5e5;
-        border-radius: 4px;
-        display: inline-block;
-        line-height: 18px;
-        margin: 8px 16px 8px 0;
-        margin-bottom: 16px;
-        padding: 6px 10px;
-        text-align: right;
+        .download-item {
+          display: inline-flex;
+          margin-top: 2px;
 
-        span.rol {
-          font-size: 0.95em;
-          font-style: oblique;
-          opacity: 0.9;
-        }
+          @media #{$small} {
+            margin-top: 12px;
+          }
 
-        span {
-          font-size: 0.75em;
-          opacity: 0.75;
-        }
-      }
+          &:not(:last-child) {
+            margin-right: 25px;
+          }
 
-      .download-item {
-        display: inline-flex;
-        margin-top: 10px;
-
-        &:not(:last-child) {
-          margin-right: 25px;
-        }
-
-        .download-button {
-          align-items: center;
-          background: rgba($primary, 0.45);
-          border-radius: 4px;
-          color: #FFF;
-          cursor: pointer;
-          display: flex;
-          justify-content: center;
-          padding: 4px 9px 4px 5px;
-          text-decoration: none;
-          transition: background 100ms ease-in-out;
-
-          &:hover {
-            background: rgba($primary, 0.75);
+          .download-button {
+            align-items: center;
+            background: rgba($primary, 0.45);
+            border-radius: 4px;
+            color: #FFF;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            padding: 4px 9px 4px 5px;
+            text-decoration: none;
             transition: background 100ms ease-in-out;
+
+            &:hover {
+              background: rgba($primary, 0.75);
+              transition: background 100ms ease-in-out;
+            }
           }
         }
       }
     }
   }
+
+  .view-metadata-link {
+    bottom: 5px;
+    color: $primary;
+    cursor: pointer;
+    font-size: 13px;
+    position: absolute;
+    right: 0;
+  }
+
 }
 
-.view-metadata-link {
-  position: absolute;
-  bottom: 0px;
-  right: -11px;
-  font-size: 13px;
-  cursor: pointer;
-  color: $primary;
-}
 
 ::ng-deep {
+  .details-view-modal>.mat-dialog-container {
+    padding: 0;
+  }
+
   .metadata-modal .mat-dialog-container {
-    max-height: 70vh;
-    max-width: 66vw;
+    max-height: 90vh;
+    max-width: 86vw;
     text-align: right;
-    padding: 8px 16px;
+    padding: 4px 24px 10px;
+
+    .mat-dialog-content {
+      max-height: inherit;
+    }
 
     pre {
       text-align: left;
-      max-height: calc(70vh - 180px);
+      max-height: calc(90vh - 90px);
+      border-radius: 4px;
     }
 
     button {
-      margin: 10px 0;
+      margin: 0;
+      min-width: 20px;
+      padding: 10px;
+      margin-right: -10px;
 
-      .close-icon {
-        margin: 0;
-        padding: 10px;
-        margin-right: -10px;
+      .mat-icon {
+        @include icon-size(28px);
       }
 
       &:focus {
@@ -255,8 +311,4 @@
       opacity: 0;
     }
   }
-}
-
-.close-button-wrapper {
-  text-align: right;
 }

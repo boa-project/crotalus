@@ -17,7 +17,11 @@
 
     <div class="custom-row">
       <div class="card-content-column">
-        <mat-card-header (click)="openDetails.emit()">
+        <mat-card-header (click)="openDetails.emit()" [ngClass]="{'image-type': itemInfo.type === searchTypes.image,
+        'video-type': itemInfo.type === searchTypes.video,
+        'audio-type': itemInfo.type === searchTypes.audio,
+        'document-type': itemInfo.type === searchTypes.document }"
+        [class.didactic-unit-type]="didacticUnitResult">
           <mat-card-title *ngIf="showTitle; else noTitleTemplate">{{itemInfo.metadata.general.title.none}}
           </mat-card-title>
           <ng-template #noTitleTemplate>
@@ -29,6 +33,9 @@
             <app-simple-audio-player class="audio-player" *ngIf="itemInfo.type === searchTypes.audio"
               [audioSrc]="originalFileUrl" (playEvent)="playEvent.emit($event)"></app-simple-audio-player>
           </p>
+          <ng-container *ngIf="isSmallScreen">
+            <ng-container *ngTemplateOutlet="itemThumbnail"></ng-container>
+          </ng-container>
           <p class="description" *ngIf="showDescription; else noDescriptionTemplate" (click)="openDetails.emit()">
             {{itemInfo.metadata.general.description.none}}</p>
           <ng-template #noDescriptionTemplate>
@@ -46,13 +53,19 @@
 
         </mat-card-content>
       </div>
-      <div class="card-thumbnail-column" *ngIf="itemInfo.type !== searchTypes.audio" (click)="openDetails.emit()">
-        <div class="custom-row">
-          <div>
-            <app-image-loader class="image-loader" [imageSrc]="itemInfo.manifest.customicon" altText="miniatura del recurso"></app-image-loader>
+      <ng-container *ngIf="!isSmallScreen">
+        <ng-container *ngTemplateOutlet="itemThumbnail"></ng-container>
+      </ng-container>
+      <ng-template #itemThumbnail>
+        <div class="card-thumbnail-column" *ngIf="itemInfo.type !== searchTypes.audio" (click)="openDetails.emit()">
+          <div class="custom-row">
+            <div>
+              <app-image-loader class="image-loader" [imageSrc]="itemInfo.manifest.customicon" altText="miniatura del recurso"></app-image-loader>
+            </div>
           </div>
         </div>
-      </div>
+      </ng-template>
+
     </div>
   </div>
   </mat-card>

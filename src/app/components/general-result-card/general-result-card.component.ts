@@ -1,6 +1,6 @@
 import { BoaResource } from 'src/app/models/boa-resource.interface';
 import { SearchTypes } from 'src/app/models/search-type.enum';
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, HostListener } from '@angular/core';
 import * as Helpers from '../../helpers';
 
 @Component({
@@ -16,6 +16,11 @@ export class GeneralResultCardComponent {
   @Output() playEvent = new EventEmitter<HTMLAudioElement>();
 
   searchTypes = SearchTypes;
+  isSmallScreen = false;
+
+  constructor() {
+    this.setSmallScreenFlag();
+  }
 
   getItemTypeLabel(itemType): string {
     return Helpers.getItemTypeLabel(itemType);
@@ -47,4 +52,16 @@ export class GeneralResultCardComponent {
       !!this.itemInfo.metadata.general.title.none;
   }
 
+  setSmallScreenFlag(): void {
+    if (window.screen.width <= 767) { // 575px mobile breakpoint
+      this.isSmallScreen = true;
+    } else {
+      this.isSmallScreen = false;
+    }
+  }
+
+  @HostListener('window:resize')
+    onResize() {
+    this.setSmallScreenFlag();
+    }
 }

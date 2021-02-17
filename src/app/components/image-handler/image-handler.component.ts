@@ -1,11 +1,11 @@
-import { Component, Input, Output, EventEmitter, SimpleChanges, OnChanges, OnInit, ChangeDetectorRef, ChangeDetectionStrategy, ViewChild, ElementRef } from '@angular/core';
+import { Component, Input, Output, EventEmitter, SimpleChanges, OnChanges, ViewChild, ElementRef, AfterViewInit, ChangeDetectorRef } from '@angular/core';
 
 @Component({
   selector: 'app-image-handler',
   templateUrl: './image-handler.component.html',
   styleUrls: ['./image-handler.component.scss'],
 })
-export class ImageHandlerComponent implements OnChanges {
+export class ImageHandlerComponent implements OnChanges, AfterViewInit {
   readonly minimumSize = '250px';
   @Input() imageUrl: string;
   @Input() imageAlt = '';
@@ -16,60 +16,53 @@ export class ImageHandlerComponent implements OnChanges {
   @Input() transparentBackground = false;
   @Input() previewUrl?: string;
   @Input() mouseover?: boolean;
+  @Input() backgroundColor?: string;
   @Output() imageLoadError = new EventEmitter();
   @ViewChild('previewBox') previewBox: ElementRef;
   imageVisible = false;
   previewLoaded = false;
   localPreviewUrl: string;
 
-  constructor(private changeDetector: ChangeDetectorRef) { }
-
-  // ngOnInit(): void {
-
-  // }
+  constructor(private elementRef: ElementRef, private changeDetector: ChangeDetectorRef) { }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.hasOwnProperty('previewUrl') && changes.previewUrl) {
-      // this.loadPreview();
       this.setBackgroundImg();
     }
     if (changes.hasOwnProperty('mouseover') && this.previewUrl) {
-      // this.resetPreview();
       this.resetPreview();
+    }
+    if (changes.hasOwnProperty('backgroundColor')) {
+      this.elementRef.nativeElement.querySelector('.loader-background').style.backgroundColor = this.backgroundColor;
     }
   }
 
-
-  showImage(): void {
-    this.imageVisible = true;
+  ngAfterViewInit(): void {
+    const componetWidth = this.elementRef.nativeElement.offsetWidth;
+    if (componetWidth < parseInt(this.placeholderWidth.split('px')[0], 10)) {
+      this.placeholderWidth = `${componetWidth}px`;
+      this.placeholderHeight = `${componetWidth}px`;
+    }
+    this.changeDetector.detectChanges();
   }
 
-  loadPreview(): void {
-    // this.localPreviewUrl = this.previewUrl;
-    // const img = new Image();
-    // img.src = this.previewUrl;
-    // img.onload = () => {
-    //   console.log('preview ready!!! --------');
-    //   this.previewLoaded = true;
-    // };
+  showImage(): void {
+    this.placeholderWidth = 'auto';
+    this.placeholderHeight = 'auto';
+    this.imageVisible = true;
+    this.changeDetector.detectChanges();
   }
 
   resetPreview(): void {
-    // if (this.mouseover && this.previewLoaded) {
-    if (this.mouseover) {
+    if (this.mouseover && this.imageVisible) {
       this.setBackgroundImg();
       this.previewBox.nativeElement.style.zIndex = '2';
-      // this.localPreviewUrl = '';
-      // this.changeDetector.detectChanges();
-      // this.localPreviewUrl = this.previewUrl;
-      // this.changeDetector.detectChanges();
     } else {
       this.previewBox.nativeElement.style.zIndex = '0';
     }
   }
 
   setBackgroundImg(): void {
-    console.log('plase reset!!');
     this.previewBox.nativeElement.style.backgroundImage = `url('')`;
     this.previewBox.nativeElement.style.backgroundImage = `url('${this.previewUrl}')`;
   }
