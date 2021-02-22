@@ -1,6 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 import { MatFormFieldModule, MatInputModule, MatButtonModule, MatCardModule, MatIconModule, MatTooltipModule, MatSnackBarModule, MatProgressSpinnerModule, MatDialogModule, MatMenuModule, MatChipsModule, MatSliderModule } from "@angular/material";
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -10,7 +9,6 @@ import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { ImageHandlerComponent } from './components/image-handler/image-handler.component';
 import { AppSettingsServiceProvider } from './services/app-settings.service.provider';
-import { ImageVideoItemCardComponent } from './shared-components/image-video-item-card/image-video-item-card.component';
 import { DetailsViewComponent } from './details-view/details-view.component';
 import { HeaderComponent } from './components/header/header.component';
 import { GeneralResultCardComponent } from './components/general-result-card/general-result-card.component';
@@ -27,7 +25,6 @@ import { HtmlPlayerComponent } from './components/html-player/html-player.compon
     AppComponent,
     SearchComponent,
     ImageHandlerComponent,
-    ImageVideoItemCardComponent,
     DetailsViewComponent,
     HeaderComponent,
     GeneralResultCardComponent,
@@ -59,7 +56,6 @@ import { HtmlPlayerComponent } from './components/html-player/html-player.compon
   ],
   providers: [
     AppSettingsServiceProvider,
-    // {provide: LocationStrategy, useClass: HashLocationStrategy}
   ],
   bootstrap: [AppComponent]
 })

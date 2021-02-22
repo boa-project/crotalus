@@ -1,4 +1,4 @@
-import { fadeInVertical } from './../shared-components/animations/fade-in-vertical';
+import { fadeInVertical } from '../animations/fade-in-vertical';
 import { Component, OnInit, ViewChild, TemplateRef, Inject, ElementRef, HostListener } from '@angular/core';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { switchMap, mergeMap } from 'rxjs/operators';
@@ -138,8 +138,6 @@ export class DetailsViewComponent implements OnInit {
     if (showldShowInfo !== this.showTopInfo) {
       this.showTopInfo = showldShowInfo;
     }
-    console.log(showldShowInfo);
-
   }
 
   get isResourceInSameDomain(): boolean {
