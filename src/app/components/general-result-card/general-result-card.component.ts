@@ -53,7 +53,7 @@ export class GeneralResultCardComponent {
   }
 
   setSmallScreenFlag(): void {
-    if (window.screen.width <= 767) { // 575px mobile breakpoint
+    if (window.innerWidth <= 767) { // 575px mobile breakpoint
       this.isSmallScreen = true;
     } else {
       this.isSmallScreen = false;

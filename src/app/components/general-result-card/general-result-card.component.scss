@@ -83,10 +83,10 @@ mat-card {
 }
 
 p.description {
-  -webkit-box-orient: vertical;
   overflow: hidden;
   text-align: left;
   display: -webkit-box;
+  -webkit-box-orient: vertical;
   -webkit-line-clamp: 3;
 }
 

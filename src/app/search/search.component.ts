@@ -13,7 +13,7 @@ import { DetailsViewComponent } from '../details-view/details-view.component';
 })
 export class SearchComponent {
 
-  valueToSearch: string = '***';
+  valueToSearch: string = '';
   results: any[];
   snackBarRef: MatSnackBarRef<SimpleSnackBar>;
   resultsSize: number;
@@ -52,21 +52,7 @@ export class SearchComponent {
     }
     this.isSearching = true;
     this.searchService.search(this.valueToSearch, firstCall, this.searchType).subscribe((results: BoaResource[][]) => {
-
-      // const resultsToShow = {
-      //   images: [],
-      //   videos: []
-      // }
-      // results.forEach(result => {
-      //   if (result.manifest.entrypoint.includes('.mp4')) {
-      //     resultsToShow.videos.push(result);
-      //   } else {
-      //     resultsToShow.images.push(result);
-      //   }
-      // })
       const flattenedResults = results.flat();
-
-
       this.searchDone = true;
       this.isSearching = false;
       const lastResults = flattenedResults;
