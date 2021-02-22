@@ -10,7 +10,6 @@ import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { ImageHandlerComponent } from './components/image-handler/image-handler.component';
 import { AppSettingsServiceProvider } from './services/app-settings.service.provider';
-// import { ImageItemCardComponent } from './components/image-item-card/image-item-card.component';
 import { ImageVideoItemCardComponent } from './shared-components/image-video-item-card/image-video-item-card.component';
 import { DetailsViewComponent } from './details-view/details-view.component';
 import { HeaderComponent } from './components/header/header.component';
