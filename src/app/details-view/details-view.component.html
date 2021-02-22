@@ -141,18 +141,23 @@
           </div>
           <div class="info-item downloads">
             <h4>Descargas por tamaño:</h4>
-            <div class="download-item" *ngFor="let alternate of alternates">
-              <a class="download-button" *ngIf="isResourceInSameDomain; else iconTemplate"
-                [href]="getResourceDownloadUrl(alternate)" [download]="entrypointName">
-                <mat-icon>get_app</mat-icon> {{ getSizeLabel(alternate) }}
-              </a>
-              <ng-template #iconTemplate>
-                <span class="download-button" (click)="openResourceInNewWindow(alternate)">
-                  <mat-icon>get_app</mat-icon>
-                  {{ getSizeLabel(alternate) }}
-                </span>
-              </ng-template>
-            </div>
+            <ng-container *ngIf="this.format !== 'text/html'; else noDownloadsAllowed">
+              <div class="download-item" *ngFor="let alternate of alternates">
+                <a class="download-button" *ngIf="isResourceInSameDomain; else iconTemplate"
+                  [href]="getResourceDownloadUrl(alternate)" [download]="entrypointName">
+                  <mat-icon>get_app</mat-icon> {{ getSizeLabel(alternate) }}
+                </a>
+                <ng-template #iconTemplate>
+                  <span class="download-button" (click)="openResourceInNewWindow(alternate)">
+                    <mat-icon>get_app</mat-icon>
+                    {{ getSizeLabel(alternate) }}
+                  </span>
+                </ng-template>
+              </div>
+            </ng-container>
+            <ng-template #noDownloadsAllowed>
+              <p>Este tipo de recurso no permite descargas.</p>
+            </ng-template>
           </div>
         </div>
       </mat-card-content>

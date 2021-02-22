@@ -69,19 +69,19 @@ export class DetailsViewComponent implements OnInit {
 
   assignLocalVariables(): void {
     const metadata = this.resourceData.metadata;
-    this.alternateBaseRef = this.resourceData.id.split('/content/')[1];
     this.manifest = this.resourceData.manifest;
-    this.title = metadata.general.title.none;
-    this.description = metadata.general.description.none;
+    this.alternateBaseRef = this.manifest.hasOwnProperty('entrypoint') ? this.manifest.entrypoint : this.resourceData.id.split('/content/')[1];
     this.format = metadata.technical.format;
     this.itemType = Helpers.getResourceType(this.resourceData);
-    this.imageSrc = `${this.resourceAboutUrl}/!/.alternate/${this.alternateBaseRef}/${this.manifest.alternate[1]}`;
+    this.title = metadata.general.title.none;
+    this.description = metadata.general.description && metadata.general.description.none;
+    this.imageSrc = `${this.resourceAboutUrl}/!/.alternate${this.alternateBaseRef ? '/' + this.alternateBaseRef : ''}/${this.manifest.alternate[1]}`;
     this.keywords = metadata.general.keywords.none;
-    this.contributions = metadata.lifecycle.contribution;
+    this.contributions = metadata.lifecycle && metadata.lifecycle.contribution;
     this.publishDate = this.manifest.lastpublished.split('T')[0];
     this.rights = metadata.rights;
     this.social = this.resourceData.social;
-    this.entrypointName = this.manifest.entrypoint.split('.')[0];
+    this.entrypointName = this.manifest.hasOwnProperty('entrypoint') ? this.manifest.entrypoint.split('.')[0] : '';
     this.alternates = [...this.alternates, ...this.manifest.alternate];
     if (this.itemType === this.searchTypes.audio) {
       this.audioSrc = this.originalFileUrl;
@@ -175,7 +175,15 @@ export class DetailsViewComponent implements OnInit {
   }
 
   get originalFileUrl(): string {
-    return `${this.resourceAboutUrl}/!/${this.manifest.entrypoint}`;
+    if (this.manifest.hasOwnProperty('entrypoint')) {
+      return `${this.resourceAboutUrl}/!/${this.manifest.entrypoint}`;
+    }
+
+    if (this.manifest.hasOwnProperty('url') && this.manifest.url) {
+      return this.manifest.url;
+    }
+
+    return `${this.resourceAboutUrl}/!/`;
   }
 
   get showViews(): boolean {
